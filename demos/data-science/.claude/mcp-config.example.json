@@ -1,0 +1,100 @@
+{
+  "_comment": "Example MCP configuration for Claude Code. Copy to mcp.json and fill in values.",
+
+  "mcpServers": {
+    "databricks": {
+      "command": "databricks-mcp",
+      "args": ["--workspace", "${DATABRICKS_HOST}"],
+      "env": {
+        "DATABRICKS_HOST": "https://your-workspace.azuredatabricks.net",
+        "DATABRICKS_TOKEN": "${DATABRICKS_TOKEN}"
+      },
+      "description": "Query Unity Catalog, run SQL, access MLflow experiments"
+    },
+
+    "github": {
+      "command": "github-mcp",
+      "args": [],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "Create PRs, manage repos, track issues"
+    },
+
+    "obsidian": {
+      "command": "obsidian-mcp",
+      "args": [],
+      "env": {
+        "OBSIDIAN_VAULT": "/path/to/your/vault"
+      },
+      "description": "Document experiments and findings"
+    },
+
+    "brave-search": {
+      "command": "brave-search-mcp",
+      "args": [],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "description": "Search for ML best practices and research"
+    },
+
+    "context7": {
+      "command": "context7-mcp",
+      "args": [],
+      "description": "Get up-to-date library documentation (XGBoost, MLflow, etc.)"
+    },
+
+    "memory": {
+      "command": "memory-mcp",
+      "args": [],
+      "description": "Persist experiment learnings across sessions"
+    }
+  },
+
+  "_setup_instructions": {
+    "databricks": [
+      "1. Install Databricks CLI: pip install databricks-cli",
+      "2. Configure authentication: databricks configure",
+      "3. The managed MCP uses your Databricks CLI auth automatically"
+    ],
+    "github": [
+      "1. Create a Personal Access Token (PAT) in GitHub Settings",
+      "2. Grant: repo (Full control of private repositories)",
+      "3. Set GITHUB_TOKEN environment variable"
+    ],
+    "obsidian": [
+      "1. Install Obsidian MCP plugin",
+      "2. Set OBSIDIAN_VAULT to your vault path",
+      "3. Enable Local REST API in Obsidian settings"
+    ]
+  },
+
+  "_example_usage": {
+    "databricks": [
+      "List tables: 'Show me all tables in hackathon_catalog.grocery'",
+      "Query data: 'What's the distribution of reorder rates by department?'",
+      "Check experiments: 'List my recent MLflow experiments'"
+    ],
+    "github": [
+      "Create PR: 'Create a pull request with my experiment results'",
+      "Create issue: 'Create an issue for feature engineering improvements'"
+    ],
+    "obsidian": [
+      "Document: 'Create a note documenting my best experiment'",
+      "Search: 'Find my notes about hyperparameter tuning'"
+    ],
+    "brave-search": [
+      "Research: 'Search for XGBoost early stopping best practices'",
+      "Find papers: 'Find recent papers on demand forecasting'"
+    ],
+    "context7": [
+      "Docs: 'Using context7, show me MLflow autolog documentation'",
+      "Examples: 'What's the XGBoost syntax for custom objectives?'"
+    ],
+    "memory": [
+      "Remember: 'Remember that learning_rate=0.1 worked best'",
+      "Recall: 'What hyperparameters worked best in our experiments?'"
+    ]
+  }
+}

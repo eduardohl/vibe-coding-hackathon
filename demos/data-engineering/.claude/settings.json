@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(databricks bundle *)",
+      "Bash(git *)",
+      "Bash(ruff *)",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(databricks bundle destroy --target prod)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ruff format $FILEPATH"
+          },
+          {
+            "type": "command",
+            "command": "ruff check --fix $FILEPATH"
+          }
+        ]
+      }
+    ]
+  }
+}

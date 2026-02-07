@@ -1,0 +1,22 @@
+# Reference examples (not for demo - use for internal reference only)
+_reference/
+
+# Generated files during demo (Claude creates these live)
+src/generated-*.py
+resources/jobs/generated-*.yml
+
+# Python
+__pycache__/
+*.py[cod]
+.ruff_cache/
+
+# Databricks
+.databricks/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

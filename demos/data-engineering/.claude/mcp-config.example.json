@@ -1,0 +1,72 @@
+{
+  "_comment": "Example MCP configuration for Claude Code. Copy to mcp.json and fill in values.",
+
+  "mcpServers": {
+    "databricks": {
+      "command": "databricks-mcp",
+      "args": ["--workspace", "${DATABRICKS_HOST}"],
+      "env": {
+        "DATABRICKS_HOST": "https://your-workspace.azuredatabricks.net",
+        "DATABRICKS_TOKEN": "${DATABRICKS_TOKEN}"
+      },
+      "description": "Query Unity Catalog, run SQL, manage jobs"
+    },
+
+    "azure-devops": {
+      "command": "azure-devops-mcp",
+      "args": [],
+      "env": {
+        "AZURE_DEVOPS_ORG": "your-org",
+        "AZURE_DEVOPS_PROJECT": "your-project",
+        "AZURE_DEVOPS_PAT": "${AZURE_DEVOPS_PAT}"
+      },
+      "description": "Create PRs, manage repos, track work items"
+    },
+
+    "confluence": {
+      "command": "confluence-mcp",
+      "args": [],
+      "env": {
+        "CONFLUENCE_URL": "https://your-domain.atlassian.net",
+        "CONFLUENCE_USERNAME": "your-email@company.com",
+        "CONFLUENCE_API_TOKEN": "${CONFLUENCE_API_TOKEN}",
+        "CONFLUENCE_SPACE": "DATA"
+      },
+      "description": "Read and write Confluence pages"
+    }
+  },
+
+  "_setup_instructions": {
+    "databricks": [
+      "1. Install Databricks CLI: pip install databricks-cli",
+      "2. Configure authentication: databricks configure",
+      "3. The managed MCP uses your Databricks CLI auth automatically"
+    ],
+    "azure-devops": [
+      "1. Create a Personal Access Token (PAT) in Azure DevOps",
+      "2. Grant: Code (Read & Write), Pull Requests (Read & Write)",
+      "3. Set AZURE_DEVOPS_PAT environment variable"
+    ],
+    "confluence": [
+      "1. Create an API token at https://id.atlassian.com/manage/api-tokens",
+      "2. Set CONFLUENCE_API_TOKEN environment variable",
+      "3. Update CONFLUENCE_SPACE to your space key"
+    ]
+  },
+
+  "_example_usage": {
+    "databricks": [
+      "List tables: 'Show me all tables in hackathon_catalog.grocery'",
+      "Query data: 'Query the top 10 products by order count'",
+      "Check job: 'What's the status of my last job run?'"
+    ],
+    "azure-devops": [
+      "Create PR: 'Create a pull request for my changes'",
+      "Check builds: 'Show me the status of the latest build'"
+    ],
+    "confluence": [
+      "Document: 'Create a Confluence page documenting my pipeline'",
+      "Search: 'Find Confluence pages about data quality'"
+    ]
+  }
+}

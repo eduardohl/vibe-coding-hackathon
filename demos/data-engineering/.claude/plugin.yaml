@@ -1,0 +1,87 @@
+# Databricks Data Engineering Plugin for Claude Code
+# This plugin bundles commands, skills, agents, and hooks for DABs development
+
+name: databricks-data-engineering
+version: 1.0.0
+description: Complete Claude Code workflow for Databricks Asset Bundles development
+
+author: Data Platform Team
+homepage: https://github.com/databricks-claude-code-hackathon
+
+# Required Claude Code version
+requires:
+  claude-code: ">=1.0.0"
+
+# Components included in this plugin
+components:
+  # Slash commands for common operations
+  commands:
+    - deploy.md           # /deploy - Deploy DABs bundle
+    - run-job.md          # /run-job - Execute and monitor jobs
+    - validate-data.md    # /validate-data - Check data quality
+    - create-pr.md        # /create-pr - Create pull requests
+
+  # Skills that trigger automatically
+  skills:
+    - data-quality-check.md   # Triggers on "data quality", "validate"
+    - spark-optimization.md   # Triggers on "slow", "optimize"
+
+  # Specialized agents for complex tasks
+  agents:
+    - spark-optimizer.md   # Spark performance analysis
+    - job-debugger.md      # Failed job diagnosis
+    - code-reviewer.md     # PySpark code review
+
+  # Hooks for automation
+  hooks:
+    PostToolUse:
+      Write:
+        - command: "ruff format $FILEPATH"
+          description: "Auto-format Python files with Ruff"
+          match: "*.py"
+        - command: "ruff check --fix $FILEPATH"
+          description: "Auto-fix linting issues with Ruff"
+          match: "*.py"
+    PreCommit:
+      - command: "databricks bundle validate"
+        description: "Validate DABs bundle before commit"
+
+# MCP servers this plugin expects
+mcp:
+  required:
+    - databricks    # For Unity Catalog queries and job management
+  optional:
+    - azure-devops  # For PR creation
+    - confluence    # For documentation
+
+# Permissions the plugin needs
+permissions:
+  allow:
+    - "Bash(databricks bundle *)"
+    - "Bash(git *)"
+    - "Bash(ruff *)"
+    - "Read"
+    - "Write"
+    - "Edit"
+  deny:
+    - "Bash(rm -rf *)"
+    - "Bash(databricks bundle destroy --target prod)"
+
+# Example usage
+examples:
+  - description: "Deploy and run a job"
+    steps:
+      - "/deploy"
+      - "/run-job"
+      - "/validate-data"
+
+  - description: "Optimize slow job"
+    prompt: "My job is taking too long, can you help?"
+
+  - description: "Debug failed job"
+    prompt: "The daily_metrics_job failed, please investigate"
+
+  - description: "Code review before PR"
+    steps:
+      - "Review my code changes"
+      - "/create-pr"
