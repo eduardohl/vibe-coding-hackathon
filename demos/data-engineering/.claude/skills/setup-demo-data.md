@@ -51,7 +51,7 @@ SELECT department_id, department FROM VALUES
 AS t(department_id, department);
 ```
 
-#### 3b. Aisles Table (134 rows - sample)
+#### 3b. Aisles Table (50 rows)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.aisles AS
 SELECT aisle_id, aisle FROM VALUES
@@ -74,7 +74,7 @@ SELECT aisle_id, aisle FROM VALUES
 AS t(aisle_id, aisle);
 ```
 
-#### 3c. Products Table (~1000 sample products)
+#### 3c. Products Table (50 products)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.products AS
 WITH base_products AS (

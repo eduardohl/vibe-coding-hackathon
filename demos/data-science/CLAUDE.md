@@ -58,7 +58,7 @@ with MLflow for experiment tracking on Databricks.
 | `{catalog}.{schema}.order_products` | Order line items | ~35,000 |
 | `{catalog}.{schema}.products` | Product catalog | 50 |
 | `{catalog}.{schema}.departments` | Product departments | 21 |
-| `{catalog}.{schema}.aisles` | Product aisles | 100 |
+| `{catalog}.{schema}.aisles` | Product aisles | 50 |
 
 ---
 

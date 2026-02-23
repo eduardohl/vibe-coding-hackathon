@@ -45,21 +45,18 @@ A practical workshop teaching AI-assisted development with Claude Code and Datab
 databricks-claude-code-hackathon/
 ├── README.md              # This file
 ├── CLAUDE.md              # Project context for Claude Code
-├── demos/                 # Reference implementations
-│   ├── data-engineering/  # DABs + PySpark + DLT demo
-│   │   ├── CLAUDE.md      # Project-specific context
-│   │   ├── README.md      # Live demo script
-│   │   ├── .claude/       # Commands, skills, agents, hooks
-│   │   └── src/           # Generated code (created live in demo)
-│   └── data-science/      # MLflow + XGBoost demo
-│       ├── CLAUDE.md      # Project-specific context
-│       ├── README.md      # Live demo script
-│       ├── .claude/       # Commands, skills, agents, hooks
-│       └── src/           # Generated code (created live in demo)
-└── hackathon/             # Problem statements & instructions
-    ├── instructions.md
-    ├── data-engineering-problem.md
-    └── data-science-problem.md
+├── claude_code_guide.md   # Claude Code features reference
+└── demos/                 # Reference implementations
+    ├── data-engineering/  # DABs + PySpark + DLT demo
+    │   ├── CLAUDE.md      # Project-specific context
+    │   ├── README.md      # Live demo script
+    │   ├── .claude/       # Commands, skills, agents, hooks
+    │   └── src/           # Generated code (created live in demo)
+    └── data-science/      # MLflow + XGBoost demo
+        ├── CLAUDE.md      # Project-specific context
+        ├── README.md      # Live demo script
+        ├── .claude/       # Commands, skills, agents, hooks
+        └── src/           # Generated code (created live in demo)
 ```
 
 ---
@@ -80,14 +77,10 @@ cd participants/team-{name}/
 # 3. Update CLAUDE.md with your team schema
 # Replace {catalog} and {schema} with your assigned values
 
-# 4. Read the problem statement
-# hackathon/data-engineering-problem.md OR
-# hackathon/data-science-problem.md
-
-# 5. Start Claude Code
+# 4. Start Claude Code
 claude .
 
-# 6. Setup demo data
+# 5. Setup demo data
 # Say: "Setup demo data in {catalog}.{schema}"
 ```
 
@@ -116,7 +109,7 @@ This creates:
 | Table | Description | Row Count |
 |-------|-------------|-----------|
 | `orders` | Order transactions | ~10,000 |
-| `order_products` | Order line items | ~35,000 |
+| `order_products` | Order line items | ~50,000 |
 | `products` | Product catalog | 50 |
 | `departments` | Product departments | 21 |
 | `aisles` | Product aisles | 50 |
@@ -154,11 +147,6 @@ By the end of this hackathon, participants will:
 ---
 
 ## Resources
-
-### Hackathon Materials
-- [Instructions](hackathon/instructions.md) - Getting started guide
-- [Data Engineering Problem](hackathon/data-engineering-problem.md) - DE track challenge
-- [Data Science Problem](hackathon/data-science-problem.md) - DS track challenge
 
 ### Demo References
 - [Data Engineering Demo Script](demos/data-engineering/README.md) - Step-by-step walkthrough

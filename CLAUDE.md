@@ -14,12 +14,10 @@ This repository contains materials for training and hackathon sessions demonstra
 databricks-claude-code-hackathon/
 ├── CLAUDE.md                    # This file - project memory
 ├── README.md                    # Quick start guide
-├── decks/                       # Training presentation deck
 ├── demos/                       # Demo templates (code generated live)
 │   ├── data-engineering/        # DABs + PySpark + DLT demo
 │   │   ├── CLAUDE.md            # Project context for Claude
 │   │   ├── README.md            # Live demo script
-│   │   ├── databricks.yml       # DABs bundle config
 │   │   ├── .claude/             # Claude Code customizations
 │   │   │   ├── commands/        # Custom slash commands
 │   │   │   ├── skills/          # Auto-triggered skills
@@ -30,10 +28,7 @@ databricks-claude-code-hackathon/
 │       ├── CLAUDE.md            # Project context
 │       ├── README.md            # Demo script
 │       └── src/                 # Training code
-└── hackathon/                   # Hackathon materials
-    ├── instructions.md          # Getting started guide
-    ├── data-engineering-problem.md
-    └── data-science-problem.md
+└── claude_code_guide.md         # Claude Code features reference
 ```
 
 > **Note:** Demo folders contain templates only. Code is generated live by Claude during demos using `generated-` prefix.
@@ -86,7 +81,7 @@ To create demo data in your own catalog/schema:
 | Table | Description | Sample Size |
 |-------|-------------|-------------|
 | `{catalog}.{schema}.orders` | Order transactions | 10,000 |
-| `{catalog}.{schema}.order_products` | Order line items | ~35,000 |
+| `{catalog}.{schema}.order_products` | Order line items | ~50,000 |
 | `{catalog}.{schema}.products` | Product catalog | 50 |
 | `{catalog}.{schema}.departments` | Product departments | 21 |
 | `{catalog}.{schema}.aisles` | Product aisles | 50 |
@@ -191,15 +186,6 @@ git checkout main  # to revert
 | Preview not updating | Close and reopen VS Code preview tab |
 | **Missing Python libraries** | Use ML Runtime 14.3+ OR add `%pip install xgboost scikit-learn matplotlib seaborn` + `dbutils.library.restartPython()` at start of notebook |
 | Job fails on serverless | Ensure library installation cells are at the top of notebook, before imports |
-
----
-
-## Files Changed This Session
-
-- Created `.claude/skills/setup-demo-data.md` - skill for creating mock data
-- Created `src/setup_demo_data.py` - Databricks notebook for data setup
-- Updated README.md - changed "Say:" to "Observation:" for live demo
-- Deleted: `claude-howto-main-example/`, `Databricks Vibe Guide (2).pdf`, `OBJECTIVES.md`
 
 ---
 
