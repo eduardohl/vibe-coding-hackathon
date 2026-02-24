@@ -12,7 +12,7 @@
 | [Slash Commands](#2-slash-commands) | **Manual** — you type `/cmd` | **Low** — injected once when invoked | `/deploy` runs bundle deploy |
 | [Skills](#3-skills) | **Auto** — Claude matches intent | **Low** — injected once when matched | "setup demo data" → SQL gen |
 | [Subagents](#4-subagents) | **Manual** — "delegate to..." | **Zero** — runs in isolated context | Spark optimizer reviews code |
-| [MCP Servers](#5-mcp-servers) | **Auto** — Claude calls as needed | **Low** — tool defs at startup, results per-call | Query Unity Catalog via SQL |
+| [MCP Servers](#5-mcp-servers) | **Auto** — Claude calls as needed | **Medium** — tool defs loaded every turn + results per-call | Query Unity Catalog via SQL |
 | [Hooks](#6-hooks) | **Auto** — fires on events | **Zero** — runs outside Claude (shell) | Ruff format on every `.py` write |
 | [Checkpoints](#7-checkpoints) | **Manual** — `Esc + Esc` | **Zero** — stored in git refs | Rewind failed DLT experiment |
 | [Headless Mode](#8-headless-mode) | **Manual** — `claude -p "..."` | **N/A** — separate invocation | Pipe job output for analysis |
