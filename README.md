@@ -61,6 +61,19 @@ databricks-claude-code-hackathon/
 
 ---
 
+## Prerequisites
+
+Before the workshop, complete these steps:
+
+1. **Install Claude Code** — Follow the setup guide on the Confluence page shared with participants
+2. **Install Ruff** — `pip install ruff` (used by hooks for auto-formatting Python)
+3. **Configure Databricks CLI** — [Install the CLI](https://docs.databricks.com/en/dev-tools/cli/install.html) and run `databricks configure`
+4. **Verify MCP servers** — Run `claude mcp list` and confirm at least `uc-function-mcp` and `github` are connected
+
+> Optional MCP servers (confluence, context7, brave-search, memory, obsidian) enhance the experience but aren't required.
+
+---
+
 ## Quick Start
 
 ### For Participants
@@ -142,7 +155,7 @@ By the end of this hackathon, participants will:
 | **Skills** | `.claude/skills/` | Auto-triggered for keywords like "setup demo data" |
 | **Agents** | `.claude/agents/` | Specialized subagents for complex tasks |
 | **Hooks** | `.claude/settings.json` | Auto-run on events (e.g., format on save) |
-| **MCP Servers** | External | Databricks, GitHub, Obsidian, Brave Search, Context7, Memory |
+| **MCP Servers** | External | Required: Databricks, GitHub. Optional: confluence, context7, brave-search, memory, obsidian |
 
 ---
 

@@ -26,15 +26,20 @@
 1. Terminal open in `demos/data-engineering/`
 2. `claude mcp list` — all servers connected
 3. Databricks workspace open in browser
-4. Fresh session: `claude /clear`
+4. Fresh session: start `claude`, then type `/clear`
 
 ---
 
 ## Walkthrough
 
-### Step 0: Setup Demo Data
+### Step 0: Start Claude Code & Setup Demo Data
 
-> Skip if you already created demo data for the other track.
+```bash
+cd demos/data-engineering
+claude .
+```
+
+> Skip the data setup below if you already created demo data for the other track.
 
 ```
 Setup demo data in {catalog}.{schema}
@@ -46,14 +51,7 @@ This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills
 
 ---
 
-### Step 1: Start Claude Code & Verify MCP
-
-```bash
-cd demos/data-engineering
-claude .
-```
-
-Then ask:
+### Step 1: Verify MCP
 
 ```
 What MCP servers do you have access to?
@@ -97,7 +95,7 @@ Use the project structure in this directory.
 ```
 
 > **Observe:** Watch for two things:
-> 1. Claude generates 4 files (2 source + 2 job definitions) in one shot
+> 1. Claude generates multiple files — source code and job definitions — in one shot
 > 2. Each `.py` file gets **auto-formatted with Ruff** as it's written — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) in `.claude/settings.json` firing automatically
 
 **Generated files:**
@@ -132,10 +130,10 @@ Using context7, show me the Delta Lake documentation for MERGE operations
 ### Step 6: Deploy and Run
 
 ```
-Deploy this bundle to {profile_name} and run the job
+Deploy this bundle and run the job
 ```
 
-Replace `{profile_name}` with your Databricks CLI profile (e.g., `default`).
+> **Note:** If no `databricks.yml` exists yet, Claude will create one as part of the deploy. You may need to specify your Databricks CLI profile (e.g., `default`).
 
 > **Observe:** Claude runs `databricks bundle deploy` and `databricks bundle run` for you and returns the job run URL. Check the Databricks UI to see it running.
 

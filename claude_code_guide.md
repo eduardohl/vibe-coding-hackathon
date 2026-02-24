@@ -1,412 +1,268 @@
-# Claude Code Feature Guide
+# Claude Code Feature Guide for Databricks
 
-> **Comprehensive documentation for all 11 features — from slash commands to background tasks**
-
----
-
-## Quick Reference Table
-
-| Feature | Invocation | Persistence | Best For |
-|---------|------------|-------------|----------|
-| **Slash Commands** | Manual (`/cmd`) | Session only | Quick shortcuts |
-| **Memory (CLAUDE.md)** | Auto-loaded | Cross-session | Long-term learning |
-| **Skills** | Auto-invoked | Filesystem | Automated workflows |
-| **Subagents** | Auto-delegated | Isolated context | Task distribution |
-| **MCP Protocol** | Auto-queried | Real-time | Live data access |
-| **Hooks** | Event-triggered | Configured | Automation & validation |
-| **Plugins** | One command | All features | Complete solutions |
-| **Checkpoints** | Manual/Auto | Session-based | Safe experimentation |
-| **Planning Mode** | Manual/Auto | Plan phase | Complex implementations |
-| **Background Tasks** | Manual | Task duration | Long-running operations |
-| **CLI Reference** | Terminal commands | Session/Script | Automation & scripting |
+> Every feature below is demonstrated live in the [data-engineering](demos/data-engineering/) and [data-science](demos/data-science/) demos.
 
 ---
 
-## Use Case Matrix
+## At a Glance
 
-| Use Case | Recommended Features |
-|----------|---------------------|
-| **Team Onboarding** | `Memory` `Slash Commands` `Plugins` |
-| **Code Quality** | `Subagents` `Skills` `Memory` `Hooks` |
-| **Documentation** | `Skills` `Subagents` `Plugins` |
-| **DevOps** | `Plugins` `MCP` `Hooks` `Background Tasks` |
-| **Security Review** | `Subagents` `Skills` `Hooks` |
-| **API Integration** | `MCP` `Memory` |
-| **Quick Tasks** | `Slash Commands` |
-| **Complex Projects** | `All Features` `Planning Mode` |
-| **Refactoring** | `Checkpoints` `Planning Mode` `Hooks` |
-| **Learning/Experimentation** | `Checkpoints` `Extended Thinking` `Permission Mode` |
-| **CI/CD Automation** | `CLI Reference` `Hooks` `Background Tasks` |
-| **Performance Optimization** | `Planning Mode` `Checkpoints` `Background Tasks` |
-| **Script Automation** | `CLI Reference` `Hooks` `MCP` |
-| **Batch Processing** | `CLI Reference` `Background Tasks` |
+| Feature | How It Triggers | Databricks Example |
+|---------|----------------|--------------------|
+| [CLAUDE.md](#1-claudemd--project-memory) | Auto-loaded at startup | Store catalog/schema, compute defaults, coding standards |
+| [Slash Commands](#2-slash-commands) | You type `/cmd` | `/deploy` runs `databricks bundle deploy` |
+| [Skills](#3-skills) | Claude detects intent | Say "setup demo data" and SQL generation activates |
+| [Subagents](#4-subagents) | Claude delegates | Spark optimizer reviews your PySpark for skew/shuffle issues |
+| [MCP Servers](#5-mcp-servers) | Claude calls tools | Query Unity Catalog tables via SQL in real time |
+| [Hooks](#6-hooks) | Fires on events | Auto-format `.py` files with Ruff on every write |
+| [Checkpoints](#7-checkpoints) | `Esc + Esc` | Rewind after a failed DLT pipeline experiment |
+| [Headless Mode](#8-headless-mode) | `claude -p "..."` | Pipe `databricks jobs list` output for analysis |
 
 ---
 
-## Detailed Features
+## 1. CLAUDE.md — Project Memory
 
-<details>
-<summary><strong>1. Slash Commands</strong> — Manual Invocation</summary>
+[Docs](https://code.claude.com/docs/en/memory)
 
-### Overview
-Pre-written prompts stored as .md files that you trigger on-demand. Perfect for repetitive tasks like commit generation, testing, or scaffolding.
+A markdown file auto-loaded into every conversation. Use it to give Claude persistent context about your project — what catalog to use, how to deploy, what conventions to follow.
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | `/command-name` |
-| **Persistence** | Session only |
-| **Token Cost** | 100–1,000 per use |
+**Where it lives:** `CLAUDE.md` at project root (and optionally in subdirectories — Claude merges them hierarchically).
 
-### Common Examples
-```
-/commit   – Generate commit messages
-/test     – Run tests
-/push     – Stage, commit, and push
-/scaffold – Generate project structure
-/deploy   – Deploy application
+**Databricks example** — tell Claude your environment once, use it forever:
+
+```markdown
+## Environment
+- Catalog: `main`
+- Schema: `grocery`
+- Compute: Serverless (use `%pip install` + `dbutils.library.restartPython()` for non-standard libs)
+- Deploy: `databricks bundle deploy --target dev`
 ```
 
-</details>
+**Tips:**
+- Keep it under 500 lines — everything here consumes context on every turn
+- Put stable facts here (catalog, schema, team conventions), not session-specific notes
+- Subdirectory CLAUDE.md files override parent settings for that scope
 
-<details>
-<summary><strong>2. Memory (CLAUDE.md)</strong> — Auto-loaded</summary>
+---
 
-### Overview
-Hierarchical markdown files that persist across sessions, containing project conventions, team standards, and architectural patterns.
+## 2. Slash Commands
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Automatic at startup |
-| **Persistence** | Cross-session |
-| **Search Pattern** | Hierarchical/Recursive |
+[Docs](https://code.claude.com/docs/en/slash-commands)
 
-### What to Store
-- Coding standards
-- Build/deploy instructions
-- Architectural patterns
-- Team preferences
-- Project context
+Pre-written prompts stored as `.md` files that you trigger manually. Think of them as team-shared macros.
 
-</details>
+**Where they live:** `.claude/commands/`
 
-<details>
-<summary><strong>3. Skills</strong> — Auto-invoked</summary>
+**Databricks examples from this repo:**
 
-### Overview
-Domain-specific expertise packages that Claude discovers automatically when relevant. Progressive disclosure keeps context efficient.
+| Command | What It Does |
+|---------|-------------|
+| `/deploy` | Validates and deploys the DABs bundle |
+| `/run-job` | Triggers a Lakeflow Job and monitors it |
+| `/validate-data` | Runs data quality checks on output tables |
+| `/train` | Trains a model with MLflow logging |
+| `/create-pr` | Creates a PR via the GitHub MCP |
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Automatic (contextual) |
-| **Persistence** | Filesystem |
-| **Token Cost** | 30–50 (metadata only) |
+**How to create one:** Add a markdown file to `.claude/commands/`. The filename becomes the command name. The file content becomes the prompt.
 
-> **Key Insight:** Skills activate only once per conversation when Claude detects relevance. They expand from 30–50 tokens of metadata to 500–5,000 tokens only when needed.
-
-</details>
-
-<details>
-<summary><strong>4. Subagents</strong> — Auto-delegated</summary>
-
-### Overview
-Specialized Claude instances with dedicated context windows. Ideal for task distribution, code reviews, and parallel analysis.
-
-| Property | Value |
-|----------|-------|
-| **Invocation** | Automatic (delegated) |
-| **Context** | Isolated window |
-| **Execution** | Parallel capable |
-
-> **Best Pattern:** Subagents analyze (read-only) → Main Claude executes (write tools). This preserves control while enabling specialized expertise.
-
-</details>
-
-<details>
-<summary><strong>5. MCP (Model Context Protocol)</strong> — Auto-queried</summary>
-
-### Overview
-External tool/service integrations connecting Claude to databases, APIs, browsers, and specialized systems. Tool Search enables lazy loading.
-
-| Property | Value |
-|----------|-------|
-| **Invocation** | Automatic (data needed) |
-| **Persistence** | Real-time |
-| **Context Savings** | 85% reduction |
-
-### Common MCP Servers
-```
-- Supabase/Postgres (database ops)
-- GitHub (version control)
-- Playwright/Puppeteer (browser automation)
-- Context7 (documentation)
-- Email systems, file system, web search
+```markdown
+<!-- .claude/commands/deploy.md -->
+Run `databricks bundle validate` first.
+If valid, run `databricks bundle deploy --target dev`.
+Report the deploy URL when done.
 ```
 
-</details>
+---
 
-<details>
-<summary><strong>6. Hooks</strong> — Event-triggered</summary>
+## 3. Skills
 
-### Overview
-Automated shell commands at lifecycle events (PreToolUse, PostToolUse, Stop, etc.). Non-negotiable automation with exit-code control.
+[Docs](https://code.claude.com/docs/en/skills)
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | System events |
-| **Persistence** | Always configured |
-| **Control** | Exit codes |
+Domain expertise that Claude discovers and activates *automatically* based on your intent. You don't invoke skills — Claude reads their trigger keywords and decides when to use them.
 
-> **Use Cases:** Auto-formatting, linting, logging, permission checks, security scanning, notifications. Exit code 0 = proceed, non-zero = block.
+**Where they live:** `.claude/skills/`
 
-</details>
+**How they differ from slash commands:** Slash commands are manual (`/deploy`). Skills are automatic — say "setup demo data" and Claude finds and follows the skill without you pointing to it.
 
-<details>
-<summary><strong>7. Plugins</strong> — One-command Install</summary>
+**Databricks examples from this repo:**
 
-### Overview
-Packaged bundles of commands, subagents, hooks, and MCP servers. Perfect for team standardization and shareable solutions.
+| Skill | Triggers When You Say... | What It Does |
+|-------|-------------------------|-------------|
+| `setup-demo-data` | "setup demo data", "create mock data" | Generates 5 tables via SQL |
+| `data-quality-check` | "check data quality", "validate output" | Runs null/duplicate/freshness checks |
+| `spark-optimization` | "optimize", "slow job" | Applies Spark tuning patterns |
+| `mlflow-logging` | "log to MLflow", "track experiment" | Sets up proper MLflow logging |
+| `hyperparameter-tuning` | "tune", "grid search" | Runs structured HP search with logging |
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Single install |
-| **Bundling** | Commands + Agents + Hooks + MCP |
-| **Distribution** | GitHub + Marketplace |
+**How to create one:** Add a `.md` file to `.claude/skills/` with trigger keywords and step-by-step instructions. Claude reads the metadata and activates the skill when it detects a match.
 
-</details>
+---
 
-<details>
-<summary><strong>8. Checkpoints</strong> — Manual/Auto Snapshots</summary>
+## 4. Subagents
 
-### Overview
-Automatic snapshots before edits, stored in local Git refs. Enables fearless experimentation with instant rollback via `Esc+Esc` or `/rewind`.
+[Docs](https://code.claude.com/docs/en/sub-agents)
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Manual or automatic |
-| **Persistence** | Session-based |
-| **Restore Modes** | Code only or full rollback |
+Specialized Claude instances with their own isolated context. Claude delegates to them for focused analysis. Each subagent has its own system prompt defining its expertise.
 
-> **Important:** Checkpoints only handle file changes. External operations (database writes, API calls, deployments) cannot be checkpointed.
+**Where they live:** `.claude/agents/`
 
-</details>
+**Databricks examples from this repo:**
 
-<details>
-<summary><strong>9. Planning Mode</strong> — Strategic Planning</summary>
+| Agent | Expertise | Example Prompt |
+|-------|-----------|---------------|
+| `spark-optimizer` | PySpark performance (skew, shuffle, caching) | "Delegate to the spark-optimizer to review my code" |
+| `feature-engineer` | ML feature design for demand forecasting | "Delegate to the feature-engineer to design features" |
+| `model-evaluator` | Train/val/test metric analysis, overfitting diagnosis | "Delegate to the model-evaluator to analyze performance" |
+| `code-reviewer` | Best practices, Unity Catalog conventions | "Delegate to the code-reviewer to check my pipeline" |
+| `job-debugger` | Lakeflow Job failure diagnosis | "Delegate to the job-debugger to investigate the failure" |
+| `experiment-analyzer` | Compare MLflow runs, find best configurations | "Delegate to the experiment-analyzer to compare my runs" |
 
-### Overview
-Two-phase execution: Claude creates detailed plan, you review/approve, then Claude executes. Perfect for complex refactors and uncertain requirements.
+**Key pattern:** Subagents analyze (read-only) while the main Claude executes (writes code). This keeps control in one place while leveraging specialized reasoning.
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Manual for complex tasks |
-| **Phases** | Plan → Approve → Execute |
-| **Best For** | Architectural changes |
+---
 
-</details>
+## 5. MCP Servers
 
-<details>
-<summary><strong>10. Background Tasks</strong> — Async Operations</summary>
+[Docs](https://code.claude.com/docs/en/mcp)
 
-### Overview
-Long-running operations (tests, builds, deployments) that execute while you continue working. Perfect for time-consuming tasks.
+Live connections to external tools and services. Claude calls them automatically when it needs real-time data. MCP (Model Context Protocol) is an open standard — any tool that implements it can plug into Claude Code.
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Manual |
-| **Persistence** | Task duration |
-| **Execution** | Asynchronous |
+**Configuration:** Set up via `claude mcp add` (see `.claude/mcp-config.example.json` for reference)
 
-</details>
+**Servers used in this repo:**
 
-<details>
-<summary><strong>11. CLI Reference (Headless Mode)</strong> — Terminal Automation</summary>
+| Server | What It Enables | Example |
+|--------|----------------|---------|
+| **uc-function-mcp** | Query Databricks via SQL | "Show me the schema of orders" |
+| **github** | PRs, issues, repos | "Create a PR for these changes" |
+| **context7** | Up-to-date library docs | "Show me XGBoost early stopping docs" |
+| **memory** | Persist facts across sessions | "Remember the best hyperparameters" |
+| **brave-search** | Web search | "Search for Spark partition pruning tips" |
+| **obsidian** | Note-taking | "Document this pipeline in my vault" |
 
-### Overview
-Non-interactive Claude execution. Send prompt via terminal, get response to stdout. Perfect for CI/CD, automation, and scripting.
+**Why this matters for Databricks:** The `uc-function-mcp` server lets Claude query your Unity Catalog directly. No copy-pasting schemas, no describing table structures — Claude sees your live data.
 
-| Property | Value |
-|----------|-------|
-| **Invocation** | Terminal command |
-| **Persistence** | Session/Script |
-| **I/O** | Pipe-friendly |
+---
 
-### Usage
+## 6. Hooks
+
+[Docs](https://code.claude.com/docs/en/hooks)
+
+Shell commands that fire automatically on lifecycle events. They're deterministic (not AI) — just scripts that run on triggers.
+
+**Where they live:** `.claude/settings.json`
+
+**Events:**
+- `PreToolUse` — before Claude uses a tool (can block with non-zero exit)
+- `PostToolUse` — after Claude uses a tool
+- `Stop` — when Claude finishes a response
+
+**Databricks examples from this repo:**
+
+```jsonc
+// .claude/settings.json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"${CLAUDE_FILE_PATH##*.}\" = \"py\" ] && ruff format \"$CLAUDE_FILE_PATH\" || true"
+          },
+          {
+            "type": "command",
+            "command": "[ \"${CLAUDE_FILE_PATH##*.}\" = \"py\" ] && ruff check --fix \"$CLAUDE_FILE_PATH\" || true"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Other Databricks-relevant hook ideas:**
+- `PreToolUse` on `Bash(git commit)` — run `databricks bundle validate` before every commit
+- `PostToolUse` on `Write(*.py)` — run `mypy` or `pylint` on new Spark code
+- `Stop` — post a Slack notification when a long training run finishes
+
+**Key distinction from subagents:** Hooks are deterministic automation ("always do X"). Subagents are intelligent delegation ("analyze this and advise me").
+
+---
+
+## 7. Checkpoints
+
+[Docs](https://code.claude.com/docs/en/overview)
+
+Automatic file snapshots before every edit, stored in local Git refs. Press `Esc + Esc` to open the checkpoint menu and roll back instantly.
+
+**Databricks use case:** You ask Claude to add a gold layer to your DLT pipeline. It doesn't work out. Press `Esc + Esc`, pick the checkpoint before the change, and you're back instantly — no `git stash`, no `git checkout .`.
+
+**Limitations:** Checkpoints only cover file changes. They can't undo external side effects like Databricks job runs, table writes, or MLflow experiment logs.
+
+---
+
+## 8. Headless Mode
+
+[Docs](https://code.claude.com/docs/en/cli)
+
+Run Claude non-interactively from the terminal. Pipe input in, get structured output back. Useful for CI/CD, automation scripts, and batch processing.
+
 ```bash
-claude -p "Your prompt here"
+# Review a Spark job for performance issues
+cat src/etl_daily_metrics.py | claude -p "Review this PySpark code for performance"
 
-# Examples
-git diff | claude -p "Review for security"
-npm audit | claude -p "Rank vulnerabilities"
-```
+# Analyze a failed job run
+databricks jobs get-run 12345 --output JSON | claude -p "Why did this job fail?"
 
-</details>
-
----
-
-## Feature Comparison
-
-| Feature | Triggers | Persists | Context Cost | Best Scenario |
-|---------|----------|----------|--------------|---------------|
-| **Slash Commands** | You (`/cmd`) | Session | 100–1K tokens | Quick actions |
-| **Memory** | Auto at start | Cross-session | Variable | Team standards |
-| **Skills** | Claude (relevant) | Filesystem | 30–50 metadata | Domain expertise |
-| **Subagents** | Claude (delegated) | Isolated | Separate window | Specialized tasks |
-| **MCP** | Claude (data needed) | Real-time | ~5K with search | External systems |
-| **Hooks** | System event | Always on | Minimal | Quality control |
-| **Plugins** | One install | All included | Bundle sum | Complete solutions |
-| **Checkpoints** | Manual/auto | Session | None | Safe experimentation |
-| **Planning Mode** | You (complex) | Plan phase | Normal | Strategic projects |
-| **Background Tasks** | You (long ops) | Task duration | Normal | Long operations |
-| **CLI** | Terminal | Session/script | Normal | Automation |
-
----
-
-## Skills vs Slash Commands
-
-> **The Key Difference:**
-> - `Skills` = Claude discovers and activates automatically based on context
-> - `Slash Commands` = You manually trigger when needed
-
-| Aspect | Skills | Slash Commands |
-|--------|--------|----------------|
-| Who decides? | Claude (model-driven) | You (user-driven) |
-| Token cost | 30–50 (metadata) | 100–1,000 (full) |
-| Predictability | Contextual | Explicit |
-| Best use | Domain knowledge | Repeated actions |
-
----
-
-## Hooks vs Subagents
-
-> **The Key Difference:**
-> - `Hooks` = "This action must ALWAYS happen" (deterministic)
-> - `Subagents` = "Analyze this and advise me" (intelligent)
-
-| Aspect | Hooks | Subagents |
-|--------|-------|-----------|
-| Type | Deterministic automation | AI-powered delegation |
-| Reasoning | None (shell commands) | Full Claude reasoning |
-| Best for | Linting, formatting, logging | Analysis, reviews, research |
-| Control | Blocking (exit codes) | Advisory (can override) |
-
----
-
-## Workflow Patterns
-
-### Pattern 1: Team Onboarding
-```
-CLAUDE.md (project standards)
-    ↓
-Slash Commands (quick actions)
-    ↓
-Plugins (entire package)
-    ↓
-Hooks (enforce quality)
-```
-
-### Pattern 2: Code Quality Assurance
-```
-Memory (conventions)
-    ↓
-Skills (expertise)
-    ↓
-Subagents (parallel review)
-    ↓
-Hooks (auto-format/lint/test)
-```
-
-### Pattern 3: Complex Refactoring
-```
-Planning Mode (strategy)
-    ↓
-Checkpoints (safety net)
-    ↓
-Subagents (parallel work)
-    ↓
-Hooks (auto-test)
-```
-
-### Pattern 4: DevOps Automation
-```
-Plugins (toolchain)
-    ↓
-MCP (integration)
-    ↓
-Hooks (validation)
-    ↓
-Background Tasks (deployments)
-    ↓
-CLI (CI/CD)
-```
-
-### Pattern 5: Security Review
-```
-Skills (security patterns)
-    ↓
-Subagents (read-only analysis)
-    ↓
-Hooks (block dangerous ops)
-    ↓
-Memory (security policies)
+# Generate a commit message from staged changes
+git diff --staged | claude -p "Write a concise commit message"
 ```
 
 ---
 
-## Decision Matrix
+## Putting It All Together
 
-| Goal | Primary Feature | Supporting Features |
-|------|-----------------|---------------------|
-| Save time on repetitive tasks | Slash Commands | Memory, Hooks |
-| Maintain consistency | Memory | Skills, Hooks |
-| Delegate specialized tasks | Subagents | Skills, MCP |
-| Connect external systems | MCP | Memory, Plugins |
-| Enforce quality standards | Hooks | Subagents, Skills |
-| Share workflows with team | Plugins | All features |
-| Safe experimentation | Checkpoints | Planning Mode |
-| Complex projects | Planning Mode | Checkpoints, Subagents |
-| Automation & CI/CD | CLI + Hooks | Background Tasks, MCP |
-| Real-time data access | MCP | Skills, Subagents |
+Here's how the features compose in a typical Databricks workflow:
 
----
-
-## Quick Start: 3-Day Implementation
-
-### Day 1: Foundation
-- Create `.claude/CLAUDE.md` with team standards
-- Write 3 frequently-used Slash Commands
-- Set up basic Hooks for formatting/linting
-
-### Day 2: Automation
-- Create 1–2 Skills for domain expertise
-- Configure MCP for essential external services
-- Test command/skill/hook combinations
-
-### Day 3: Scaling
-- Create first Plugin bundling Day 1–2 features
-- Document workflows for team
-- Gather feedback and iterate
+```
+CLAUDE.md defines your catalog, schema, and conventions
+        |
+        v
+You say "setup demo data" -----> Skill activates, generates SQL
+        |
+        v
+Claude queries Unity Catalog --> MCP server runs live SQL
+        |
+        v
+You say "/deploy" -------------> Slash command deploys the bundle
+        |
+        v
+Claude writes Python ----------> Hook auto-formats with Ruff
+        |
+        v
+"Review my Spark code" --------> Subagent analyzes for performance
+        |
+        v
+Something goes wrong? ---------> Checkpoint rolls back instantly
+```
 
 ---
 
-## Glossary
+## File Layout (Inside Each Demo)
 
-| Term | Definition |
-|------|------------|
-| **MCP** | Model Context Protocol; standard for external tool integration using JSON-RPC over stdio |
-| **Subagent** | Specialized Claude instance with isolated context window; can run in parallel |
-| **Checkpoint** | Snapshot of file state stored in local Git refs; enables safe rollback |
-| **Hook** | Automated shell command triggered by lifecycle event (PreToolUse, PostToolUse, Stop, etc.) |
-| **Skill** | Auto-invoked expertise package discovered by Claude when contextually relevant |
-| **Plugin** | Bundled package containing commands, agents, hooks, and MCPs; shareable and versioned |
-| **Planning Mode** | Two-phase execution: Claude creates plan → You approve → Claude executes |
-| **Tool Search** | Lazy loading of tool definitions via regex; reduces context usage by 85% |
-| **Headless Mode** | Non-interactive Claude execution via CLI; perfect for automation and scripting |
-| **Background Task** | Long-running operation (tests, builds, deployments) that executes asynchronously |
-| **Memory File** | CLAUDE.md file containing project context, conventions, and team preferences; loaded hierarchically |
-| **Slash Command** | User-triggered shortcut stored as .md file; executes on manual invocation |
+```
+demos/data-engineering/        # or demos/data-science/
+├── CLAUDE.md                  # Project memory (auto-loaded)
+├── README.md                  # Live demo script
+└── .claude/
+    ├── commands/              # Slash commands: /deploy, /run-job, /train, etc.
+    ├── skills/                # Auto-triggered: setup-demo-data, data-quality, etc.
+    ├── agents/                # Subagents: spark-optimizer, feature-engineer, etc.
+    ├── settings.json          # Hooks configuration
+    └── mcp-config.example.json  # MCP server reference template
+```
 
 ---
 
-*Claude Code Feature Guide • Last Updated: January 2026*
-
-For official documentation, visit [docs.anthropic.com](https://docs.anthropic.com/en/docs/claude-code)
+*For the full official documentation, visit [code.claude.com/docs](https://code.claude.com/docs/en/overview)*

@@ -14,7 +14,7 @@ Train a machine learning model with proper MLflow experiment tracking.
 
 2. **Prepare data**
    - Load data from specified source
-   - Apply preprocessing from `src/preprocessing.py`
+   - Apply feature engineering (from `generated-feature_engineering.py` if available)
    - Split into train/validation/test sets
 
 3. **Train the model**

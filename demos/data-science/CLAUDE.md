@@ -116,35 +116,26 @@ Hooks in `.claude/settings.json` run automatically:
 | PostToolUse:Write | After writing .py files | Auto-format with Ruff |
 | PostToolUse:Edit | After editing .py files | Auto-lint with Ruff |
 
-### Plugin Bundle
-
-This demo includes a complete plugin (`plugin.yaml`) that bundles all features:
-
-```yaml
-name: databricks-data-science
-components:
-  commands: [train, evaluate, tune, create-pr]
-  skills: [mlflow-logging, hyperparameter-tuning]
-  agents: [feature-engineer, model-evaluator, experiment-analyzer]
-  hooks: [ruff format, ruff check]
-```
-
-**Plugins let you package and share Claude Code workflows with your team.**
-
 ### MCP Integrations
 
-Pre-configured MCP servers (verify with `claude mcp list`):
+Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
+
+**Required:**
 
 | Server | Capabilities |
 |--------|-------------|
 | **uc-function-mcp** | Query Databricks tables via SQL, explore data |
 | **github** | Create PRs, issues, manage repositories |
-| **obsidian** | Document experiments, write notes and summaries |
-| **brave-search** | Search for ML research and best practices |
+
+**Optional (nice-to-have):**
+
+| Server | Capabilities |
+|--------|-------------|
+| **confluence** | Read/write Confluence pages for documentation |
 | **context7** | Get up-to-date library documentation (XGBoost, MLflow) |
+| **brave-search** | Search for ML research and best practices |
 | **memory** | Persist experiment learnings across sessions |
-| **puppeteer** | Visual verification of MLflow UI |
-| **filesystem** | File operations outside the project |
+| **obsidian** | Document experiments, write notes and summaries |
 
 ---
 
@@ -240,8 +231,7 @@ CREATE SCHEMA IF NOT EXISTS {catalog}.models;
 │   │   ├── model-evaluator.md
 │   │   └── experiment-analyzer.md
 │   ├── settings.json              # Hooks and permissions
-│   ├── plugin.yaml                # Plugin bundle definition
-│   └── mcp-config.example.json    # MCP configuration template
+│   └── mcp-config.example.json    # MCP server reference template
 └── src/
     ├── setup_demo_data.py         # Setup script (upload to Databricks)
     └── generated-*.py             # Created during demo by Claude
@@ -322,167 +312,3 @@ A good baseline model should achieve:
 - Customer purchase frequency
 - Interaction features (department × time)
 
----
-
-## Demo Scenarios
-
-### Scenario 1: Train and Evaluate
-
-```
-You: /train
-Claude: [Trains model with MLflow logging]
-       [Logs parameters, metrics, and artifacts]
-
-You: /evaluate
-Claude: [Evaluates model on test set]
-       [Shows metrics and feature importance]
-```
-
-### Scenario 2: Hyperparameter Tuning
-
-```
-You: Help me tune the hyperparameters
-Claude: [Hyperparameter tuning skill activates]
-       [Runs grid search with cross-validation]
-       [Logs all trials to MLflow]
-```
-
-### Scenario 3: Feature Engineering
-
-```
-You: I need better features for my model
-Claude: [Delegates to feature-engineer agent]
-       [Analyzes data and suggests features]
-       [Implements time and product features]
-```
-
-### Scenario 4: Analyze Experiments
-
-```
-You: Compare my MLflow runs and find the best model
-Claude: [Delegates to experiment-analyzer agent]
-       [Compares metrics across runs]
-       [Identifies best configuration]
-```
-
-### Scenario 5: Model Debugging
-
-```
-You: My model is overfitting, can you help?
-Claude: [Delegates to model-evaluator agent]
-       [Analyzes train vs val curves]
-       [Suggests regularization strategies]
-```
-
-### Scenario 6: Safe Experimentation (Checkpoints)
-
-```
-You: git checkout -b experiment/new-features
-Claude: [Creates branch for safe experimentation]
-
-You: Add interaction features to the model
-Claude: [Implements changes on experiment branch]
-
-You: That didn't improve things, let's go back
-You: git checkout main
-Claude: [Clean return to main branch - no harm done]
-```
-
-### Scenario 7: CLI Power Features
-
-```bash
-# Start Claude Code in your project
-claude .
-
-# Check what Claude remembers about experiments
-claude /memory
-
-# See token usage
-claude /cost
-
-# Compact a long conversation
-claude /compact
-
-# Check MCP server status
-claude /mcp
-```
-
----
-
-## Common Issues
-
-| Issue | Solution |
-|-------|----------|
-| Memory error with toPandas | Sample data or aggregate in Spark first |
-| MLflow experiment not found | Check experiment name path, create if needed |
-| Model registration fails | Ensure models schema exists in Unity Catalog |
-| Slow training | Use sample_fraction parameter, reduce data size |
-| Overfitting | Add regularization, reduce model complexity |
-| Permission denied | Check Unity Catalog grants on source tables |
-
----
-
-## MCP Integration Examples
-
-### Query Data (uc-function-mcp)
-
-```
-Using the Databricks MCP, show me the reorder rate by department
-
-What's the distribution of order_hour_of_day in the orders table?
-
-Show me 5 sample rows from order_products joined with products
-```
-
-### Look Up Documentation (context7)
-
-```
-Using context7, show me XGBoost documentation for early stopping
-
-What's the MLflow autolog syntax for scikit-learn?
-```
-
-### Search Best Practices (brave-search)
-
-```
-Search for feature engineering best practices for demand forecasting
-
-Find recent papers on XGBoost hyperparameter tuning
-```
-
-### Create Documentation (obsidian)
-
-```
-Create a note in my Obsidian vault under "ML Experiments/Demand Forecast" with:
-- Hypothesis tested
-- Model configuration
-- Results and next steps
-```
-
-### Persist Learnings (memory)
-
-```
-Remember that log-transforming the target improved RMSE by 15%
-and optimal learning_rate was 0.1
-
-What hyperparameters worked best in our experiments?
-```
-
-### Create PR (github)
-
-```
-Create a GitHub PR for the improved training code with experiment results
-
-Create a GitHub issue for "Investigate feature interactions"
-```
-
----
-
-## Testing Checklist
-
-- [ ] MLflow experiment is created and accessible
-- [ ] Training completes without errors
-- [ ] Metrics are logged to MLflow
-- [ ] Model artifact is saved
-- [ ] Feature importance is logged
-- [ ] Can compare multiple runs in MLflow UI

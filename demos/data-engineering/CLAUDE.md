@@ -3,7 +3,7 @@
 ## Overview
 
 This is a Databricks Asset Bundles (DABs) project for the Vibe Coding Hackathon.
-It demonstrates ETL job creation using both Lakeflow Jobs and Lakeflow SDP (DLT).
+It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables (DLT).
 
 **This demo showcases Claude Code features including:**
 - Custom slash commands (`/deploy`, `/run-job`, `/validate-data`, `/create-pr`)
@@ -75,6 +75,7 @@ Skills in `.claude/skills/` activate automatically based on context:
 |-------|-------------|
 | `data-quality-check` | "data quality", "null check", "validate output" |
 | `spark-optimization` | "slow job", "optimize", "performance issue" |
+| `setup-demo-data` | "setup demo data", "create mock data" |
 
 **Example:** Just say "check the data quality" and the skill activates.
 
@@ -97,37 +98,28 @@ Hooks in `.claude/settings.json` run automatically:
 | Hook | Trigger | Action |
 |------|---------|--------|
 | PostToolUse:Write | After writing .py files | Auto-format with Ruff |
-| PreCommit | Before git commit | Validate DABs bundle |
-
-### Plugin Bundle
-
-This demo includes a complete plugin (`plugin.yaml`) that bundles all features:
-
-```yaml
-name: databricks-data-engineering
-components:
-  commands: [deploy, run-job, validate-data, create-pr]
-  skills: [data-quality-check, spark-optimization]
-  agents: [spark-optimizer, job-debugger, code-reviewer]
-  hooks: [ruff format, ruff check, bundle validate]
-```
-
-**Plugins let you package and share Claude Code workflows with your team.**
+| PostToolUse:Edit | After editing .py files | Auto-lint with Ruff |
 
 ### MCP Integrations
 
-Pre-configured MCP servers (verify with `claude mcp list`):
+Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
+
+**Required:**
 
 | Server | Capabilities |
 |--------|-------------|
 | **uc-function-mcp** | Query Databricks tables via SQL, explore schemas |
 | **github** | Create PRs, issues, manage repositories |
-| **obsidian** | Document pipelines, write notes and summaries |
-| **brave-search** | Search for Spark/Databricks best practices |
+
+**Optional (nice-to-have):**
+
+| Server | Capabilities |
+|--------|-------------|
+| **confluence** | Read/write Confluence pages for documentation |
 | **context7** | Get up-to-date library documentation |
+| **brave-search** | Search for Spark/Databricks best practices |
 | **memory** | Persist learnings and facts across sessions |
-| **puppeteer** | Visual verification of Databricks UI |
-| **filesystem** | File operations outside the project |
+| **obsidian** | Document pipelines, write notes and summaries |
 
 ---
 
@@ -190,7 +182,6 @@ databricks bundle destroy --target dev
 ```
 ├── CLAUDE.md                    # This file - project context
 ├── README.md                    # Demo script for presenter
-├── databricks.yml               # DABs bundle configuration
 ├── .gitignore                   # Ignores generated files
 ├── .claude/
 │   ├── commands/                # Custom slash commands
@@ -207,7 +198,7 @@ databricks bundle destroy --target dev
 │   │   ├── job-debugger.md
 │   │   └── code-reviewer.md
 │   ├── settings.json            # Hooks and permissions
-│   └── plugin.yaml              # Plugin bundle definition
+│   └── mcp-config.example.json  # MCP server reference template
 ├── src/
 │   ├── setup_demo_data.py       # Setup script (upload to Databricks)
 │   └── generated-*.py           # Created during demo by Claude
@@ -250,145 +241,3 @@ Aggregated order metrics by day of week and hour of day.
 | `max_items_in_order` | INT | Largest basket size |
 | `processed_at` | TIMESTAMP | Processing timestamp |
 
----
-
-## Demo Scenarios
-
-### Scenario 1: Deploy and Run
-
-```
-You: Read CLAUDE.md then /deploy
-Claude: [Validates and deploys bundle to dev]
-
-You: /run-job
-Claude: [Runs job and monitors completion]
-
-You: /validate-data
-Claude: [Checks output data quality]
-```
-
-### Scenario 2: Optimize Slow Job
-
-```
-You: My job is taking too long, can you optimize it?
-Claude: [Spark optimization skill activates]
-       [Analyzes code and suggests improvements]
-```
-
-### Scenario 3: Debug Failed Job
-
-```
-You: The job failed, can you debug it?
-Claude: [Delegates to job-debugger agent]
-       [Analyzes logs and provides fix]
-```
-
-### Scenario 4: Code Review and PR
-
-```
-You: Review my code changes
-Claude: [Delegates to code-reviewer agent]
-
-You: /create-pr
-Claude: [Creates PR via GitHub MCP]
-```
-
-### Scenario 5: Safe Experimentation (Checkpoints)
-
-```
-You: git checkout -b experiment/add-gold-layer
-Claude: [Creates branch for safe experimentation]
-
-You: Add a gold layer to the DLT pipeline
-Claude: [Implements changes on experiment branch]
-
-You: That's not what I wanted, let's go back
-You: git checkout main
-Claude: [Clean return to main branch - no harm done]
-```
-
-### Scenario 6: CLI Power Features
-
-```bash
-# Start Claude Code in your project
-claude .
-
-# Check what Claude remembers about this project
-claude /memory
-
-# See token usage
-claude /cost
-
-# Compact a long conversation
-claude /compact
-
-# Check MCP server status
-claude /mcp
-```
-
----
-
-## Common Issues
-
-| Issue | Solution |
-|-------|----------|
-| Permission denied | Check Unity Catalog grants on source tables |
-| Schema not found | Verify target schema exists or create it |
-| Job timeout | Increase timeout in job YAML or reduce data scope |
-| Cluster start failure | Check compute quota and instance availability |
-
----
-
-## MCP Integration Examples
-
-### Query Data (uc-function-mcp)
-
-```
-Using the Databricks MCP, show me the schema for {catalog}.{schema}.orders
-
-Query the top 10 products by order count from the demo data
-
-What tables are available in {catalog}.{schema}?
-```
-
-### Look Up Documentation (context7)
-
-```
-Using context7, show me the Delta Lake MERGE documentation
-
-What's the PySpark syntax for window functions?
-```
-
-### Search Best Practices (brave-search)
-
-```
-Search for Spark partition pruning best practices
-
-Find recent articles on Delta Lake optimization
-```
-
-### Create Documentation (obsidian)
-
-```
-Create a note in my Obsidian vault under "Pipelines/Daily Metrics" with:
-- Purpose and data flow
-- Input/output tables
-- Schedule and monitoring
-```
-
-### Persist Learnings (memory)
-
-```
-Remember that {catalog}.{schema}.orders has 10K rows
-and our target schema is {catalog}.{schema}
-
-What do you remember about this project?
-```
-
-### Create PR (github)
-
-```
-Create a GitHub PR for my changes with a summary of what was modified
-
-Create a GitHub issue for "Add data quality monitoring to pipeline"
-```

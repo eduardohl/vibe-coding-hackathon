@@ -25,8 +25,8 @@ Create a pull request for the changes made in this session.
    - Create a feature branch if not already on one
    - Push with: `git push -u origin {branch}`
 
-5. **Create PR** via Azure DevOps MCP
-   - Use the Azure DevOps MCP to create the PR
+5. **Create PR** via GitHub MCP
+   - Use the GitHub MCP to create the PR
    - Include:
      - Clear title summarizing the change
      - Description with context

@@ -30,10 +30,10 @@ Execute a Databricks job defined in this bundle and monitor its progress.
 ```
 /run-job                              # Run daily_metrics_job on dev
 /run-job daily_metrics_job            # Explicit job name
-/run-job daily_metrics_dlt_trigger    # Run the DLT pipeline trigger
+/run-job daily_metrics_dlt            # Run the DLT pipeline
 ```
 
 ## Available Jobs
 
 - `daily_metrics_job` - Standard PySpark ETL job
-- `daily_metrics_dlt_trigger` - DLT pipeline trigger job
+- `daily_metrics_dlt` - DLT pipeline job

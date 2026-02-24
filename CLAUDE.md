@@ -27,6 +27,7 @@ databricks-claude-code-hackathon/
 │   └── data-science/            # MLflow + XGBoost demo
 │       ├── CLAUDE.md            # Project context
 │       ├── README.md            # Demo script
+│       ├── .claude/             # Commands, skills, agents, hooks
 │       └── src/                 # Training code
 └── claude_code_guide.md         # Claude Code features reference
 ```
@@ -74,7 +75,7 @@ databricks-claude-code-hackathon/
 
 To create demo data in your own catalog/schema:
 - Say "setup demo data in {catalog}.{schema}" to trigger the skill, OR
-- Run `src/setup_demo_data.py` in Databricks with your target catalog/schema
+- Run `demos/*/src/setup_demo_data.py` in Databricks with your target catalog/schema
 
 **Tables (after setup):**
 
@@ -95,18 +96,24 @@ To create demo data in your own catalog/schema:
 
 ## MCP Integrations
 
-This project uses multiple MCP (Model Context Protocol) servers:
+This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. See `demos/*/.claude/mcp-config.example.json` for setup.
+
+**Required:**
 
 | Server | Purpose | Example Use |
 |--------|---------|-------------|
 | **uc-function-mcp** | Query Databricks via SQL | "Show me tables in catalog.schema" |
-| **github** | Create PRs, issues | "/create-pr" |
-| **obsidian** | Document pipelines | "Create a note in my vault" |
-| **brave-search** | Search best practices | "Search for Spark optimization tips" |
+| **github** | Create PRs, issues | "Create a PR for my changes" |
+
+**Optional (nice-to-have):**
+
+| Server | Purpose | Example Use |
+|--------|---------|-------------|
+| **confluence** | Documentation | "Create a Confluence page documenting my pipeline" |
 | **context7** | Library documentation | "Using context7, show Delta Lake MERGE syntax" |
+| **brave-search** | Search best practices | "Search for Spark optimization tips" |
 | **memory** | Persist facts across sessions | "Remember that X" |
-| **puppeteer** | Browser automation | "Take a screenshot of the job run" |
-| **filesystem** | File operations | Read/write files outside project |
+| **obsidian** | Note-taking | "Create a note in my vault" |
 
 **Verify connections:** `claude mcp list`
 
@@ -131,33 +138,42 @@ This project uses multiple MCP (Model Context Protocol) servers:
 
 ### Data Engineering Demo (~45 min)
 
-1. **Show MCP Connection** - "What MCP servers do you have access to?"
-2. **Setup Demo Data** - "Setup demo data in catalog.schema" (if needed)
-3. **Explore Data** - "Show me tables in the schema"
-4. **Create ETL Job** - "Create a PySpark job that aggregates daily metrics"
-5. **Optimize** - "Review and optimize for large data"
-6. **Deploy & Run** - "Deploy and run the job"
-7. **Document** - "Create documentation in Obsidian"
-8. **Create PR** - "/create-pr"
+0. **Setup Demo Data** - "Setup demo data in {catalog}.{schema}"
+1. **Verify MCP** - "What MCP servers do you have access to?"
+2. **Explore Data** - "Show me what tables are in {catalog}.{schema}"
+3. **Create ETL Pipelines** - PySpark batch + DLT side by side
+4. **Optimize** - Delegate to spark-optimizer subagent
+5. **Look Up Docs** - "Using context7, show me Delta Lake MERGE docs"
+6. **Deploy & Run** - Deploy bundle and run the job
+7. **Memory** - "Remember that our target schema is..."
+8. **Commit & Push** - Git workflow
+9. **Checkpoints** - Press Esc+Esc to rewind
 
 ### Data Science Demo (~45 min)
 
-1. **Explore Data** - Query distributions and patterns
-2. **Feature Engineering** - Build product/time features
-3. **Train Model** - XGBoost with MLflow tracking
-4. **Evaluate** - Compare runs, analyze feature importance
-5. **Document** - Write experiment notes
+0. **Setup Demo Data** - "Setup demo data in {catalog}.{schema}"
+1. **Verify MCP** - "What MCP servers do you have access to?"
+2. **Explore Data** - Query distributions and patterns
+3. **Feature Engineering** - Delegate to feature-engineer subagent
+4. **Look Up Docs** - "Using context7, show me XGBoost early stopping"
+5. **Build Pipeline** - Create XGBoost training code
+6. **Train Model** - Upload and run on Databricks
+7. **Evaluate** - Delegate to model-evaluator subagent
+8. **Tune** - 5 hyperparameter trials with MLflow
+9. **Memory** - "Remember the best hyperparameters"
+10. **Commit & Push** - Git workflow
+11. **Checkpoints** - Press Esc+Esc to rewind
 
 ---
 
 ## Important Notes
 
 ### Catalog Setup
-The demos reference `hackathon_catalog.grocery` but this may not exist in every workspace. Before running demos:
+The demos use `{catalog}.{schema}` placeholders throughout. Before running demos:
 
 1. Check available catalogs: `SHOW CATALOGS`
-2. Either use an existing catalog with data, or
-3. Run `src/setup_demo_data.py` to create mock data
+2. Pick a catalog you have write access to
+3. Run "setup demo data in {catalog}.{schema}" or use `demos/*/src/setup_demo_data.py` to create mock data
 
 ### Team Schemas
 For hackathon participants, each team gets their own schema:

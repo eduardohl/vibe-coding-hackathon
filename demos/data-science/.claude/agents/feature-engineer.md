@@ -101,14 +101,14 @@ df['category_encoded'] = df['category'].map(target_means)
    - Rationale: Relative product importance
 
 ### Implementation Plan
-1. Add features to preprocessing.py
+1. Add features to `generated-feature_engineering.py`
 2. Update training pipeline
 3. Run A/B test with/without features
 4. Measure impact on validation set
 
 ### Code Changes
 ```python
-# Add to preprocessing.py
+# Add to generated-feature_engineering.py
 def add_engineered_features(df):
     # Cyclical time features
     df['hour_sin'] = np.sin(2 * np.pi * df['hour'] / 24)

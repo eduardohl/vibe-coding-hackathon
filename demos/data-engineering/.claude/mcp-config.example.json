@@ -1,7 +1,10 @@
 {
-  "_comment": "Example MCP configuration for Claude Code. Copy to mcp.json and fill in values.",
+  "_comment": "Copy to mcp.json and fill in values. Required servers are needed for the demo; optional ones are nice-to-have.",
 
   "mcpServers": {
+
+    "_required": "--- Required for the demo ---",
+
     "databricks": {
       "command": "databricks-mcp",
       "args": ["--workspace", "${DATABRICKS_HOST}"],
@@ -12,16 +15,16 @@
       "description": "Query Unity Catalog, run SQL, manage jobs"
     },
 
-    "azure-devops": {
-      "command": "azure-devops-mcp",
+    "github": {
+      "command": "github-mcp",
       "args": [],
       "env": {
-        "AZURE_DEVOPS_ORG": "your-org",
-        "AZURE_DEVOPS_PROJECT": "your-project",
-        "AZURE_DEVOPS_PAT": "${AZURE_DEVOPS_PAT}"
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
       },
-      "description": "Create PRs, manage repos, track work items"
+      "description": "Create PRs, manage repos, track issues"
     },
+
+    "_optional": "--- Optional (nice-to-have) ---",
 
     "confluence": {
       "command": "confluence-mcp",
@@ -32,7 +35,37 @@
         "CONFLUENCE_API_TOKEN": "${CONFLUENCE_API_TOKEN}",
         "CONFLUENCE_SPACE": "DATA"
       },
-      "description": "Read and write Confluence pages"
+      "description": "Read and write Confluence pages for documentation"
+    },
+
+    "context7": {
+      "command": "context7-mcp",
+      "args": [],
+      "description": "Get up-to-date library documentation (Delta Lake, PySpark, XGBoost, MLflow)"
+    },
+
+    "brave-search": {
+      "command": "brave-search-mcp",
+      "args": [],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "description": "Search for best practices and research"
+    },
+
+    "memory": {
+      "command": "memory-mcp",
+      "args": [],
+      "description": "Persist learnings and facts across sessions"
+    },
+
+    "obsidian": {
+      "command": "obsidian-mcp",
+      "args": [],
+      "env": {
+        "OBSIDIAN_VAULT": "/path/to/your/vault"
+      },
+      "description": "Document pipelines and experiments in your vault"
     }
   },
 
@@ -42,10 +75,10 @@
       "2. Configure authentication: databricks configure",
       "3. The managed MCP uses your Databricks CLI auth automatically"
     ],
-    "azure-devops": [
-      "1. Create a Personal Access Token (PAT) in Azure DevOps",
-      "2. Grant: Code (Read & Write), Pull Requests (Read & Write)",
-      "3. Set AZURE_DEVOPS_PAT environment variable"
+    "github": [
+      "1. Create a Personal Access Token (PAT) in GitHub Settings",
+      "2. Grant: repo (Full control of private repositories)",
+      "3. Set GITHUB_TOKEN environment variable"
     ],
     "confluence": [
       "1. Create an API token at https://id.atlassian.com/manage/api-tokens",
@@ -56,13 +89,13 @@
 
   "_example_usage": {
     "databricks": [
-      "List tables: 'Show me all tables in hackathon_catalog.grocery'",
+      "List tables: 'Show me all tables in my_catalog.grocery'",
       "Query data: 'Query the top 10 products by order count'",
       "Check job: 'What's the status of my last job run?'"
     ],
-    "azure-devops": [
+    "github": [
       "Create PR: 'Create a pull request for my changes'",
-      "Check builds: 'Show me the status of the latest build'"
+      "Create issue: 'Create an issue for adding data quality checks'"
     ],
     "confluence": [
       "Document: 'Create a Confluence page documenting my pipeline'",

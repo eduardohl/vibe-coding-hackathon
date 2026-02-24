@@ -32,11 +32,11 @@ Check the quality of data in the output tables after a job run.
 ## Usage
 
 ```
-/validate-data                                    # Validate default table
-/validate-data daily_order_metrics                # Specific table
-/validate-data hackathon_catalog.demo.my_table    # Full path
+/validate-data                                        # Validate default table
+/validate-data daily_order_metrics                    # Specific table
+/validate-data {catalog}.{schema}.my_table            # Full path
 ```
 
 ## Default Table
 
-`hackathon_catalog.{target_schema}.daily_order_metrics`
+`{catalog}.{schema}.daily_order_metrics` (uses catalog/schema from CLAUDE.md)

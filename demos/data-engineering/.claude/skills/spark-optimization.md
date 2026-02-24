@@ -120,7 +120,7 @@ I'll analyze your Spark code for optimization opportunities.
 Found 3 optimization opportunities:
 
 1. **Line 78: Use broadcast join**
-   The products table is small (50K rows). Broadcasting it will eliminate a shuffle.
+   The products table is small (50 rows). Broadcasting it will eliminate a shuffle.
 
    Current:
    df.join(products, "product_id")

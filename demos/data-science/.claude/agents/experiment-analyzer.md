@@ -106,23 +106,22 @@ run = mlflow.get_run(run_id)
 ## Query Templates
 
 **Find best runs:**
-```sql
-SELECT run_id, params.learning_rate, metrics.val_rmse
-FROM mlflow_runs
-WHERE experiment_id = '{exp_id}'
-ORDER BY metrics.val_rmse ASC
-LIMIT 10
+```python
+import mlflow
+runs = mlflow.search_runs(
+    experiment_names=[f"/Users/{username}/hackathon-demand"],
+    order_by=["metrics.val_rmse ASC"],
+    max_results=10
+)
+runs[["run_id", "params.learning_rate", "metrics.val_rmse"]]
 ```
 
 **Compare feature engineering impact:**
-```sql
-SELECT
-  tags.feature_version,
-  AVG(metrics.val_rmse) as avg_rmse,
-  COUNT(*) as num_runs
-FROM mlflow_runs
-WHERE experiment_id = '{exp_id}'
-GROUP BY tags.feature_version
+```python
+runs = mlflow.search_runs(
+    experiment_names=[f"/Users/{username}/hackathon-demand"]
+)
+runs.groupby("tags.feature_version")["metrics.val_rmse"].agg(["mean", "count"])
 ```
 
 ## Constraints

@@ -1,7 +1,10 @@
 {
-  "_comment": "Example MCP configuration for Claude Code. Copy to mcp.json and fill in values.",
+  "_comment": "Copy to mcp.json and fill in values. Required servers are needed for the demo; optional ones are nice-to-have.",
 
   "mcpServers": {
+
+    "_required": "--- Required for the demo ---",
+
     "databricks": {
       "command": "databricks-mcp",
       "args": ["--workspace", "${DATABRICKS_HOST}"],
@@ -21,13 +24,24 @@
       "description": "Create PRs, manage repos, track issues"
     },
 
-    "obsidian": {
-      "command": "obsidian-mcp",
+    "_optional": "--- Optional (nice-to-have) ---",
+
+    "confluence": {
+      "command": "confluence-mcp",
       "args": [],
       "env": {
-        "OBSIDIAN_VAULT": "/path/to/your/vault"
+        "CONFLUENCE_URL": "https://your-domain.atlassian.net",
+        "CONFLUENCE_USERNAME": "your-email@company.com",
+        "CONFLUENCE_API_TOKEN": "${CONFLUENCE_API_TOKEN}",
+        "CONFLUENCE_SPACE": "DATA"
       },
-      "description": "Document experiments and findings"
+      "description": "Read and write Confluence pages for documentation"
+    },
+
+    "context7": {
+      "command": "context7-mcp",
+      "args": [],
+      "description": "Get up-to-date library documentation (Delta Lake, PySpark, XGBoost, MLflow)"
     },
 
     "brave-search": {
@@ -36,19 +50,22 @@
       "env": {
         "BRAVE_API_KEY": "${BRAVE_API_KEY}"
       },
-      "description": "Search for ML best practices and research"
-    },
-
-    "context7": {
-      "command": "context7-mcp",
-      "args": [],
-      "description": "Get up-to-date library documentation (XGBoost, MLflow, etc.)"
+      "description": "Search for best practices and research"
     },
 
     "memory": {
       "command": "memory-mcp",
       "args": [],
-      "description": "Persist experiment learnings across sessions"
+      "description": "Persist learnings and facts across sessions"
+    },
+
+    "obsidian": {
+      "command": "obsidian-mcp",
+      "args": [],
+      "env": {
+        "OBSIDIAN_VAULT": "/path/to/your/vault"
+      },
+      "description": "Document pipelines and experiments in your vault"
     }
   },
 
@@ -63,16 +80,16 @@
       "2. Grant: repo (Full control of private repositories)",
       "3. Set GITHUB_TOKEN environment variable"
     ],
-    "obsidian": [
-      "1. Install Obsidian MCP plugin",
-      "2. Set OBSIDIAN_VAULT to your vault path",
-      "3. Enable Local REST API in Obsidian settings"
+    "confluence": [
+      "1. Create an API token at https://id.atlassian.com/manage/api-tokens",
+      "2. Set CONFLUENCE_API_TOKEN environment variable",
+      "3. Update CONFLUENCE_SPACE to your space key"
     ]
   },
 
   "_example_usage": {
     "databricks": [
-      "List tables: 'Show me all tables in hackathon_catalog.grocery'",
+      "List tables: 'Show me all tables in my_catalog.grocery'",
       "Query data: 'What's the distribution of reorder rates by department?'",
       "Check experiments: 'List my recent MLflow experiments'"
     ],
@@ -80,21 +97,9 @@
       "Create PR: 'Create a pull request with my experiment results'",
       "Create issue: 'Create an issue for feature engineering improvements'"
     ],
-    "obsidian": [
-      "Document: 'Create a note documenting my best experiment'",
-      "Search: 'Find my notes about hyperparameter tuning'"
-    ],
-    "brave-search": [
-      "Research: 'Search for XGBoost early stopping best practices'",
-      "Find papers: 'Find recent papers on demand forecasting'"
-    ],
-    "context7": [
-      "Docs: 'Using context7, show me MLflow autolog documentation'",
-      "Examples: 'What's the XGBoost syntax for custom objectives?'"
-    ],
-    "memory": [
-      "Remember: 'Remember that learning_rate=0.1 worked best'",
-      "Recall: 'What hyperparameters worked best in our experiments?'"
+    "confluence": [
+      "Document: 'Create a Confluence page documenting my experiment results'",
+      "Search: 'Find Confluence pages about demand forecasting'"
     ]
   }
 }

@@ -28,15 +28,20 @@
 1. Terminal open in `demos/data-science/`
 2. `claude mcp list` — all servers connected
 3. Databricks workspace open in browser (MLflow UI ready)
-4. Fresh session: `claude /clear`
+4. Fresh session: start `claude`, then type `/clear`
 
 ---
 
 ## Walkthrough
 
-### Step 0: Setup Demo Data
+### Step 0: Start Claude Code & Setup Demo Data
 
-> Skip if you already created demo data for the other track.
+```bash
+cd demos/data-science
+claude .
+```
+
+> Skip the data setup below if you already created demo data for the other track.
 
 ```
 Setup demo data in {catalog}.{schema}
@@ -48,14 +53,7 @@ This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills
 
 ---
 
-### Step 1: Start Claude Code & Verify MCP
-
-```bash
-cd demos/data-science
-claude .
-```
-
-Then ask:
+### Step 1: Verify MCP
 
 ```
 What MCP servers do you have access to?

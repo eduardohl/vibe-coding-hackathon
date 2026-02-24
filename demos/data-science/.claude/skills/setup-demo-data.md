@@ -1,14 +1,14 @@
+---
+name: setup-demo-data
+description: Creates mock grocery data for demo purposes via Databricks MCP
+triggers:
+  - setup demo data
+  - create mock data
+  - populate demo tables
+  - initialize demo tables
+---
+
 # Setup Demo Data Skill
-
-## Description
-Creates mock grocery data in the specified catalog/schema for demo purposes.
-Uses the Databricks MCP (uc-function-mcp) to execute SQL and populate tables.
-
-## Triggers
-- "setup demo data"
-- "create mock data"
-- "populate demo tables"
-- "initialize demo tables"
 
 ## Instructions
 

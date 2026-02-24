@@ -22,11 +22,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "ruff format $FILEPATH"
+            "command": "[ \"${CLAUDE_FILE_PATH##*.}\" = \"py\" ] && ruff format \"$CLAUDE_FILE_PATH\" || true"
           },
           {
             "type": "command",
-            "command": "ruff check --fix $FILEPATH"
+            "command": "[ \"${CLAUDE_FILE_PATH##*.}\" = \"py\" ] && ruff check --fix \"$CLAUDE_FILE_PATH\" || true"
           }
         ]
       }

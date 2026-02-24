@@ -90,7 +90,7 @@ I'll run a comprehensive data quality check on your output table.
 
 [Queries via MCP]
 
-## Data Quality Report: hackathon_catalog.demo.daily_order_metrics
+## Data Quality Report: {catalog}.{schema}.daily_order_metrics
 
 ✅ All checks passed!
 
