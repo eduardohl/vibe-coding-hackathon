@@ -79,10 +79,11 @@ Before the workshop, complete these steps:
 ### For Participants
 
 ```bash
-# 1. Copy demo template to your workspace
-cp -r demos/data-engineering participants/team-{name}/
+# 1. Create your team folder and copy the demo template
+mkdir -p participants/team-{name}
+cp -r demos/data-engineering/* participants/team-{name}/
 # OR
-cp -r demos/data-science participants/team-{name}/
+cp -r demos/data-science/* participants/team-{name}/
 
 # 2. Navigate to your team folder
 cd participants/team-{name}/
