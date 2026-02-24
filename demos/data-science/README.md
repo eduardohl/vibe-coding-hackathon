@@ -47,9 +47,7 @@ claude .
 Setup demo data in {catalog}.{schema}
 ```
 
-This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills) in `.claude/skills/`. It creates 5 tables with mock grocery data.
-
-> **Observe:** Claude matched "setup demo data" to the skill's trigger keywords and activated it automatically. You didn't point it to any file — that's [skills](https://code.claude.com/docs/en/skills) in action.
+> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills).
 
 ---
 
@@ -59,7 +57,7 @@ This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills
 What MCP servers do you have access to?
 ```
 
-> **Observe:** Claude lists all connected [MCP servers](https://code.claude.com/docs/en/mcp) — Databricks, GitHub, search engines, docs, and more. These are live tool connections, not static knowledge.
+> **Observe:** These are live tool connections — Databricks, GitHub, docs, and more. Not static knowledge.
 
 ---
 
@@ -75,7 +73,9 @@ Then:
 What's the distribution of orders by day of week?
 ```
 
-> **Observe:** Claude runs SQL against your *live* Databricks workspace via the `uc-function-mcp` server. It can explore schemas, sample data, and run aggregations — all through natural language.
+> **Observe:** That's your *live* Databricks workspace queried via MCP — schemas, samples, aggregations, all through natural language.
+
+**Try your own:** Ask Claude anything — "How many unique products?" "What's the reorder rate?"
 
 ---
 
@@ -85,7 +85,9 @@ What's the distribution of orders by day of week?
 Delegate to the feature-engineer agent to design features for a demand forecasting model using the demo data and create a notebook with the feature engineering code (e.g., demos/data-science/src/generated-feature_engineering.py)
 ```
 
-> **Observe:** Claude delegates to a specialized [subagent](https://code.claude.com/docs/en/sub-agents) defined in `.claude/agents/feature-engineer.md`. The subagent has its own isolated context and domain expertise. Notice how it suggests cyclical encoding for time features and log transforms for the target — that's the agent's prompt guiding its reasoning.
+> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own domain expertise. Notice it suggests cyclical encoding and log transforms — that's the agent's prompt guiding its reasoning.
+
+> **Ask the room:** What features would *you* create for demand forecasting? How do these compare?
 
 ---
 
@@ -95,7 +97,7 @@ Delegate to the feature-engineer agent to design features for a demand forecasti
 Using context7, show me XGBoost documentation for early stopping
 ```
 
-> **Observe:** Context7 is an [MCP server](https://code.claude.com/docs/en/mcp) that fetches current library documentation. Claude gets the *latest* API reference, not stale training data. Try it with MLflow too.
+> **Observe:** Context7 fetches *current* library docs via [MCP](https://code.claude.com/docs/en/mcp) — not stale training data. Try it with MLflow too.
 
 ---
 
@@ -110,9 +112,7 @@ Create an XGBoost demand forecasting model that:
 - Use a small sample for speed
 ```
 
-> **Observe:** Two things happen:
-> 1. Claude builds a complete training pipeline referencing the features from Step 3
-> 2. Each `.py` file gets **auto-formatted with Ruff** — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) in `.claude/settings.json` firing on every file write
+> **Observe:** (1) Claude builds a complete pipeline referencing features from Step 3, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff.
 
 ---
 
@@ -122,7 +122,9 @@ Create an XGBoost demand forecasting model that:
 Create and upload a combined training script (features and training) on Databricks and run it as a Job.
 ```
 
-> **Observe:** Claude uploads the notebook, triggers a job run, and returns the URL. Open the MLflow UI in Databricks to see the logged parameters, metrics, and artifacts.
+> **Observe:** Claude uploads the notebook, triggers a run, and returns the URL.
+
+**While it runs:** Open the MLflow UI — can everyone find the experiment? Check the logged parameters and metrics.
 
 ---
 
@@ -132,7 +134,7 @@ Create and upload a combined training script (features and training) on Databric
 Delegate to the model-evaluator agent to analyze the model performance and diagnose any issues
 ```
 
-> **Observe:** Another [subagent](https://code.claude.com/docs/en/sub-agents) — this one compares train/val/test metrics, identifies overfitting or underfitting, and suggests concrete next steps. Each subagent is a separate `.md` file in `.claude/agents/` with its own instructions.
+> **Observe:** Another [subagent](https://code.claude.com/docs/en/sub-agents) — this one compares train/val/test metrics and diagnoses overfitting. Each agent is a `.md` file with its own instructions.
 
 ---
 
@@ -142,7 +144,11 @@ Delegate to the model-evaluator agent to analyze the model performance and diagn
 The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and max_depth. Log each trial to MLflow.
 ```
 
-> **Observe:** This is "autopilot mode" — Claude iterates through trials autonomously, logging each to MLflow. Check the MLflow experiment UI to see all 5 runs appear with their metrics. Compare them side-by-side in the MLflow comparison view.
+> **Observe:** "Autopilot mode" — Claude iterates through 5 trials autonomously, logging each to MLflow.
+
+**While it runs:** Open the MLflow experiment — watch the runs appear. Compare them side-by-side.
+
+> **Ask the room:** What other hyperparameters would you tune? What search strategy would you use at scale?
 
 ---
 
@@ -152,7 +158,7 @@ The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and 
 Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and that log-transforming the target improved RMSE by 15%
 ```
 
-> **Observe:** The [Memory MCP](https://code.claude.com/docs/en/memory) persists facts across sessions. Next time you open Claude Code, ask "What hyperparameters worked best?" and it will recall this.
+> **Observe:** [Memory](https://code.claude.com/docs/en/memory) persists across sessions. Next time, ask "What hyperparameters worked best?" and Claude recalls it.
 
 ---
 
@@ -162,7 +168,7 @@ Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and 
 Commit and push these changes
 ```
 
-> **Observe:** Claude stages the right files, writes a commit message that includes experiment context, and pushes. It understands the ML workflow, not just the file diff.
+> **Observe:** Claude stages the right files and writes a commit message with experiment context — it understands the ML workflow.
 
 ---
 
@@ -174,13 +180,19 @@ Let me try adding polynomial features to the model
 
 After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 
-> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot your files before every edit. You can roll back instantly — perfect for ML experimentation where you want to try things without risk.
+> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot before every edit. Roll back instantly — perfect for ML experimentation.
+
+**Try it:** Rewind, then try a different approach.
 
 **Bonus — compact a long conversation:**
 
 ```
 /compact
 ```
+
+---
+
+> **Reflect with the group:** What surprised you most? What would you try first in your own workflow?
 
 ---
 

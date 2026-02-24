@@ -45,9 +45,7 @@ claude .
 Setup demo data in {catalog}.{schema}
 ```
 
-This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills) in `.claude/skills/`. It creates 5 tables with mock grocery data.
-
-> **Observe:** Claude found and activated the skill automatically — you didn't have to tell it where the skill was. That's how skills work: Claude matches your intent to the skill's trigger keywords.
+> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills).
 
 ---
 
@@ -57,7 +55,7 @@ This triggers the [setup-demo-data skill](https://code.claude.com/docs/en/skills
 What MCP servers do you have access to?
 ```
 
-> **Observe:** Claude lists all connected [MCP servers](https://code.claude.com/docs/en/mcp). These give Claude live access to external tools — Databricks, GitHub, search engines, and more. No API code needed.
+> **Observe:** These are live tool connections — Databricks, GitHub, docs, and more. No API code needed.
 
 ---
 
@@ -73,13 +71,15 @@ Then:
 Show me 5 sample rows from the orders table
 ```
 
-> **Observe:** Claude is querying your *actual* Databricks workspace in real time. This isn't static data — it's a live SQL connection via the `uc-function-mcp` server.
+> **Observe:** That's your *actual* Databricks workspace, queried in real time via MCP.
+
+**Try your own:** Ask Claude anything — "What's the busiest hour?" "Any null values in orders?"
 
 ---
 
 ### Step 3: Create TWO ETL Pipelines
 
-This is the main event. Ask Claude to generate both approaches side by side:
+This is the main event:
 
 ```
 Create TWO versions of an ETL pipeline that:
@@ -94,11 +94,11 @@ Create both:
 Use the project structure in this directory.
 ```
 
-> **Observe:** Watch for two things:
-> 1. Claude generates multiple files — source code and job definitions — in one shot
-> 2. Each `.py` file gets **auto-formatted with Ruff** as it's written — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) in `.claude/settings.json` firing automatically
+> **Observe:** (1) Multiple files generated in one shot, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff on every write.
 
-**Generated files:**
+> **Ask the room:** How many files did Claude create? Can anyone spot the Ruff formatting in the terminal?
+
+**Expected files:**
 
 | Version | Source Code | Job Definition |
 |---------|-------------|----------------|
@@ -113,7 +113,9 @@ Use the project structure in this directory.
 Delegate to the spark-optimizer agent to review my PySpark code for performance issues
 ```
 
-> **Observe:** Claude delegates to a specialized [subagent](https://code.claude.com/docs/en/sub-agents) defined in `.claude/agents/spark-optimizer.md`. The subagent has its own isolated context and expertise. Notice how the recommendations are structured and prioritized — that's the agent's prompt at work.
+> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context. Notice how the recommendations are structured — that's the agent's prompt at work.
+
+> **Ask the room:** Do you agree with the recommendations? What would you add?
 
 ---
 
@@ -123,7 +125,7 @@ Delegate to the spark-optimizer agent to review my PySpark code for performance 
 Using context7, show me the Delta Lake documentation for MERGE operations
 ```
 
-> **Observe:** Context7 is an [MCP server](https://code.claude.com/docs/en/mcp) that fetches up-to-date library docs. Claude gets the *current* API reference, not stale training data.
+> **Observe:** Context7 fetches *current* library docs via [MCP](https://code.claude.com/docs/en/mcp) — not stale training data.
 
 ---
 
@@ -133,9 +135,11 @@ Using context7, show me the Delta Lake documentation for MERGE operations
 Deploy this bundle and run the job
 ```
 
-> **Note:** If no `databricks.yml` exists yet, Claude will create one as part of the deploy. You may need to specify your Databricks CLI profile (e.g., `default`).
+> Claude will create `databricks.yml` if needed. You may need to specify your CLI profile (e.g., `default`).
 
-> **Observe:** Claude runs `databricks bundle deploy` and `databricks bundle run` for you and returns the job run URL. Check the Databricks UI to see it running.
+> **Observe:** Claude runs `databricks bundle deploy` + `run` and returns the job URL.
+
+**While it runs:** Open the Databricks UI — can everyone find the running job?
 
 ---
 
@@ -145,7 +149,7 @@ Deploy this bundle and run the job
 Remember that our target schema is {catalog}.{schema} and the orders table has 10K rows
 ```
 
-> **Observe:** The [Memory MCP](https://code.claude.com/docs/en/memory) persists facts across sessions. Next time you start Claude Code, ask "What do you remember about this project?" and it will recall this.
+> **Observe:** [Memory](https://code.claude.com/docs/en/memory) persists across sessions. Next time, ask "What do you remember?" and Claude recalls it.
 
 ---
 
@@ -155,7 +159,7 @@ Remember that our target schema is {catalog}.{schema} and the orders table has 1
 Commit and push these changes
 ```
 
-> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes. It understands git context from the diff, not just file names.
+> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes — it reads context from the diff.
 
 ---
 
@@ -167,13 +171,19 @@ Let me try adding a gold layer aggregation to the DLT pipeline
 
 After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 
-> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot your files before every edit. You can roll back instantly without touching git. Try it — rewind, then try a different approach.
+> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot your files before every edit. Roll back instantly without touching git.
+
+**Try it:** Rewind, then try a different approach.
 
 **Bonus — compact a long conversation:**
 
 ```
 /compact
 ```
+
+---
+
+> **Reflect with the group:** What surprised you most? What would you try first in your own workflow?
 
 ---
 
