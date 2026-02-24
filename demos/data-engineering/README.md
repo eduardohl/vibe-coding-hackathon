@@ -15,10 +15,9 @@
 | 4 | `Delegate to the spark-optimizer agent to review my PySpark code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | 5 | `Using context7, show me the Delta Lake documentation for MERGE` | MCP (docs lookup) |
 | 6 | `/deploy` then `/run-job` | [Slash Commands](https://code.claude.com/docs/en/slash-commands) |
-| 7 | `Use Chrome to open the job run, verify it succeeded...` *(see below)* | [Browser MCP](https://code.claude.com/docs/en/mcp) |
-| 8 | `Remember that our target schema is {catalog}.{schema}` | [Memory](https://code.claude.com/docs/en/memory) |
-| 9 | `Commit and push these changes` | Git workflow |
-| 10 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 7 | `Remember that our target schema is {catalog}.{schema}` | [Memory](https://code.claude.com/docs/en/memory) |
+| 8 | `Commit and push these changes` | Git workflow |
+| 9 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -162,17 +161,7 @@ Then:
 
 ---
 
-### Step 7: Visual Verification with Chrome
-
-```
-Use Chrome to open the Databricks job run, verify it completed successfully, and check that the output table daily_order_metrics has data. If anything failed, read the error logs and fix the code.
-```
-
-> **Observe:** Claude controls Chrome via [Browser MCP](https://code.claude.com/docs/en/mcp) — navigating to the job run, taking screenshots, and reading the UI. If the job failed, watch Claude read the error, diagnose the issue, fix the code, and re-run — all without you lifting a finger.
-
----
-
-### Step 8: Persist Knowledge with Memory
+### Step 7: Persist Knowledge with Memory
 
 ```
 Remember that our target schema is {catalog}.{schema} and the orders table has 10K rows
@@ -182,7 +171,7 @@ Remember that our target schema is {catalog}.{schema} and the orders table has 1
 
 ---
 
-### Step 9: Commit and Push
+### Step 8: Commit and Push
 
 ```
 Commit and push these changes
@@ -192,7 +181,7 @@ Commit and push these changes
 
 ---
 
-### Step 10: Safe Experimentation with Checkpoints
+### Step 9: Safe Experimentation with Checkpoints
 
 ```
 Let me try adding a gold layer aggregation to the DLT pipeline
@@ -248,6 +237,6 @@ Create a GitHub issue for "Add data quality checks to pipeline"
 | [Slash Commands](https://code.claude.com/docs/en/slash-commands) | `/deploy`, `/run-job`, `/validate-data` | `.claude/commands/` | [Commands](https://code.claude.com/docs/en/slash-commands) |
 | [Skills](https://code.claude.com/docs/en/skills) | Auto-triggered (data quality, optimization) | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
 | [Subagents](https://code.claude.com/docs/en/sub-agents) | Spark optimizer, job debugger, code reviewer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, Chrome, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
 | [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format Python with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
 | [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |

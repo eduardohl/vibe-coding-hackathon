@@ -15,12 +15,11 @@
 | 4 | `Using context7, show me XGBoost documentation for early stopping` | MCP (docs lookup) |
 | 5 | `Create an XGBoost demand forecasting model...` *(see below)* | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 6 | `Create and upload a combined training script on Databricks and run it` | CLI automation |
-| 7 | `Use Chrome to open the MLflow experiment and verify the run succeeded...` *(see below)* | [Browser MCP](https://code.claude.com/docs/en/mcp) |
-| 8 | `Delegate to the model-evaluator agent to analyze performance` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 9 | `Run 5 hyperparameter tuning trials, varying learning_rate and max_depth` | Autonomous iteration |
-| 10 | `Remember that the best hyperparameters were learning_rate=0.1, max_depth=6` | [Memory](https://code.claude.com/docs/en/memory) |
-| 11 | `Commit and push these changes` | Git workflow |
-| 12 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 7 | `Delegate to the model-evaluator agent to analyze performance` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 8 | `Run 5 hyperparameter tuning trials, varying learning_rate and max_depth` | Autonomous iteration |
+| 9 | `Remember that the best hyperparameters were learning_rate=0.1, max_depth=6` | [Memory](https://code.claude.com/docs/en/memory) |
+| 10 | `Commit and push these changes` | Git workflow |
+| 11 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -135,17 +134,7 @@ Create and upload a combined training script (features and training) on Databric
 
 ---
 
-### Step 7: Visual Verification with Chrome
-
-```
-Use Chrome to open the MLflow experiment, verify the training run completed successfully, and check the logged metrics look reasonable. If anything failed, read the error details and fix the code.
-```
-
-> **Observe:** Claude controls Chrome via [Browser MCP](https://code.claude.com/docs/en/mcp) — navigating to the MLflow UI, taking screenshots, and reading results. If the run failed, watch Claude read the error, diagnose the issue, fix the code, and re-run — all without you lifting a finger.
-
----
-
-### Step 8: Evaluate with a Subagent
+### Step 7: Evaluate with a Subagent
 
 ```
 Delegate to the model-evaluator agent to analyze the model performance and diagnose any issues
@@ -155,7 +144,7 @@ Delegate to the model-evaluator agent to analyze the model performance and diagn
 
 ---
 
-### Step 9: Autonomous Hyperparameter Tuning
+### Step 8: Autonomous Hyperparameter Tuning
 
 ```
 The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and max_depth. Log each trial to MLflow.
@@ -167,7 +156,7 @@ The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and 
 
 ---
 
-### Step 10: Persist Knowledge with Memory
+### Step 9: Persist Knowledge with Memory
 
 ```
 Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and that log-transforming the target improved RMSE by 15%
@@ -177,7 +166,7 @@ Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and 
 
 ---
 
-### Step 11: Commit and Push
+### Step 10: Commit and Push
 
 ```
 Commit and push these changes
@@ -187,7 +176,7 @@ Commit and push these changes
 
 ---
 
-### Step 12: Safe Experimentation with Checkpoints
+### Step 11: Safe Experimentation with Checkpoints
 
 ```
 Let me try adding polynomial features to the model
@@ -243,6 +232,6 @@ Create a GitHub issue for "Investigate feature interactions for demand model"
 | [Slash Commands](https://code.claude.com/docs/en/slash-commands) | `/train`, `/evaluate`, `/tune` | `.claude/commands/` | [Commands](https://code.claude.com/docs/en/slash-commands) |
 | [Skills](https://code.claude.com/docs/en/skills) | Auto-triggered (MLflow logging, tuning) | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
 | [Subagents](https://code.claude.com/docs/en/sub-agents) | Feature engineer, model evaluator, experiment analyzer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, Chrome, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
 | [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format Python with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
 | [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
