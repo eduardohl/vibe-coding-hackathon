@@ -177,7 +177,7 @@ Remember that our target schema is {catalog}.{schema} and the orders table has 1
 Commit and push these changes
 ```
 
-> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes — it reads context from the diff.
+> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes — it reads context from the diff. Did it use the command line git command or MCP? What's the difference?
 
 ---
 
