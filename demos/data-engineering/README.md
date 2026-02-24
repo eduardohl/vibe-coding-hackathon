@@ -14,7 +14,7 @@
 | 3 | `Create TWO versions of an ETL pipeline...` *(see below)* | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 4 | `Delegate to the spark-optimizer agent to review my PySpark code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | 5 | `Using context7, show me the Delta Lake documentation for MERGE` | MCP (docs lookup) |
-| 6 | `Deploy this bundle and run the job` | CLI automation |
+| 6 | `/deploy` then `/run-job` | [Slash Commands](https://code.claude.com/docs/en/slash-commands) |
 | 7 | `Remember that our target schema is {catalog}.{schema}` | [Memory](https://code.claude.com/docs/en/memory) |
 | 8 | `Commit and push these changes` | Git workflow |
 | 9 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
@@ -127,13 +127,21 @@ Using context7, show me the Delta Lake documentation for MERGE operations
 
 ### Step 6: Deploy and Run
 
+Now use the slash commands we built for this:
+
 ```
-Deploy this bundle and run the job
+/deploy
 ```
 
 > Claude will create `databricks.yml` if needed. You may need to specify your CLI profile (e.g., `default`).
 
-> **Observe:** Claude runs `databricks bundle deploy` + `run` and returns the job URL.
+Then:
+
+```
+/run-job
+```
+
+> **Observe:** These are [Slash Commands](https://code.claude.com/docs/en/slash-commands) — pre-written prompts in `.claude/commands/`. You typed `/deploy` instead of explaining what to do. Claude followed the instructions in `deploy.md` automatically.
 
 **While it runs:** Open the Databricks UI — can everyone find the running job?
 
