@@ -41,13 +41,21 @@ cd demos/data-science
 claude .
 ```
 
+First, tell Claude your environment:
+
+```
+My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
+```
+
+> **Observe:** Claude stores this via the [Memory MCP](https://code.claude.com/docs/en/memory) — you won't have to repeat it. Every prompt from here on can just say "the orders table" instead of the full path.
+
 > Skip the data setup below if you already created demo data for the other track.
 
 ```
-Setup demo data in {catalog}.{schema}
+Setup demo data in my catalog and schema
 ```
 
-> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills).
+> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills). Notice Claude used the catalog/schema you just told it.
 
 ---
 

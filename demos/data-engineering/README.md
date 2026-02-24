@@ -39,13 +39,21 @@ cd demos/data-engineering
 claude .
 ```
 
+First, tell Claude your environment:
+
+```
+My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
+```
+
+> **Observe:** Claude stores this via the [Memory MCP](https://code.claude.com/docs/en/memory) — you won't have to repeat it. Every prompt from here on can just say "the orders table" instead of the full path.
+
 > Skip the data setup below if you already created demo data for the other track.
 
 ```
-Setup demo data in {catalog}.{schema}
+Setup demo data in my catalog and schema
 ```
 
-> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills).
+> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills). Notice Claude used the catalog/schema you just told it.
 
 ---
 
@@ -91,8 +99,10 @@ Create both:
 1. A traditional PySpark batch job
 2. A Delta Live Tables (DLT/SDP) pipeline
 
-Include a databricks.yml bundle config so we can deploy this.
+Include a databricks.yml bundle config so we can deploy this using DABs.
 Use the project structure in this directory.
+
+Don't deploy or run, after implementing please stop.
 ```
 
 > **Observe:** (1) Multiple files generated in one shot, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff on every write. How many files did Claude create? Can you spot the Ruff formatting in the terminal?
