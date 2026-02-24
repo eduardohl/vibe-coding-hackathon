@@ -91,6 +91,7 @@ Create both:
 1. A traditional PySpark batch job
 2. A Delta Live Tables (DLT/SDP) pipeline
 
+Include a databricks.yml bundle config so we can deploy this.
 Use the project structure in this directory.
 ```
 
@@ -98,10 +99,13 @@ Use the project structure in this directory.
 
 **Expected files:**
 
-| Version | Source Code | Job Definition |
-|---------|-------------|----------------|
-| PySpark | `src/generated-etl_daily_metrics.py` | `resources/jobs/generated-daily_metrics_job.yml` |
-| DLT/SDP | `src/generated-dlt_daily_metrics.py` | `resources/jobs/generated-daily_metrics_dlt.yml` |
+| File | Purpose |
+|------|---------|
+| `databricks.yml` | DABs bundle config (needed for deploy) |
+| `src/generated-etl_daily_metrics.py` | PySpark batch job |
+| `src/generated-dlt_daily_metrics.py` | DLT pipeline |
+| `resources/jobs/generated-daily_metrics_job.yml` | PySpark job definition |
+| `resources/jobs/generated-daily_metrics_dlt.yml` | DLT job definition |
 
 ---
 
@@ -133,7 +137,7 @@ Now use the slash commands we built for this:
 /deploy
 ```
 
-> Claude will create `databricks.yml` if needed. You may need to specify your CLI profile (e.g., `default`).
+> You may need to specify your Databricks CLI profile (e.g., `default`).
 
 Then:
 
