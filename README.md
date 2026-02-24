@@ -88,7 +88,7 @@ cp -r demos/data-science/* participants/team-{name}/
 # 2. Navigate to your team folder
 cd participants/team-{name}/
 
-# 3. Update CLAUDE.md with your team schema
+# 3. Update CLAUDE.md in YOUR TEAM FOLDER (not the repo root) with your team schema
 # Replace {catalog} and {schema} with your assigned values
 
 # 4. Start Claude Code
