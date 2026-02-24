@@ -4,6 +4,7 @@ _reference/
 # Generated files during demo (Claude creates these live)
 src/generated-*.py
 resources/jobs/generated-*.yml
+databricks.yml
 
 # Python
 __pycache__/
