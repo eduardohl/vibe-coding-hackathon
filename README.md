@@ -123,7 +123,7 @@ This creates:
 | Table | Description | Row Count |
 |-------|-------------|-----------|
 | `orders` | Order transactions | ~10,000 |
-| `order_products` | Order line items | ~60,000 |
+| `order_products` | Order line items | ~35,000 |
 | `products` | Product catalog | 50 |
 | `departments` | Product departments | 21 |
 | `aisles` | Product aisles | 100 |

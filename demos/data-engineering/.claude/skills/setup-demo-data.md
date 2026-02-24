@@ -136,7 +136,7 @@ SELECT
 FROM range(10000);
 ```
 
-#### 4e. Order Products Table (~60,000 rows, variable basket sizes)
+#### 4e. Order Products Table (~35,000 rows, variable basket sizes)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.order_products AS
 SELECT
@@ -182,7 +182,7 @@ Demo data created successfully in {catalog}.{schema}:
 | aisles         | 100     |
 | products       | 50      |
 | orders         | 10,000  |
-| order_products | ~60,000 |
+| order_products | ~35,000 |
 
 Update your CLAUDE.md to use:
 - Catalog: {catalog}

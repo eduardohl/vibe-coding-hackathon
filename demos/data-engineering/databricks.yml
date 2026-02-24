@@ -7,7 +7,12 @@ variables:
     default: serverless_xb4o77_catalog
   schema:
     description: Schema containing source tables and output
-    default: eduardo_lomonaco
+    default: sobeys_hack
+
+sync:
+  include:
+    - src/generated-*.py
+    - resources/jobs/generated-*.yml
 
 include:
   - resources/jobs/*.yml
