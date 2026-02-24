@@ -94,9 +94,7 @@ Create both:
 Use the project structure in this directory.
 ```
 
-> **Observe:** (1) Multiple files generated in one shot, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff on every write.
-
-> **Ask the room:** How many files did Claude create? Can anyone spot the Ruff formatting in the terminal?
+> **Observe:** (1) Multiple files generated in one shot, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff on every write. How many files did Claude create? Can you spot the Ruff formatting in the terminal?
 
 **Expected files:**
 
@@ -113,9 +111,7 @@ Use the project structure in this directory.
 Delegate to the spark-optimizer agent to review my PySpark code for performance issues
 ```
 
-> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context. Notice how the recommendations are structured — that's the agent's prompt at work.
-
-> **Ask the room:** Do you agree with the recommendations? What would you add?
+> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context. Notice how the recommendations are structured — that's the agent's prompt at work. Do you agree with them? What would you add?
 
 ---
 

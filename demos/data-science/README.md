@@ -85,9 +85,7 @@ What's the distribution of orders by day of week?
 Delegate to the feature-engineer agent to design features for a demand forecasting model using the demo data and create a notebook with the feature engineering code (e.g., demos/data-science/src/generated-feature_engineering.py)
 ```
 
-> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own domain expertise. Notice it suggests cyclical encoding and log transforms — that's the agent's prompt guiding its reasoning.
-
-> **Ask the room:** What features would *you* create for demand forecasting? How do these compare?
+> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own domain expertise. Notice it suggests cyclical encoding and log transforms — that's the agent's prompt guiding its reasoning. What features would *you* have created? How do these compare?
 
 ---
 
@@ -144,11 +142,9 @@ Delegate to the model-evaluator agent to analyze the model performance and diagn
 The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and max_depth. Log each trial to MLflow.
 ```
 
-> **Observe:** "Autopilot mode" — Claude iterates through 5 trials autonomously, logging each to MLflow.
+> **Observe:** "Autopilot mode" — Claude iterates through 5 trials autonomously, logging each to MLflow. What other hyperparameters would you tune? What strategy would you use at scale?
 
 **While it runs:** Open the MLflow experiment — watch the runs appear. Compare them side-by-side.
-
-> **Ask the room:** What other hyperparameters would you tune? What search strategy would you use at scale?
 
 ---
 
