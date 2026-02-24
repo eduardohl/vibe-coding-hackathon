@@ -1,6 +1,8 @@
 # Demo: Data Science with Claude Code
 
 > **45 min** | XGBoost + MLflow + Feature Engineering | [Full Claude Code Docs](https://code.claude.com/docs/en/overview)
+>
+> **Prerequisite:** Run the [Data Engineering demo](../data-engineering/README.md) first. It covers Skills, MCP verification, and demo data setup — this demo skips those steps.
 
 ---
 
@@ -8,68 +10,51 @@
 
 | Step | Prompt | Feature Shown |
 |------|--------|---------------|
-| 0 | `Setup demo data in {catalog}.{schema}` | [Skills](https://code.claude.com/docs/en/skills) |
-| 1 | `What MCP servers do you have access to?` | [MCP](https://code.claude.com/docs/en/mcp) |
-| 2 | `Using the Databricks MCP, what does the schema of {catalog}.{schema}.orders look like?` | MCP (live query) |
-| 3 | `Delegate to the feature-engineer agent to design features...` *(see below)* | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 4 | `Using context7, show me XGBoost documentation for early stopping` | MCP (docs lookup) |
-| 5 | `Create an XGBoost demand forecasting model...` *(see below)* | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
-| 6 | `Create and upload a combined training script on Databricks and run it` | CLI automation |
-| 7 | `Delegate to the model-evaluator agent to analyze performance` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 8 | `Run 5 hyperparameter tuning trials, varying learning_rate and max_depth` | Autonomous iteration |
-| 9 | `Remember that the best hyperparameters were learning_rate=0.1, max_depth=6` | [Memory](https://code.claude.com/docs/en/memory) |
-| 10 | `Commit and push these changes` | Git workflow |
-| 11 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 0 | *Start Claude Code in `demos/data-science/`* | Setup |
+| 1 | `Using the Databricks MCP, what does the schema of {catalog}.{schema}.orders look like?` | MCP (live query) |
+| 2 | `Delegate to the feature-engineer agent to design features...` *(see below)* | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 3 | `Using context7, show me XGBoost documentation for early stopping` | MCP (docs lookup) |
+| 4 | `Create an XGBoost demand forecasting model...` *(see below)* | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
+| 5 | `Create and upload a combined training script on Databricks and run it` | CLI automation |
+| 6 | `Delegate to the model-evaluator agent to analyze performance` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 7 | `Run 5 hyperparameter tuning trials, varying learning_rate and max_depth` | Autonomous iteration |
+| 8 | `Remember that the best hyperparameters were learning_rate=0.1, max_depth=6` | [Memory](https://code.claude.com/docs/en/memory) |
+| 9 | `Commit and push these changes` | Git workflow |
+| 10 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
 ## Prerequisites
 
-1. Terminal open in `demos/data-science/`
-2. `claude mcp list` — all servers connected
-3. Databricks workspace open in browser (MLflow UI ready)
-4. Fresh session: start `claude`, then type `/clear`
+1. **Data Engineering demo completed** — demo data and MCP already verified
+2. Terminal open in `demos/data-science/`
+3. **Verify your Databricks MCP (`uc-function-mcp`) is configured to the correct workspace/profile** — run `databricks auth env --profile {profile_name}` to confirm
+4. Databricks workspace open in browser (MLflow UI ready)
+5. Fresh session: start `claude`, then type `/clear`
 
 ---
 
 ## Walkthrough
 
-### Step 0: Start Claude Code & Setup Demo Data
+### Step 0: Start Claude Code
 
 ```bash
 cd demos/data-science
 claude .
 ```
 
-First, tell Claude your environment:
+Tell Claude your environment (same catalog/schema as the DE demo):
 
 ```
 My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
+My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace — no other workspaces are allowed.
 ```
 
-> **Observe:** Claude stores this via the [Memory MCP](https://code.claude.com/docs/en/memory) — you won't have to repeat it. Every prompt from here on can just say "the orders table" instead of the full path.
-
-> Skip the data setup below if you already created demo data for the other track.
-
-```
-Setup demo data in my catalog and schema
-```
-
-> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills). Notice Claude used the catalog/schema you just told it.
+> Demo data and MCP verification were covered in the Data Engineering demo — no need to repeat.
 
 ---
 
-### Step 1: Verify MCP
-
-```
-What MCP servers do you have access to?
-```
-
-> **Observe:** These are live tool connections — Databricks, GitHub, docs, and more. Not static knowledge.
-
----
-
-### Step 2: Explore Live Data
+### Step 1: Explore Live Data
 
 ```
 Using the Databricks MCP, what does the schema of {catalog}.{schema}.orders look like?
@@ -87,7 +72,7 @@ What's the distribution of orders by day of week?
 
 ---
 
-### Step 3: Feature Engineering with a Subagent
+### Step 2: Feature Engineering with a Subagent
 
 ```
 Delegate to the feature-engineer agent to design features for a demand forecasting model using the demo data and create a notebook with the feature engineering code (e.g., demos/data-science/src/generated-feature_engineering.py)
@@ -97,7 +82,7 @@ Delegate to the feature-engineer agent to design features for a demand forecasti
 
 ---
 
-### Step 4: Look Up Documentation
+### Step 3: Look Up Documentation
 
 ```
 Using context7, show me XGBoost documentation for early stopping
@@ -107,7 +92,7 @@ Using context7, show me XGBoost documentation for early stopping
 
 ---
 
-### Step 5: Build the Training Pipeline
+### Step 4: Build the Training Pipeline
 
 ```
 Create an XGBoost demand forecasting model that:
@@ -118,11 +103,11 @@ Create an XGBoost demand forecasting model that:
 - Use a small sample for speed
 ```
 
-> **Observe:** (1) Claude builds a complete pipeline referencing features from Step 3, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff.
+> **Observe:** (1) Claude builds a complete pipeline referencing features from Step 2, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff.
 
 ---
 
-### Step 6: Train the Model
+### Step 5: Train the Model
 
 ```
 Create and upload a combined training script (features and training) on Databricks and run it as a Job.
@@ -134,7 +119,7 @@ Create and upload a combined training script (features and training) on Databric
 
 ---
 
-### Step 7: Evaluate with a Subagent
+### Step 6: Evaluate with a Subagent
 
 ```
 Delegate to the model-evaluator agent to analyze the model performance and diagnose any issues
@@ -144,7 +129,7 @@ Delegate to the model-evaluator agent to analyze the model performance and diagn
 
 ---
 
-### Step 8: Autonomous Hyperparameter Tuning
+### Step 7: Autonomous Hyperparameter Tuning
 
 ```
 The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and max_depth. Log each trial to MLflow.
@@ -156,7 +141,7 @@ The RMSE is high. Run 5 hyperparameter tuning trials, varying learning_rate and 
 
 ---
 
-### Step 9: Persist Knowledge with Memory
+### Step 8: Persist Knowledge with Memory
 
 ```
 Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and that log-transforming the target improved RMSE by 15%
@@ -166,7 +151,7 @@ Remember that the best hyperparameters were learning_rate=0.1, max_depth=6, and 
 
 ---
 
-### Step 10: Commit and Push
+### Step 9: Commit and Push
 
 ```
 Commit and push these changes
@@ -176,7 +161,7 @@ Commit and push these changes
 
 ---
 
-### Step 11: Safe Experimentation with Checkpoints
+### Step 10: Safe Experimentation with Checkpoints
 
 ```
 Let me try adding polynomial features to the model

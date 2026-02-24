@@ -25,8 +25,9 @@
 
 1. Terminal open in `demos/data-engineering/`
 2. `claude mcp list` — all servers connected
-3. Databricks workspace open in browser
-4. Fresh session: start `claude`, then type `/clear`
+3. **Verify your Databricks MCP (`uc-function-mcp`) is configured to the correct workspace/profile** — ask Claude to confirm
+4. Databricks workspace open in browser
+5. Fresh session: start `claude`, then type `/clear`
 
 ---
 
@@ -43,6 +44,7 @@ First, tell Claude your environment:
 
 ```
 My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
+My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace — no other workspaces are allowed.
 ```
 
 > **Observe:** Claude stores this via the [Memory MCP](https://code.claude.com/docs/en/memory) — you won't have to repeat it. Every prompt from here on can just say "the orders table" instead of the full path.
