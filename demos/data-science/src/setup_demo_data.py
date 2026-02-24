@@ -286,21 +286,22 @@ print(f"Created orders table: {orders_df.count()} rows")
 
 # COMMAND ----------
 
-# Generate order-product relationships (avg 5 products per order)
+# Generate order-product relationships (variable basket sizes, 2-8 products per order)
 order_products_df = spark.sql(f"""
         SELECT
-            o.order_id,
-            p.product_id,
-            ROW_NUMBER() OVER (PARTITION BY o.order_id ORDER BY rand()) as add_to_cart_order,
+            order_id,
+            product_id,
+            ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY add_to_cart_order) as add_to_cart_order,
             CASE WHEN rand() < 0.4 THEN 1 ELSE 0 END as reordered
-        FROM {catalog}.{schema}.orders o
-        CROSS JOIN (
-            SELECT product_id
-            FROM {catalog}.{schema}.products
-            ORDER BY rand()
-            LIMIT 5
-        ) p
-        WHERE rand() < 0.7
+        FROM (
+            SELECT
+                o.order_id,
+                p.product_id,
+                rand() as add_to_cart_order
+            FROM {catalog}.{schema}.orders o
+            CROSS JOIN {catalog}.{schema}.products p
+            WHERE rand() < 0.12
+        )
     """)
 
 order_products_df.write.mode("overwrite").saveAsTable(

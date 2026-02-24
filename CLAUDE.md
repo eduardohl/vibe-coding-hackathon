@@ -81,10 +81,10 @@ To create demo data in your own catalog/schema:
 | Table | Description | Sample Size |
 |-------|-------------|-------------|
 | `{catalog}.{schema}.orders` | Order transactions | 10,000 |
-| `{catalog}.{schema}.order_products` | Order line items | ~50,000 |
+| `{catalog}.{schema}.order_products` | Order line items | ~60,000 |
 | `{catalog}.{schema}.products` | Product catalog | 50 |
 | `{catalog}.{schema}.departments` | Product departments | 21 |
-| `{catalog}.{schema}.aisles` | Product aisles | 50 |
+| `{catalog}.{schema}.aisles` | Product aisles | 100 |
 
 **Key Columns:**
 - `orders`: order_id, user_id, order_dow (0-6), order_hour_of_day (0-23), days_since_prior_order

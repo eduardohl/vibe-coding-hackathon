@@ -16,7 +16,7 @@ When the user asks to set up demo data, follow these steps:
 
 ### Step 1: Determine Target Location
 Parse the user's request for catalog.schema format (e.g., "my_catalog.my_schema").
-If not provided, use `samples` catalog as default.
+If not provided, ask the user for a target catalog and schema.
 
 ### Step 2: Verify Catalog Access
 First, check if the catalog exists and is accessible:
@@ -26,7 +26,7 @@ SHOW CATALOGS
 
 If the requested catalog doesn't exist in the list:
 1. Try to create it: `CREATE CATALOG IF NOT EXISTS {catalog}`
-2. If creation fails (no storage location), use `samples` catalog as fallback
+2. If creation fails (no storage location), suggest a catalog from the list
 3. Inform the user which catalog is being used
 
 ### Step 3: Create Schema
@@ -38,7 +38,7 @@ CREATE SCHEMA IF NOT EXISTS {catalog}.{schema};
 
 Execute each SQL statement using the Databricks MCP tool `mcp__uc-function-mcp__execute_sql`:
 
-#### 3a. Departments Table (21 rows)
+#### 4a. Departments Table (21 rows)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.departments AS
 SELECT department_id, department FROM VALUES
@@ -51,7 +51,7 @@ SELECT department_id, department FROM VALUES
 AS t(department_id, department);
 ```
 
-#### 3b. Aisles Table (50 rows)
+#### 4b. Aisles Table (100 rows)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.aisles AS
 SELECT aisle_id, aisle FROM VALUES
@@ -70,102 +70,89 @@ SELECT aisle_id, aisle FROM VALUES
   (40, 'chips pretzels'), (41, 'popcorn jerky'), (42, 'cookies cakes'),
   (43, 'candy chocolate'), (44, 'granola'), (45, 'cereal'), (46, 'breakfast bars'),
   (47, 'bread'), (48, 'tortillas flat bread'), (49, 'baby food formula'),
-  (50, 'diapers wipes')
+  (50, 'diapers wipes'), (51, 'facial care'), (52, 'oral hygiene'),
+  (53, 'shave needs'), (54, 'skin care'), (55, 'hair care'),
+  (56, 'eye ear care'), (57, 'first aid'), (58, 'feminine care'),
+  (59, 'deodorants'), (60, 'body lotions soap'), (61, 'vitamins supplements'),
+  (62, 'digestion'), (63, 'protein bars'), (64, 'food storage'),
+  (65, 'cleaning products'), (66, 'air fresheners candles'), (67, 'trash bags liners'),
+  (68, 'laundry'), (69, 'dish detergents'), (70, 'cat food care'),
+  (71, 'cat litter'), (72, 'dog treats'), (73, 'bird food'),
+  (74, 'fish food'), (75, 'more household'), (76, 'plates bowls cups flatware'),
+  (77, 'baking ingredients'), (78, 'spices seasonings'), (79, 'oils vinegars'),
+  (80, 'condiments'), (81, 'pickled goods olives'), (82, 'spreads'),
+  (83, 'honeys syrups nectars'), (84, 'sugar sweeteners'), (85, 'flour'),
+  (86, 'nuts seeds dried fruit'), (87, 'dried fruits'), (88, 'latino foods'),
+  (89, 'asian foods'), (90, 'kosher foods'), (91, 'indian foods'),
+  (92, 'british foods'), (93, 'grains rice dried goods'), (94, 'canned meat seafood'),
+  (95, 'canned fruit applesauce'), (96, 'canned vegetables'), (97, 'soup broth bouillon'),
+  (98, 'canned jarred vegetables'), (99, 'poultry counter'), (100, 'beef counter')
 AS t(aisle_id, aisle);
 ```
 
-#### 3c. Products Table (50 products)
+#### 4c. Products Table (50 products)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.products AS
-WITH base_products AS (
-  SELECT
-    ROW_NUMBER() OVER (ORDER BY rand()) as product_id,
-    product_name,
-    aisle_id,
-    department_id
-  FROM (
-    SELECT explode(array(
-      struct('Banana' as product_name, 21 as aisle_id, 4 as department_id),
-      struct('Bag of Organic Bananas', 21, 4),
-      struct('Organic Strawberries', 21, 4),
-      struct('Organic Baby Spinach', 22, 4),
-      struct('Organic Hass Avocado', 21, 4),
-      struct('Organic Avocado', 21, 4),
-      struct('Large Lemon', 21, 4),
-      struct('Limes', 21, 4),
-      struct('Strawberries', 21, 4),
-      struct('Organic Whole Milk', 24, 16),
-      struct('2% Reduced Fat Milk', 24, 16),
-      struct('Organic Large Brown Eggs', 26, 16),
-      struct('Large White Eggs', 26, 16),
-      struct('Plain Nonfat Greek Yogurt', 29, 16),
-      struct('Vanilla Greek Yogurt', 29, 16),
-      struct('Butter', 28, 16),
-      struct('Cheddar Cheese', 23, 16),
-      struct('Mozzarella Cheese', 23, 16),
-      struct('Sourdough Bread', 47, 3),
-      struct('Whole Wheat Bread', 47, 3),
-      struct('Sparkling Water', 32, 7),
-      struct('Spring Water', 32, 7),
-      struct('Orange Juice', 30, 7),
-      struct('Apple Juice', 30, 7),
-      struct('Coffee Beans', 20, 7),
-      struct('Ground Coffee', 20, 7),
-      struct('Green Tea', 19, 7),
-      struct('Chicken Breast', 7, 12),
-      struct('Ground Beef', 7, 12),
-      struct('Salmon Fillet', 15, 12),
-      struct('Pasta', 9, 9),
-      struct('Marinara Sauce', 9, 9),
-      struct('Olive Oil', 13, 13),
-      struct('Salt', 13, 13),
-      struct('Black Pepper', 13, 13),
-      struct('Garlic', 22, 4),
-      struct('Onion', 22, 4),
-      struct('Tomatoes', 22, 4),
-      struct('Potato Chips', 40, 19),
-      struct('Tortilla Chips', 40, 19),
-      struct('Dark Chocolate Bar', 43, 19),
-      struct('Granola Bars', 3, 19),
-      struct('Ice Cream', 34, 1),
-      struct('Frozen Pizza', 36, 1),
-      struct('Frozen Vegetables', 39, 1),
-      struct('Paper Towels', 17, 17),
-      struct('Dish Soap', 10, 17),
-      struct('Laundry Detergent', 17, 17),
-      struct('Toothpaste', 11, 11),
-      struct('Shampoo', 11, 11)
-    )) as product
-  )
-  SELECT product.product_name, product.aisle_id, product.department_id
-)
-SELECT * FROM base_products;
+SELECT product_id, product_name, aisle_id, department_id FROM VALUES
+  (1, 'Banana', 21, 4), (2, 'Bag of Organic Bananas', 21, 4),
+  (3, 'Organic Strawberries', 21, 4), (4, 'Organic Baby Spinach', 22, 4),
+  (5, 'Organic Hass Avocado', 21, 4), (6, 'Organic Avocado', 21, 4),
+  (7, 'Large Lemon', 21, 4), (8, 'Limes', 21, 4),
+  (9, 'Strawberries', 21, 4), (10, 'Organic Raspberries', 21, 4),
+  (11, 'Organic Whole Milk', 24, 16), (12, '2% Reduced Fat Milk', 24, 16),
+  (13, 'Organic Large Brown Eggs', 26, 16), (14, 'Large White Eggs', 26, 16),
+  (15, 'Plain Nonfat Greek Yogurt', 29, 16), (16, 'Vanilla Greek Yogurt', 29, 16),
+  (17, 'Butter', 28, 16), (18, 'Salted Butter', 28, 16),
+  (19, 'Cheddar Cheese', 23, 16), (20, 'Mozzarella Cheese', 23, 16),
+  (21, 'Sourdough Bread', 47, 3), (22, 'Whole Wheat Bread', 47, 3),
+  (23, 'Sparkling Water', 32, 7), (24, 'Spring Water', 32, 7),
+  (25, 'Orange Juice', 30, 7), (26, 'Apple Juice', 30, 7),
+  (27, 'Coffee Beans', 20, 7), (28, 'Ground Coffee', 20, 7),
+  (29, 'Green Tea', 19, 7), (30, 'Black Tea', 19, 7),
+  (31, 'Chicken Breast', 7, 12), (32, 'Ground Beef', 7, 12),
+  (33, 'Salmon Fillet', 15, 12), (34, 'Shrimp', 15, 12),
+  (35, 'Pasta', 9, 9), (36, 'Spaghetti', 9, 9),
+  (37, 'Marinara Sauce', 9, 9), (38, 'Alfredo Sauce', 9, 9),
+  (39, 'Olive Oil', 79, 13), (40, 'Vegetable Oil', 79, 13),
+  (41, 'Salt', 78, 13), (42, 'Black Pepper', 78, 13),
+  (43, 'Garlic', 22, 4), (44, 'Onion', 22, 4),
+  (45, 'Tomatoes', 22, 4), (46, 'Cucumber', 22, 4),
+  (47, 'Potato Chips', 40, 19), (48, 'Tortilla Chips', 40, 19),
+  (49, 'Dark Chocolate Bar', 43, 19), (50, 'Milk Chocolate', 43, 19)
+AS t(product_id, product_name, aisle_id, department_id);
 ```
 
-#### 3d. Orders Table (~10,000 sample orders)
+#### 4d. Orders Table (10,000 rows)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.orders AS
 SELECT
-  ROW_NUMBER() OVER (ORDER BY rand()) as order_id,
-  (rand() * 100000)::INT as user_id,
-  CASE WHEN rand() < 0.6 THEN 'prior' WHEN rand() < 0.9 THEN 'train' ELSE 'test' END as eval_set,
-  (rand() * 10)::INT as order_number,
-  (rand() * 7)::INT as order_dow,
-  (rand() * 24)::INT as order_hour_of_day,
-  CASE WHEN rand() < 0.3 THEN NULL ELSE (rand() * 30)::INT END as days_since_prior_order
+  id + 1 as order_id,
+  CAST(rand() * 5000 AS INT) + 1 as user_id,
+  CASE WHEN rand() < 0.6 THEN 'prior' WHEN rand() < 0.8 THEN 'train' ELSE 'test' END as eval_set,
+  CAST(rand() * 20 AS INT) + 1 as order_number,
+  CAST(rand() * 7 AS INT) as order_dow,
+  CAST(rand() * 24 AS INT) as order_hour_of_day,
+  CASE WHEN rand() < 0.15 THEN NULL ELSE CAST(rand() * 30 AS INT) END as days_since_prior_order
 FROM range(10000);
 ```
 
-#### 3e. Order Products Table (~50,000 sample records)
+#### 4e. Order Products Table (~60,000 rows, variable basket sizes)
 ```sql
 CREATE OR REPLACE TABLE {catalog}.{schema}.order_products AS
 SELECT
-  o.order_id,
-  p.product_id,
-  (rand() * 10 + 1)::INT as add_to_cart_order,
+  order_id,
+  product_id,
+  ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY add_to_cart_order) as add_to_cart_order,
   CASE WHEN rand() < 0.4 THEN 1 ELSE 0 END as reordered
-FROM {catalog}.{schema}.orders o
-CROSS JOIN (SELECT product_id FROM {catalog}.{schema}.products ORDER BY rand() LIMIT 5) p;
+FROM (
+  SELECT
+    o.order_id,
+    p.product_id,
+    rand() as add_to_cart_order
+  FROM {catalog}.{schema}.orders o
+  CROSS JOIN {catalog}.{schema}.products p
+  WHERE rand() < 0.12
+);
 ```
 
 ### Step 5: Verify Data
@@ -192,10 +179,10 @@ Demo data created successfully in {catalog}.{schema}:
 | Table          | Rows    |
 |----------------|---------|
 | departments    | 21      |
-| aisles         | 50      |
+| aisles         | 100     |
 | products       | 50      |
 | orders         | 10,000  |
-| order_products | 50,000  |
+| order_products | ~60,000 |
 
 Update your CLAUDE.md to use:
 - Catalog: {catalog}

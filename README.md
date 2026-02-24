@@ -109,10 +109,10 @@ This creates:
 | Table | Description | Row Count |
 |-------|-------------|-----------|
 | `orders` | Order transactions | ~10,000 |
-| `order_products` | Order line items | ~50,000 |
+| `order_products` | Order line items | ~60,000 |
 | `products` | Product catalog | 50 |
 | `departments` | Product departments | 21 |
-| `aisles` | Product aisles | 50 |
+| `aisles` | Product aisles | 100 |
 
 **Key columns:**
 - `orders`: order_id, user_id, order_dow (0-6), order_hour_of_day (0-23)
