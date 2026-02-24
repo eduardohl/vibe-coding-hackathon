@@ -91,7 +91,6 @@ Domain expertise that Claude discovers and activates *automatically* based on yo
 |-------|-------------------------|-------------|
 | `setup-demo-data` | "setup demo data", "create mock data" | Generates 5 tables via SQL |
 | `data-quality-check` | "check data quality", "validate output" | Runs null/duplicate/freshness checks |
-| `spark-optimization` | "optimize", "slow job" | Applies Spark tuning patterns |
 | `mlflow-logging` | "log to MLflow", "track experiment" | Sets up proper MLflow logging |
 | `hyperparameter-tuning` | "tune", "grid search" | Runs structured HP search with logging |
 

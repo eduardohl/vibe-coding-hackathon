@@ -1,0 +1,13 @@
+# Override .gitignore for bundle sync — we WANT generated files deployed
+# Only ignore non-essential files
+
+_reference/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.databricks/
+*.egg-info/
+.vscode/
+.idea/
+.DS_Store
+.databricksignore

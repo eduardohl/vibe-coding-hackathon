@@ -1,0 +1,20 @@
+bundle:
+  name: daily-order-metrics
+
+variables:
+  catalog:
+    description: Unity Catalog name
+    default: serverless_xb4o77_catalog
+  schema:
+    description: Schema containing source tables and output
+    default: eduardo_lomonaco
+
+include:
+  - resources/jobs/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://fevm-serverless-xb4o77.cloud.databricks.com

@@ -18,6 +18,7 @@ with MLflow for experiment tracking on Databricks.
 
 ## Rules
 
+- **ONLY use local skills** from this project's `.claude/skills/` directory — do NOT use `fe-databricks-tools`, `fe-workflows`, or any other external plugin skills. This demo must be self-contained.
 - ALWAYS check `.claude/skills/` directory before implementing any task manually
 - When user mentions "setup demo data", "mlflow", "tune", or "hyperparameter", use the corresponding skill
 - Read the skill file and follow its instructions exactly before writing any code

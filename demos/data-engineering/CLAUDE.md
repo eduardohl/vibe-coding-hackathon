@@ -7,15 +7,16 @@ It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables 
 
 **This demo showcases Claude Code features including:**
 - Custom slash commands (`/deploy`, `/run-job`, `/validate-data`, `/create-pr`)
-- Auto-triggered skills (data quality, Spark optimization)
+- Auto-triggered skills (data quality, demo data setup)
 - Specialized subagents (optimizer, debugger, code reviewer)
 - Hooks for automatic code formatting
 - MCP integrations (Databricks via uc-function-mcp, GitHub, Obsidian, Brave Search, Context7, Memory)
 
 ## Rules
 
+- **ONLY use local skills** from this project's `.claude/skills/` directory — do NOT use `fe-databricks-tools`, `fe-workflows`, or any other external plugin skills. This demo must be self-contained.
 - ALWAYS check `.claude/skills/` directory before implementing any task manually
-- When user mentions "setup demo data", "data quality", or "optimize", use the corresponding skill
+- When user mentions "setup demo data" or "data quality", use the corresponding skill
 - Read the skill file and follow its instructions exactly before writing any code
 - **IMPORTANT:** When creating new files, use the `generated-` prefix (e.g., `generated-etl_daily_metrics.py`) to distinguish demo-created files from template files
 
@@ -74,7 +75,6 @@ Skills in `.claude/skills/` activate automatically based on context:
 | Skill | Triggers On |
 |-------|-------------|
 | `data-quality-check` | "data quality", "null check", "validate output" |
-| `spark-optimization` | "slow job", "optimize", "performance issue" |
 | `setup-demo-data` | "setup demo data", "create mock data" |
 
 **Example:** Just say "check the data quality" and the skill activates.
@@ -191,7 +191,6 @@ databricks bundle destroy --target dev
 │   │   └── create-pr.md
 │   ├── skills/                  # Auto-triggered skills
 │   │   ├── data-quality-check.md
-│   │   ├── spark-optimization.md
 │   │   └── setup-demo-data.md
 │   ├── agents/                  # Specialized subagents
 │   │   ├── spark-optimizer.md

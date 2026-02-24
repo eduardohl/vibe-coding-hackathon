@@ -124,7 +124,7 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 | Feature | Location | Description |
 |---------|----------|-------------|
 | **Slash Commands** | `.claude/commands/` | /deploy, /run-job, /validate-data, /create-pr |
-| **Skills** | `.claude/skills/` | Auto-triggered for "data quality", "optimize", "setup demo data" |
+| **Skills** | `.claude/skills/` | Auto-triggered for "data quality", "setup demo data", "tune" |
 | **Subagents** | `.claude/agents/` | spark-optimizer, job-debugger, code-reviewer |
 | **Hooks** | `.claude/settings.json` | Auto-format Python, validate bundle pre-commit |
 | **CLAUDE.md** | Project root | Project context auto-loaded by Claude |
