@@ -6,16 +6,18 @@
 
 ## At a Glance
 
-| Feature | How It Triggers | Databricks Example |
-|---------|----------------|--------------------|
-| [CLAUDE.md](#1-claudemd--project-memory) | Auto-loaded at startup | Store catalog/schema, compute defaults, coding standards |
-| [Slash Commands](#2-slash-commands) | You type `/cmd` | `/deploy` runs `databricks bundle deploy` |
-| [Skills](#3-skills) | Claude detects intent | Say "setup demo data" and SQL generation activates |
-| [Subagents](#4-subagents) | Claude delegates | Spark optimizer reviews your PySpark for skew/shuffle issues |
-| [MCP Servers](#5-mcp-servers) | Claude calls tools | Query Unity Catalog tables via SQL in real time |
-| [Hooks](#6-hooks) | Fires on events | Auto-format `.py` files with Ruff on every write |
-| [Checkpoints](#7-checkpoints) | `Esc + Esc` | Rewind after a failed DLT pipeline experiment |
-| [Headless Mode](#8-headless-mode) | `claude -p "..."` | Pipe `databricks jobs list` output for analysis |
+| Feature | Trigger | Context Cost | Databricks Example |
+|---------|---------|-------------|-------------------|
+| [CLAUDE.md](#1-claudemd--project-memory) | **Auto** — every turn | **High** — full file loaded into every message | Catalog/schema, conventions |
+| [Slash Commands](#2-slash-commands) | **Manual** — you type `/cmd` | **Low** — injected once when invoked | `/deploy` runs bundle deploy |
+| [Skills](#3-skills) | **Auto** — Claude matches intent | **Low** — injected once when matched | "setup demo data" → SQL gen |
+| [Subagents](#4-subagents) | **Manual** — "delegate to..." | **Zero** — runs in isolated context | Spark optimizer reviews code |
+| [MCP Servers](#5-mcp-servers) | **Auto** — Claude calls as needed | **Low** — tool defs at startup, results per-call | Query Unity Catalog via SQL |
+| [Hooks](#6-hooks) | **Auto** — fires on events | **Zero** — runs outside Claude (shell) | Ruff format on every `.py` write |
+| [Checkpoints](#7-checkpoints) | **Manual** — `Esc + Esc` | **Zero** — stored in git refs | Rewind failed DLT experiment |
+| [Headless Mode](#8-headless-mode) | **Manual** — `claude -p "..."` | **N/A** — separate invocation | Pipe job output for analysis |
+
+> **Context cost** = how much of Claude's limited context window a feature consumes. High-cost features reduce how much conversation history Claude can "remember." Keep CLAUDE.md lean; prefer low/zero-cost features for heavy content.
 
 ---
 
