@@ -16,10 +16,9 @@
 | 3 | `Add a POST /api/supplies/{sku}/reserve endpoint using SupplyTrackSDK...` *(see below)* | Code gen with proprietary library |
 | 4 | `Write JUnit 5 tests for the controller and the SupplyTrackSDK integration` | Testing + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 5 | `/run-tests` | [Skills](https://code.claude.com/docs/en/skills) |
-| 6 | `Delegate to the code-reviewer agent to review my code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 7 | `Delegate to the security-auditor agent to check for vulnerabilities` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 8 | `Start the app locally and test every endpoint with curl...` | Self-healing loop |
-| 9 | `Commit these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 6 | `Delegate to the code-reviewer and security-auditor agents in the background...` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 7 | `Start the app locally and test every endpoint with curl...` | Self-healing loop |
+| 8 | `Commit these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -118,27 +117,17 @@ Write JUnit 5 tests:
 
 ---
 
-### Step 6: Code Review with a Subagent
+### Step 6: Code Review & Security Audit (Background)
 
 ```
-Delegate to the code-reviewer agent to review my code for quality, test coverage, and Spring Boot best practices
+Delegate to the code-reviewer and security-auditor agents in the background. The code-reviewer should check quality, test coverage, and Spring Boot best practices. The security-auditor should check for OWASP vulnerabilities. While they run, continue with the next steps.
 ```
 
-> **Observe:** The [subagent](https://code.claude.com/docs/en/sub-agents) reviews with its own checklist — Spring conventions, input validation, error handling, test quality. It runs in an isolated context. Do you agree with the findings?
+> **Observe:** Two [subagents](https://code.claude.com/docs/en/sub-agents) launch in the background — each with its own isolated context and specialized checklist. You don't have to wait. Claude keeps working while they run in parallel, and reports back when they finish. Each agent is a `.md` file with specialized instructions.
 
 ---
 
-### Step 7: Security Audit with a Subagent
-
-```
-Delegate to the security-auditor agent to check my API for vulnerabilities
-```
-
-> **Observe:** Another [subagent](https://code.claude.com/docs/en/sub-agents) checks for injection, missing validation, error leakage, and other OWASP issues. Each agent is a `.md` file with specialized instructions. What would you add?
-
----
-
-### Step 8: Run Locally & Self-Heal
+### Step 7: Run Locally & Self-Heal
 
 ```
 Start the app locally with mvn spring-boot:run, then test every endpoint with curl — list all supplies, get one by SKU, create a new supply, update it, delete it, reserve stock, and check warehouse capacity. If any request fails or returns an unexpected result, fix the bug and update the tests. Keep going until everything works.
@@ -173,7 +162,7 @@ curl -s http://localhost:8080/api/warehouses/capacity | python3 -m json.tool
 
 ---
 
-### Step 9: Commit & Checkpoints
+### Step 8: Commit & Checkpoints
 
 ```
 Commit these changes with a meaningful message

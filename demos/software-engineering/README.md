@@ -16,11 +16,10 @@
 | 3 | `What do you know about SupplyTrackSDK?` | [Skills](https://code.claude.com/docs/en/skills) (bundled docs) |
 | 4 | `Write unit tests for the API routes and React components, including the SDK integration` | Testing + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 5 | `/run-tests` | [Skills](https://code.claude.com/docs/en/skills) |
-| 6 | `Delegate to the code-reviewer agent to review my code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 7 | `Delegate to the security-auditor agent to check for vulnerabilities` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 8 | `/deploy-app` | [Skills](https://code.claude.com/docs/en/skills) |
-| 9 | `Open the deployed app in Chrome and test it for bugs` | [MCP](https://code.claude.com/docs/en/mcp) (Chrome DevTools) |
-| 10 | `Commit and push these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 6 | `Delegate to the code-reviewer and security-auditor agents in the background...` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 7 | `/deploy-app` | [Skills](https://code.claude.com/docs/en/skills) |
+| 8 | `Open the deployed app in Chrome and test it for bugs` | [MCP](https://code.claude.com/docs/en/mcp) (Chrome DevTools) |
+| 9 | `Commit and push these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -74,13 +73,14 @@ What MCP servers do you have access to? Then show me the products table schema a
 
 ```
 Create a Databricks App for supply chain inventory management with a React frontend and Express.js backend:
+- Use Tailwind CSS for styling with a clean, modern dashboard look
 - Connects to Lakebase for persistence
 - CRUD for medical supplies (list, view, add, edit, delete) with SKU, stock level, reorder point
-- Simple order analytics dashboard
+- Simple order analytics dashboard with charts
 - app.yaml for Databricks Apps deployment
 - Uses the products and departments from {catalog}.{schema}
 
-Structure as generated-app/ with server.js, src/ (React + Vite), package.json, and app.yaml.
+Structure as generated-app/ with server.js, src/ (React + Vite + Tailwind), package.json, and app.yaml.
 Don't deploy yet.
 ```
 
@@ -130,27 +130,17 @@ Use Jest. Test both success and error paths.
 
 ---
 
-### Step 6: Code Review with a Subagent
+### Step 6: Code Review & Security Audit (Background)
 
 ```
-Delegate to the code-reviewer agent to review my code for quality, test coverage, and best practices
+Delegate to the code-reviewer and security-auditor agents in the background. The code-reviewer should check quality, test coverage, and best practices. The security-auditor should check for OWASP vulnerabilities. While they run, continue with the next steps.
 ```
 
-> **Observe:** A [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context and specialized checklist. It reviews code quality, testing patterns, and error handling. Do you agree with the findings?
+> **Observe:** Two [subagents](https://code.claude.com/docs/en/sub-agents) launch in the background — each with its own isolated context and specialized checklist. You don't have to wait. Claude keeps working while they run in parallel, and reports back when they finish. Each agent is a `.md` file with specialized instructions.
 
 ---
 
-### Step 7: Security Audit with a Subagent
-
-```
-Delegate to the security-auditor agent to check my API for OWASP vulnerabilities
-```
-
-> **Observe:** Another [subagent](https://code.claude.com/docs/en/sub-agents) — checks for SQL injection, XSS, missing input validation, and error leakage. Each agent is a `.md` file with specialized instructions. What would you add?
-
----
-
-### Step 8: Deploy
+### Step 7: Deploy
 
 ```
 /deploy-app
@@ -160,7 +150,7 @@ Delegate to the security-auditor agent to check my API for OWASP vulnerabilities
 
 ---
 
-### Step 9: Automated UI Testing via Chrome
+### Step 8: Automated UI Testing via Chrome
 
 > **Prereq:** The presenter has connected a Chrome DevTools MCP server on the side. No setup needed from participants.
 
@@ -172,7 +162,7 @@ Open the deployed app in Chrome and test it for bugs. Click through every page, 
 
 ---
 
-### Step 10: Commit & Checkpoints
+### Step 9: Commit & Checkpoints
 
 ```
 Commit and push these changes
