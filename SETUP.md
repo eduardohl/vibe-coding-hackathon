@@ -89,13 +89,11 @@ Your workspace exposes MCP endpoints at `https://YOUR-WORKSPACE/api/2.0/mcp/sql`
 
 **Mac/Windows:**
 ```bash
-claude mcp add uc-function-mcp \
-  --transport http \
-  --url https://YOUR-WORKSPACE.cloud.databricks.com/api/2.0/mcp/sql \
-  --header "Authorization: Bearer $(databricks auth token --host https://YOUR-WORKSPACE.cloud.databricks.com | jq -r .access_token)"
+claude mcp add-json uc-function-mcp \
+  '{"type":"http","url":"https://YOUR-WORKSPACE.cloud.databricks.com/api/2.0/mcp/sql","headers":{"Authorization":"Bearer '"$(databricks auth token --host https://YOUR-WORKSPACE.cloud.databricks.com | jq -r .access_token)"'"}}'
 ```
 
-> **Note:** The Bearer token expires after ~1 hour. For long sessions, re-run the `claude mcp add` command above to refresh it. For a more durable setup, consider configuring [OAuth client authentication](https://docs.databricks.com/en/generative-ai/mcp/connect-external-services.html).
+> **Note:** The Bearer token expires after ~1 hour. For long sessions, re-run the `claude mcp add-json` command above to refresh it. For a more durable setup, consider configuring [OAuth client authentication](https://docs.databricks.com/en/generative-ai/mcp/connect-external-services.html).
 
 ### Option B: Community MCP via uv (deprecated)
 

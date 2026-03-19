@@ -64,7 +64,7 @@
     "databricks": [
       "1. Install Databricks CLI: brew install databricks/tap/databricks (Mac) or winget install Databricks.DatabricksCLI (Windows)",
       "2. Authenticate: databricks auth login --host https://YOUR-WORKSPACE.cloud.databricks.com",
-      "3. Add MCP: claude mcp add uc-function-mcp --transport http --url https://YOUR-WORKSPACE/api/2.0/mcp/sql --header 'Authorization: Bearer TOKEN'"
+      "3. Add MCP: claude mcp add-json uc-function-mcp '{\"type\":\"http\",\"url\":\"https://YOUR-WORKSPACE.cloud.databricks.com/api/2.0/mcp/sql\",\"headers\":{\"Authorization\":\"Bearer TOKEN\"}}'"
     ],
     "confluence": [
       "1. Create an API token at https://id.atlassian.com/manage/api-tokens",
