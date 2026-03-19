@@ -10,7 +10,7 @@ with MLflow for experiment tracking on Databricks.
 **Tracking:** MLflow experiments
 
 **This demo showcases Claude Code features including:**
-- Custom slash commands (`/train`, `/evaluate`, `/tune`, `/create-pr`)
+- Custom skills (`/train`, `/evaluate`, `/tune`, `/create-pr`)
 - Auto-triggered skills (MLflow logging, hyperparameter tuning)
 - Specialized subagents (feature engineer, model evaluator, experiment analyzer)
 - Hooks for automatic code formatting
@@ -49,7 +49,7 @@ with MLflow for experiment tracking on Databricks.
 - **Catalog:** `{catalog}` - Replace with your catalog
 - **Schema:** `{schema}` - Replace with your schema
 
-> **Note:** This demo uses the **same data** as the Data Engineering demo. If you already ran "setup demo data" for data-engineering, just use the same catalog.schema here - no need to recreate.
+> **First time?** Run "setup demo data in {catalog}.{schema}" to create the tables.
 
 ### Key Tables
 
@@ -65,16 +65,19 @@ with MLflow for experiment tracking on Databricks.
 
 ## Claude Code Features
 
-### Custom Slash Commands
+### Custom Skills
 
-This project includes custom slash commands in `.claude/commands/`:
+This project includes custom skills in `.claude/skills/`:
 
-| Command | Description |
-|---------|-------------|
-| `/train` | Train a model with MLflow logging |
-| `/evaluate` | Evaluate model performance metrics |
-| `/tune` | Run hyperparameter tuning |
-| `/create-pr` | Create a pull request with experiment results |
+| Skill | Description | Triggers On |
+|-------|-------------|-------------|
+| `/train` | Train a model with MLflow logging | User invokes `/train` |
+| `/evaluate` | Evaluate model performance metrics | User invokes `/evaluate` |
+| `/tune` | Run hyperparameter tuning | User invokes `/tune` |
+| `/create-pr` | Create a pull request with experiment results | User invokes `/create-pr` |
+| `mlflow-logging` | Auto-triggered MLflow logging | "mlflow", "log experiment", "track experiment" |
+| `hyperparameter-tuning` | Auto-triggered hyperparameter tuning | "tune", "hyperparameter", "grid search" |
+| `setup-demo-data` | Auto-triggered demo data setup | "setup demo data" |
 
 **Example usage:**
 
@@ -84,17 +87,7 @@ This project includes custom slash commands in `.claude/commands/`:
 /tune               # Run hyperparameter search
 ```
 
-### Skills (Auto-Triggered)
-
-Skills in `.claude/skills/` activate automatically based on context:
-
-| Skill | Triggers On |
-|-------|-------------|
-| `mlflow-logging` | "mlflow", "log experiment", "track experiment" |
-| `hyperparameter-tuning` | "tune", "hyperparameter", "grid search" |
-| `setup-demo-data` | "setup demo data" |
-
-**Example:** Just say "log this to MLflow" and the skill activates.
+**Auto-trigger example:** Just say "log this to MLflow" and the mlflow-logging skill activates.
 
 ### Subagents (Specialists)
 
@@ -142,39 +135,9 @@ Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 
 ## MLflow Configuration
 
-### Experiment Naming Convention
-```
-/Users/{your_email}/hackathon-demand
-```
-
-To get your username in a notebook:
-```python
-username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
-experiment_name = f"/Users/{username}/hackathon-demand"
-mlflow.set_experiment(experiment_name)
-```
-
-### Required Logging
-
-Every training run must log:
-
-| Category | What to Log |
-|----------|-------------|
-| **Parameters** | All hyperparameters (learning_rate, max_depth, n_estimators, etc.) |
-| **Metrics** | train_rmse, val_rmse, test_rmse, train_mae, val_mae, test_mae, r2 |
-| **Artifacts** | feature_importance.csv, model file |
-| **Tags** | model_type, env, owner, data_version, problem_type |
-
-### Model Registry
-
-- Use Unity Catalog Model Registry for production models
-- Path: `{catalog}.models.{model_name}`
-- Always add model description and input/output signatures
-
-Note: The `models` schema must exist. Create if needed:
-```sql
-CREATE SCHEMA IF NOT EXISTS {catalog}.models;
-```
+- **Experiment path:** `/Users/{your_email}/hackathon-demand`
+- **Required logging:** parameters (all hyperparameters), metrics (train/val/test RMSE, MAE, R²), artifacts (feature_importance.csv, model), tags (model_type, env, owner)
+- **Model Registry:** `{catalog}.models.{model_name}` (create schema first: `CREATE SCHEMA IF NOT EXISTS {catalog}.models`)
 
 ---
 
@@ -187,129 +150,21 @@ CREATE SCHEMA IF NOT EXISTS {catalog}.models;
 - Place library installation BEFORE configuration and imports
 - Standard structure: Install → Restart → Config → Imports → Code
 
-### Python
+### Python & Data Processing
 
-- Use type hints for function signatures
-- Follow PEP 8 style guide
-- Use `logging` module instead of print statements in production
-- Add docstrings to functions
-
-### Data Processing
-
-- Use Spark for large datasets, pandas for aggregated/small datasets
-- Aggregate in Spark before converting to pandas with `toPandas()`
-- Check data size before `toPandas()` to avoid memory issues
-- Always validate data shapes after transformations
-
-### ML Best Practices
-
+- Use type hints; follow PEP 8 (auto-enforced by Ruff hook)
+- Aggregate in Spark before `toPandas()` — check data size first
 - Split data: 70% train, 15% validation, 15% test
-- Use time-based splits for time series data (no random shuffle)
-- Always check for data leakage
-- Log all preprocessing steps
 - Use log transforms for skewed targets (demand data)
+- Always check for data leakage
 
 ---
 
 ## File Structure
 
-```
-├── CLAUDE.md                      # This file - project context
-├── README.md                      # Demo script for presenter
-├── .gitignore                     # Ignores generated files
-├── .claude/
-│   ├── commands/                  # Custom slash commands
-│   │   ├── train.md
-│   │   ├── evaluate.md
-│   │   ├── tune.md
-│   │   └── create-pr.md
-│   ├── skills/                    # Auto-triggered skills
-│   │   ├── mlflow-logging.md
-│   │   ├── hyperparameter-tuning.md
-│   │   └── setup-demo-data.md
-│   ├── agents/                    # Specialized subagents
-│   │   ├── feature-engineer.md
-│   │   ├── model-evaluator.md
-│   │   └── experiment-analyzer.md
-│   ├── settings.json              # Hooks and permissions
-│   └── mcp-config.example.json    # MCP server reference template
-└── src/
-    ├── setup_demo_data.py         # Setup script (upload to Databricks)
-    └── generated-*.py             # Created during demo by Claude
-```
-
-> **Note:** The `generated-*` files are created live during the demo by Claude Code. They are gitignored so each participant generates their own.
-
----
-
-## Quick Start Commands
-
-### Set MLflow Experiment
-```python
-import mlflow
-
-username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
-mlflow.set_experiment(f"/Users/{username}/hackathon-demand")
-```
-
-### Start a Training Run
-```python
-with mlflow.start_run(run_name="my-experiment"):
-    mlflow.log_params(params)
-    mlflow.log_metrics(metrics)
-    mlflow.xgboost.log_model(model, "model")
-```
-
-### Search Past Runs
-```python
-runs = mlflow.search_runs(
-    experiment_names=[f"/Users/{username}/hackathon-demand"],
-    order_by=["metrics.val_rmse ASC"]
-)
-```
-
-### Load a Model
-```python
-model = mlflow.xgboost.load_model(f"runs:/{run_id}/model")
-```
-
----
-
-## Evaluation Metrics
-
-### For Regression (Demand Forecasting)
-
-| Metric | Description | Goal |
-|--------|-------------|------|
-| **RMSE** | Root Mean Square Error | Lower is better (primary) |
-| **MAE** | Mean Absolute Error | Lower is better |
-| **R²** | Coefficient of determination | Higher is better (closer to 1) |
-| **MAPE** | Mean Absolute Percentage Error | Lower is better |
-
-### Baseline Performance
-
-A good baseline model should achieve:
-- Val RMSE: ~0.85 (on log-transformed target)
-- Test R²: > 0.5
-
----
-
-## Feature Engineering Ideas
-
-### Product Features
-- Total historical orders
-- Reorder rate (% of orders that are reorders)
-- Average cart position
-- Department/aisle popularity
-
-### Time Features
-- Day of week (0-6)
-- Hour of day (0-23)
-- Is weekend (binary)
-- Cyclical encoding: `sin(2π * hour/24)`, `cos(2π * hour/24)`
-
-### Advanced Features
-- Product rank within department
-- Customer purchase frequency
-- Interaction features (department × time)
-
+- `CLAUDE.md` — This file (project context)
+- `README.md` — Demo script for presenter
+- `.claude/skills/` — Skills: `/train`, `/evaluate`, `/tune`, `/create-pr`, plus auto-triggered (mlflow-logging, hyperparameter-tuning, setup-demo-data)
+- `.claude/agents/` — Subagents: feature-engineer, model-evaluator, experiment-analyzer
+- `src/setup_demo_data.py` — Setup script (upload to Databricks)
+- `src/generated-*.py` — Created live during demo (gitignored)

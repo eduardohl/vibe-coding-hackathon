@@ -14,7 +14,7 @@
 | 3 | `Create TWO versions of an ETL pipeline...` *(see below)* | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 4 | `Delegate to the spark-optimizer agent to review my PySpark code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | 5 | `Using context7, show me the Delta Lake documentation for MERGE` | MCP (docs lookup) |
-| 6 | `/deploy` then `/run-job` | [Slash Commands](https://code.claude.com/docs/en/slash-commands) |
+| 6 | `/deploy` then `/run-job` | [Skills](https://code.claude.com/docs/en/skills) |
 | 7 | `Remember that our target schema is {catalog}.{schema}` | [Memory](https://code.claude.com/docs/en/memory) |
 | 8 | `Commit and push these changes` | Git workflow |
 | 9 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
@@ -40,22 +40,15 @@ cd demos/data-engineering
 claude .
 ```
 
-First, tell Claude your environment:
-
 ```
-My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
-My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace — no other workspaces are allowed.
+My catalog is {catalog} and my schema is {schema}. My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace. Remember this for the rest of our session.
 ```
 
-> **Observe:** Claude stores this via the [Memory MCP](https://code.claude.com/docs/en/memory) — you won't have to repeat it. Every prompt from here on can just say "the orders table" instead of the full path.
+> **Observe:** Claude stores this via [Memory](https://code.claude.com/docs/en/memory) — you won't have to repeat it.
 
-> Skip the data setup below if you already created demo data for the other track.
+Then: `Setup demo data in my catalog and schema`
 
-```
-Setup demo data in my catalog and schema
-```
-
-> **Observe:** You didn't point to any file — Claude matched your intent to the skill's keywords automatically. That's [Skills](https://code.claude.com/docs/en/skills). Notice Claude used the catalog/schema you just told it.
+> **Observe:** Claude matched your intent to the skill's keywords. That's [Skills](https://code.claude.com/docs/en/skills).
 
 ---
 
@@ -75,15 +68,9 @@ What MCP servers do you have access to?
 Using the Databricks MCP, show me what tables are in {catalog}.{schema}
 ```
 
-Then:
+Then: `Show me 5 sample rows from the orders table`
 
-```
-Show me 5 sample rows from the orders table
-```
-
-> **Observe:** That's your *actual* Databricks workspace, queried in real time via MCP.
-
-**Try your own:** Ask Claude anything — "What's the busiest hour?" "Any null values in orders?"
+> **Observe:** That's your *actual* Databricks workspace, queried in real time via MCP. Try your own: "What's the busiest hour?" "Any null values in orders?"
 
 ---
 
@@ -107,17 +94,9 @@ Use the project structure in this directory.
 Don't deploy or run, after implementing please stop.
 ```
 
-> **Observe:** (1) Multiple files generated in one shot, and (2) each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff on every write. How many files did Claude create? Can you spot the Ruff formatting in the terminal?
+> **Observe:** Multiple files generated in one shot, and each `.py` gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Ruff. Can you spot the Ruff formatting in the terminal?
 
-**Expected files:**
-
-| File | Purpose |
-|------|---------|
-| `databricks.yml` | DABs bundle config (needed for deploy) |
-| `src/generated-etl_daily_metrics.py` | PySpark batch job |
-| `src/generated-dlt_daily_metrics.py` | DLT pipeline |
-| `resources/jobs/generated-daily_metrics_job.yml` | PySpark job definition |
-| `resources/jobs/generated-daily_metrics_dlt.yml` | DLT job definition |
+**Expected files:** `databricks.yml`, `src/generated-etl_daily_metrics.py`, `src/generated-dlt_daily_metrics.py`, plus job definitions in `resources/jobs/`.
 
 ---
 
@@ -127,7 +106,7 @@ Don't deploy or run, after implementing please stop.
 Delegate to the spark-optimizer agent to review my PySpark code for performance issues
 ```
 
-> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context. Notice how the recommendations are structured — that's the agent's prompt at work. Do you agree with them? What would you add?
+> **Observe:** Claude delegates to a [subagent](https://code.claude.com/docs/en/sub-agents) with its own isolated context. Notice the structured recommendations — that's the agent's prompt at work.
 
 ---
 
@@ -143,23 +122,13 @@ Using context7, show me the Delta Lake documentation for MERGE operations
 
 ### Step 6: Deploy and Run
 
-Now use the slash commands we built for this:
-
 ```
 /deploy
 ```
 
-> You may need to specify your Databricks CLI profile (e.g., `default`).
+Then: `/run-job`
 
-Then:
-
-```
-/run-job
-```
-
-> **Observe:** These are [Slash Commands](https://code.claude.com/docs/en/slash-commands) — pre-written prompts in `.claude/commands/`. You typed `/deploy` instead of explaining what to do. Claude followed the instructions in `deploy.md` automatically.
-
-**While it runs:** Open the Databricks UI — can everyone find the running job?
+> **Observe:** These are [Skills](https://code.claude.com/docs/en/skills) — pre-written prompts in `.claude/skills/`. You typed `/deploy` instead of explaining what to do. While it runs, open the Databricks UI — can everyone find the running job?
 
 ---
 
@@ -179,7 +148,7 @@ Remember that our target schema is {catalog}.{schema} and the orders table has 1
 Commit and push these changes
 ```
 
-> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes — it reads context from the diff. Did it use the command line git command or MCP? What's the difference?
+> **Observe:** Claude stages the right files, writes a meaningful commit message, and pushes — it reads context from the diff.
 
 ---
 
@@ -191,32 +160,13 @@ Let me try adding a gold layer aggregation to the DLT pipeline
 
 After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 
-> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot your files before every edit. Roll back instantly without touching git.
+> **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot before every edit. Roll back instantly without touching git.
 
-**Try it:** Rewind, then try a different approach.
-
-**Bonus — compact a long conversation:**
-
-```
-/compact
-```
+**Bonus:** Type `/compact` to summarize a long conversation.
 
 ---
 
 > **Reflect with the group:** What surprised you most? What would you try first in your own workflow?
-
----
-
-## Bonus Prompts
-
-Try these if you have extra time:
-
-```
-What tables are available in {catalog}.{schema}?
-What's the distribution of orders by day of week?
-Search for best practices for PySpark partition pruning
-Create a GitHub issue for "Add data quality checks to pipeline"
-```
 
 ---
 
@@ -233,12 +183,11 @@ Create a GitHub issue for "Add data quality checks to pipeline"
 
 ## Features Cheat Sheet
 
-| Feature | What It Does | Where It Lives | Docs |
-|---------|--------------|----------------|------|
-| [CLAUDE.md](https://code.claude.com/docs/en/memory) | Project context, auto-loaded | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
-| [Slash Commands](https://code.claude.com/docs/en/slash-commands) | `/deploy`, `/run-job`, `/validate-data` | `.claude/commands/` | [Commands](https://code.claude.com/docs/en/slash-commands) |
-| [Skills](https://code.claude.com/docs/en/skills) | Auto-triggered (data quality, optimization) | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
-| [Subagents](https://code.claude.com/docs/en/sub-agents) | Spark optimizer, job debugger, code reviewer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
-| [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format Python with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
-| [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
+| Feature | Where It Lives | Docs |
+|---------|----------------|------|
+| [CLAUDE.md](https://code.claude.com/docs/en/memory) — project context | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
+| [Skills](https://code.claude.com/docs/en/skills) — `/deploy`, `/run-job`, `/validate-data`, `/create-pr` | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
+| [Subagents](https://code.claude.com/docs/en/sub-agents) — spark optimizer, job debugger, code reviewer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| [MCP](https://code.claude.com/docs/en/mcp) — Databricks, GitHub, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [Hooks](https://code.claude.com/docs/en/hooks) — auto-format with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
+| [Checkpoints](https://code.claude.com/docs/en/overview) — `Esc+Esc` to rewind | Built-in | [Overview](https://code.claude.com/docs/en/overview) |

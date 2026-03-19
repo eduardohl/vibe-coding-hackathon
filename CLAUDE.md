@@ -24,11 +24,26 @@ databricks-claude-code-hackathon/
 │   │   │   └── agents/          # Specialized subagents
 │   │   ├── src/                 # generated-*.py created during demo
 │   │   └── resources/jobs/      # generated-*.yml created during demo
-│   └── data-science/            # MLflow + XGBoost demo
+│   ├── data-science/            # MLflow + XGBoost demo
+│   │   ├── CLAUDE.md            # Project context
+│   │   ├── README.md            # Demo script
+│   │   ├── .claude/             # Commands, skills, agents, hooks
+│   │   └── src/                 # Training code
+│   ├── software-engineering/    # Databricks Apps + Lakebase (Node.js/React)
+│   │   ├── CLAUDE.md            # Project context
+│   │   ├── README.md            # Demo script
+│   │   ├── .claude/             # Skills, agents, hooks (+ SupplyTrackSDK docs)
+│   │   └── src/                 # App code (generated live)
+│   ├── software-engineering-java/  # Spring Boot + JUnit 5 (no cloud)
+│   │   ├── CLAUDE.md            # Project context
+│   │   ├── README.md            # Demo script
+│   │   ├── .claude/             # Skills, agents, hooks (+ SupplyTrackSDK docs)
+│   │   └── src/                 # App code (generated live)
+│   └── productivity/            # Email → deliverables demo (no infra)
 │       ├── CLAUDE.md            # Project context
 │       ├── README.md            # Demo script
-│       ├── .claude/             # Commands, skills, agents, hooks
-│       └── src/                 # Training code
+│       ├── .claude/             # Commands, skills, hooks
+│       └── src/                 # Sample email + generated output
 └── claude_code_guide.md         # Claude Code features reference
 ```
 
@@ -36,7 +51,7 @@ databricks-claude-code-hackathon/
 
 ---
 
-## Two Tracks
+## Five Tracks
 
 ### Track 1: Data Engineering
 **Problem:** Build an Automated Product Reorder Alert Pipeline
@@ -50,7 +65,7 @@ databricks-claude-code-hackathon/
 | Orchestration | Lakeflow Jobs |
 
 **Demo Features:**
-- Custom slash commands (`/deploy`, `/run-job`, `/validate-data`)
+- Custom skills (`/deploy`, `/run-job`, `/validate-data`)
 - Auto-triggered skills (data quality, Spark optimization)
 - Specialized subagents (spark-optimizer, job-debugger, code-reviewer)
 - Hooks for auto-formatting Python with Ruff
@@ -65,13 +80,61 @@ databricks-claude-code-hackathon/
 | Feature Engineering | PySpark → Pandas |
 | Model Registry | Unity Catalog |
 
+### Track 3: Software Engineering (Node.js)
+**Problem:** Build a Supply Chain Inventory Management App
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | React (Vite) |
+| Backend | Express.js (Node.js) |
+| Database | Lakebase (Postgres-compatible) |
+| Deployment | Databricks Apps |
+
+**Demo Features:**
+- Custom skills (`/deploy-app`, `/run-tests`, `/lint`)
+- Skills with bundled documentation (SupplyTrackSDK — teaches Claude a proprietary library)
+- Specialized subagents (code-reviewer, api-debugger, security-auditor)
+- Hooks for auto-formatting JS/TS with Prettier + ESLint
+
+### Track 3b: Software Engineering (Java)
+**Problem:** Build a Medical Supply Inventory Service
+
+| Component | Technology |
+|-----------|------------|
+| Framework | Spring Boot |
+| Testing | JUnit 5 + MockMvc |
+| Database | H2 (in-memory) |
+| Deployment | Local only — no cloud required |
+
+**Demo Features:**
+- Custom skills (`/run-tests`, `/create-pr`)
+- Skills with bundled documentation (SupplyTrackSDK — Java version)
+- Specialized subagents (code-reviewer, security-auditor)
+- Hooks for auto-formatting Java with google-java-format
+- Zero external dependencies — runs entirely local
+
+### Track 4: Productivity
+**Problem:** Turn a messy email into organized deliverables
+
+| Component | Technology |
+|-----------|------------|
+| Input | Fictional supervisor email (supply chain operations review) |
+| Output | Todo list, messages, slides, spreadsheet, Python script |
+| Infrastructure | None — just Claude Code + local files |
+
+**Demo Features:**
+- Custom skills (`/todo`, `/draft-reply`)
+- Auto-triggered skills (email parsing, message drafting, slides, spreadsheets)
+- Hooks for auto-formatting Python with Ruff
+- No MCP required — ideal as the first demo
+
 ---
 
 ## Data Sources
 
-### Demo Data (Shared Between Both Tracks)
+### Demo Data (Shared Between Tracks)
 
-**Important:** Both Data Engineering and Data Science demos use the **same data**. Set it up once and use the same catalog.schema for both.
+**Important:** Data Engineering, Data Science, and Node.js Software Engineering demos use the **same data**. Set it up once and use the same catalog.schema for all. The Java SE demo and Productivity demo need no demo data.
 
 To create demo data in your own catalog/schema:
 - Say "setup demo data in {catalog}.{schema}" to trigger the skill, OR
@@ -123,10 +186,9 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 
 | Feature | Location | Description |
 |---------|----------|-------------|
-| **Slash Commands** | `.claude/commands/` | /deploy, /run-job, /validate-data, /create-pr |
-| **Skills** | `.claude/skills/` | Auto-triggered for "data quality", "setup demo data", "tune" |
-| **Subagents** | `.claude/agents/` | spark-optimizer, job-debugger, code-reviewer |
-| **Hooks** | `.claude/settings.json` | Auto-format Python, validate bundle pre-commit |
+| **Skills** | `.claude/skills/` | /deploy, /run-job, /train, /deploy-app, /run-tests, /todo, SupplyTrackSDK docs |
+| **Subagents** | `.claude/agents/` | spark-optimizer, job-debugger, code-reviewer, security-auditor |
+| **Hooks** | `.claude/settings.json` | Auto-format Python with Ruff, JS/TS with Prettier, Java with google-java-format |
 | **CLAUDE.md** | Project root | Project context auto-loaded by Claude |
 | **Checkpoints** | Built-in | Press Esc twice to rewind changes |
 | **/compact** | Built-in | Summarize long conversations |
@@ -163,6 +225,44 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 9. **Memory** - "Remember the best hyperparameters"
 10. **Commit & Push** - Git workflow
 11. **Checkpoints** - Press Esc+Esc to rewind
+
+### Software Engineering Demo — Node.js (~45 min)
+
+0. **Setup** - Set catalog/schema/profile, setup demo data
+1. **Explore Data** - Query products table via MCP
+2. **Scaffold App** - Create React + Express supply chain inventory app
+3. **Teach SDK** - "What do you know about SupplyTrackSDK?" + integrate
+4. **Write Tests** - Unit tests for API routes, SDK integration, and React components
+5. **Run Tests** - /run-tests skill
+6. **Code Review** - Delegate to code-reviewer subagent
+7. **Security Audit** - Delegate to security-auditor subagent
+8. **Deploy** - /deploy-app skill
+9. **Commit & Checkpoints** - Git + Esc+Esc to rewind
+
+### Software Engineering Demo — Java (~40 min)
+
+0. **Start** - Claude reads CLAUDE.md, knows the domain and stack
+1. **Scaffold API** - Spring Boot REST API for medical supply inventory
+2. **Teach SDK** - "What do you know about SupplyTrackSDK?" + integrate
+3. **Write Tests** - JUnit 5 + MockMvc for controller + SDK integration
+4. **Run Tests** - /run-tests skill
+5. **Code Review** - Delegate to code-reviewer subagent
+6. **Security Audit** - Delegate to security-auditor subagent
+7. **Commit & Checkpoints** - Git + Esc+Esc to rewind
+
+### Productivity Demo (~30 min)
+
+0. **Start Claude Code** - Claude reads CLAUDE.md, knows the scenario
+1. **Read Email** - Read the supply chain operations review email
+2. **Image Understanding** - Paste a screenshot, Claude reads and extracts data
+3. **Todo List** - /todo slash command to extract tasks
+4. **Draft Messages** - "Draft a message to Sarah..." (skill auto-triggers)
+5. **Create Slides** - "Create a slide deck..." (skill auto-triggers)
+6. **Create Spreadsheet** - "Create a CSV with the budget..." (skill auto-triggers)
+7. **Write Script** - Generate Python script for calculations
+8. **Technical Response** - Draft response to client question
+9. **Reply** - /draft-reply to tie everything together
+10. **Checkpoints** - Press Esc+Esc to rewind
 
 ---
 

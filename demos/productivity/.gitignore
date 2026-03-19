@@ -1,0 +1,19 @@
+# Generated files (created during demo)
+src/generated-*
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Ruff cache
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

@@ -6,7 +6,7 @@ This is a Databricks Asset Bundles (DABs) project for the Vibe Coding Hackathon.
 It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables (DLT).
 
 **This demo showcases Claude Code features including:**
-- Custom slash commands (`/deploy`, `/run-job`, `/validate-data`, `/create-pr`)
+- Custom skills (`/deploy`, `/run-job`, `/validate-data`, `/create-pr`)
 - Auto-triggered skills (data quality, demo data setup)
 - Specialized subagents (optimizer, debugger, code reviewer)
 - Hooks for automatic code formatting
@@ -49,9 +49,9 @@ It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables 
 
 ## Claude Code Features
 
-### Custom Slash Commands
+### Custom Skills
 
-This project includes custom slash commands in `.claude/commands/`:
+This project includes custom skills in `.claude/skills/`:
 
 | Command | Description |
 |---------|-------------|
@@ -68,7 +68,7 @@ This project includes custom slash commands in `.claude/commands/`:
 /validate-data       # Check output data quality
 ```
 
-### Skills (Auto-Triggered)
+### Skills
 
 Skills in `.claude/skills/` activate automatically based on context:
 
@@ -131,7 +131,7 @@ Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 - Always use `F.col()` from `pyspark.sql.functions` for column references
 - Avoid `spark.sql()` with string interpolation - use DataFrame API instead
 - Avoid `collect()` on large datasets
-- Cache DataFrames that are reused multiple times
+- Do NOT use `.cache()` or `.persist()` — not supported on serverless compute
 
 ### Delta Lake
 
@@ -179,64 +179,10 @@ databricks bundle destroy --target dev
 
 ## File Structure
 
-```
-├── CLAUDE.md                    # This file - project context
-├── README.md                    # Demo script for presenter
-├── .gitignore                   # Ignores generated files
-├── .claude/
-│   ├── commands/                # Custom slash commands
-│   │   ├── deploy.md
-│   │   ├── run-job.md
-│   │   ├── validate-data.md
-│   │   └── create-pr.md
-│   ├── skills/                  # Auto-triggered skills
-│   │   ├── data-quality-check.md
-│   │   └── setup-demo-data.md
-│   ├── agents/                  # Specialized subagents
-│   │   ├── spark-optimizer.md
-│   │   ├── job-debugger.md
-│   │   └── code-reviewer.md
-│   ├── settings.json            # Hooks and permissions
-│   └── mcp-config.example.json  # MCP server reference template
-├── src/
-│   ├── setup_demo_data.py       # Setup script (upload to Databricks)
-│   └── generated-*.py           # Created during demo by Claude
-└── resources/
-    └── jobs/
-        └── generated-*.yml      # Created during demo by Claude
-```
-
-> **Note:** Files with `generated-` prefix are created live during the demo and are gitignored.
-
----
-
-## Widget Parameters
-
-Both notebooks support these configurable parameters:
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `catalog` | (user-specified) | Unity Catalog name |
-| `schema` | (user-specified) | Schema with demo data and output tables |
-
----
-
-## Output Tables
-
-### daily_order_metrics
-
-Aggregated order metrics by day of week and hour of day.
-
-| Column | Type | Description |
-|--------|------|-------------|
-| `day_of_week` | INT | 0 (Sunday) to 6 (Saturday) |
-| `hour_of_day` | INT | 0 to 23 |
-| `total_orders` | LONG | Count of orders |
-| `unique_customers` | LONG | Distinct user count |
-| `avg_days_since_prior_order` | DOUBLE | Average days between orders |
-| `first_time_orders` | LONG | Orders with no prior order |
-| `avg_items_per_order` | DOUBLE | Average basket size |
-| `avg_reordered_items_per_order` | DOUBLE | Average reorder items |
-| `max_items_in_order` | INT | Largest basket size |
-| `processed_at` | TIMESTAMP | Processing timestamp |
-
+- `CLAUDE.md` — This file (project context)
+- `README.md` — Demo script for presenter
+- `.claude/skills/` — Skills: `/deploy`, `/run-job`, `/validate-data`, `/create-pr`, plus auto-triggered (data-quality-check, setup-demo-data)
+- `.claude/agents/` — Subagents: spark-optimizer, job-debugger, code-reviewer
+- `src/setup_demo_data.py` — Setup script (upload to Databricks)
+- `src/generated-*.py` — Created live during demo (gitignored)
+- `resources/jobs/generated-*.yml` — Job definitions created during demo (gitignored)

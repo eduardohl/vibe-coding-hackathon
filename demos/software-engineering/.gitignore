@@ -1,0 +1,51 @@
+# Generated files (created during demo)
+src/generated-*/
+generated-*.js
+generated-*.jsx
+generated-*.ts
+generated-*.tsx
+
+# Node.js
+node_modules/
+dist/
+build/
+.cache/
+*.tgz
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Databricks
+.databricks/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ruff cache
+.ruff_cache/
+
+# Reference examples (not for demo)
+_reference/

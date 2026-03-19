@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(java *)",
+      "Bash(javac *)",
+      "Bash(mvn *)",
+      "Bash(git *)",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(rm -rf *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"${CLAUDE_FILE_PATH}\" | grep -qE '\\.java$' && google-java-format --replace \"$CLAUDE_FILE_PATH\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
