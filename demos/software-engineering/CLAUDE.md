@@ -77,11 +77,21 @@ Build a **Supply Chain Inventory** app using React + Express.js + Lakebase, then
 
 Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 
+**Required:**
+
 | Server | Capabilities |
 |--------|-------------|
-| **uc-function-mcp** | Query Databricks tables via SQL |
-| **context7** | Library documentation (optional) |
-| **memory** | Persist facts across sessions (optional) |
+| **uc-function-mcp** | Query Databricks tables via SQL, explore schemas |
+
+**Optional (nice-to-have):**
+
+| Server | Capabilities |
+|--------|-------------|
+| **confluence** | Read/write Confluence pages for documentation |
+| **context7** | Get up-to-date library documentation |
+| **brave-search** | Search for best practices |
+| **memory** | Persist facts across sessions |
+| **obsidian** | Document architecture, write notes and summaries |
 
 ## SupplyTrackSDK
 

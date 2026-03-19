@@ -187,6 +187,17 @@ After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 
 ---
 
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Skill not activating | Check `.claude/skills/` exists with SKILL.md files |
+| Ruff hook not formatting | Verify Ruff is installed: `ruff --version` |
+| Generated file not created | Check Claude's output for the file path, look in `src/` |
+| Context too long | Use `/compact` to summarize the conversation |
+
+---
+
 ## Features Cheat Sheet
 
 | Feature | What It Does | Where It Lives | Docs |

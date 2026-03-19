@@ -194,6 +194,20 @@ Open the deployed app in Chrome and test it for bugs. Click through every page, 
 
 ---
 
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| MCP not connecting | `claude mcp list`, verify token and workspace URL |
+| `npm install` fails | Check Node.js version (`node --version`, need 18+) |
+| App deploy fails | Verify `app.yaml` in app root, check `databricks apps get {name}` |
+| Lakebase connection error | Check app.yaml resource config, verify Lakebase is enabled |
+| Tests fail with module errors | Run `npm install` first, check `package.json` for missing deps |
+| Prettier hook not firing | Verify `.claude/settings.json` exists and has PostToolUse hook |
+| Chrome UI test not working | Ensure Chrome DevTools MCP is connected (`claude mcp list`) |
+
+---
+
 ## Features Cheat Sheet
 
 | Feature | What It Does | Where It Lives | Docs |

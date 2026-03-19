@@ -241,13 +241,14 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 
 0. **Start** - Claude reads CLAUDE.md, knows the domain and stack
 1. **Scaffold API** - Spring Boot REST API for medical supply inventory
-2. **Teach SDK** - "What do you know about SupplyTrackSDK?" + integrate
-3. **Write Tests** - JUnit 5 + MockMvc for controller + SDK integration
-4. **Run Tests** - /run-tests skill
-5. **Code Review** - Delegate to code-reviewer subagent
-6. **Security Audit** - Delegate to security-auditor subagent
-7. **Run & Self-Heal** - Start server, curl every endpoint, fix bugs autonomously
-8. **Commit & Checkpoints** - Git + Esc+Esc to rewind
+2. **Teach SDK** - "What do you know about SupplyTrackSDK?"
+3. **Integrate SDK** - Add reserve endpoint + warehouse capacity using SDK
+4. **Write Tests** - JUnit 5 + MockMvc for controller + SDK integration
+5. **Run Tests** - /run-tests skill
+6. **Code Review** - Delegate to code-reviewer subagent
+7. **Security Audit** - Delegate to security-auditor subagent
+8. **Run & Self-Heal** - Start server, curl every endpoint, fix bugs autonomously
+9. **Commit & Checkpoints** - Git + Esc+Esc to rewind
 
 ### Productivity Demo (~30 min)
 

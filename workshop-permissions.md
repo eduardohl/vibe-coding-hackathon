@@ -24,6 +24,11 @@ Databricks permissions required for workshop participants across all five demo t
 - Personal Access Token (PAT) or OAuth — for Databricks CLI and MCP
 - Databricks CLI installed and configured
 
+## Demos With No Databricks Requirements
+
+- **Software Engineering (Java)** — runs entirely locally with Java + Maven + H2. No workspace, no MCP, no tokens.
+- **Productivity** — runs entirely locally with just Claude Code. No infrastructure at all.
+
 ## Recommended Setup
 
 Give each participant/team a permissive role on a dedicated workshop workspace + a shared catalog where each team gets their own schema (`team_{name}`). This avoids permission debugging during the session.

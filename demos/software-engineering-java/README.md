@@ -201,6 +201,19 @@ Then press **`Esc` twice** to open the checkpoint menu.
 
 ---
 
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| `mvn: command not found` | Install Maven: `brew install maven` (Mac) or [download](https://maven.apache.org/download.cgi) |
+| `java: command not found` | Install Java 17+: `brew install openjdk@17` (Mac) or [download](https://adoptium.net) |
+| Tests fail with compilation error | Run `mvn clean compile` first, check Java version (`java --version`) |
+| `google-java-format` not found | Install: `brew install google-java-format` (Mac) |
+| Port 8080 already in use | Kill the process: `lsof -ti:8080 \| xargs kill` |
+| Spring Boot won't start | Check `application.properties`, verify H2 config |
+
+---
+
 ## Features Cheat Sheet
 
 | Feature | What It Does | Where It Lives | Docs |

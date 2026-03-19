@@ -184,11 +184,11 @@ After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 
 ## Features Cheat Sheet
 
-| Feature | Where It Lives | Docs |
-|---------|----------------|------|
-| [CLAUDE.md](https://code.claude.com/docs/en/memory) — project context | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
-| [Skills](https://code.claude.com/docs/en/skills) — `/deploy`, `/run-job`, `/validate-data`, `/create-pr` | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
-| [Subagents](https://code.claude.com/docs/en/sub-agents) — spark optimizer, job debugger, code reviewer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) — Databricks, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
-| [Hooks](https://code.claude.com/docs/en/hooks) — auto-format with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
-| [Checkpoints](https://code.claude.com/docs/en/overview) — `Esc+Esc` to rewind | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
+| Feature | What It Does | Where It Lives | Docs |
+|---------|--------------|----------------|------|
+| [CLAUDE.md](https://code.claude.com/docs/en/memory) | Project context, auto-loaded | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
+| [Skills](https://code.claude.com/docs/en/skills) | `/deploy`, `/run-job`, `/validate-data`, `/create-pr` | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
+| [Subagents](https://code.claude.com/docs/en/sub-agents) | Spark optimizer, job debugger, code reviewer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
+| [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
