@@ -251,7 +251,7 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 
 0. **Start Claude Code** - Claude reads CLAUDE.md, knows the scenario
 1. **Read Email** - Read the supply chain operations review email
-2. **Image Understanding** - Paste a screenshot, Claude reads and extracts data
+2. **Image Understanding** - Paste a UI screenshot, Claude recreates it as an HTML mockup
 3. **Todo List** - /todo slash command to extract tasks
 4. **Draft Messages** - "Draft a message to Sarah..." (skill auto-triggers)
 5. **Create Slides** - "Create a slide deck..." (skill auto-triggers)

@@ -12,7 +12,7 @@
 |------|--------|---------------|
 | 0 | *Start Claude Code in `demos/productivity/`* | Setup |
 | 1 | `Read the email in src/sample-email.md and give me a quick summary` | File reading |
-| 2 | *Paste a screenshot* + `What does this show?` | Image understanding |
+| 2 | *Paste a UI screenshot* + `Recreate this as HTML` | Image understanding |
 | 3 | `/todo` | [Skills](https://code.claude.com/docs/en/skills) |
 | 4 | `Draft a message to Sarah Chen asking her to finalize the cycle count variance report by Tuesday` | [Skills](https://code.claude.com/docs/en/skills) (message-drafter) |
 | 5 | `Create a slide deck for the Q3 Distribution Ops Review based on the email` | [Skills](https://code.claude.com/docs/en/skills) (slide-creator) |
@@ -57,15 +57,13 @@ Read the email in src/sample-email.md and give me a quick summary
 
 ### Step 2: Image Understanding
 
-Take a screenshot of something relevant — a dashboard, a chart, an error message, a whiteboard photo, or even a table from a PDF — and paste it directly into Claude Code.
+Take a screenshot of any app interface you use daily — a dashboard, an internal tool, a settings page, anything with a UI — and paste it into Claude Code.
 
 ```
-What does this show? Summarize the key takeaways.
+Recreate this interface as a self-contained HTML file. Make it look as close to the original as possible. Save it as src/generated-mockup.html
 ```
 
-> **Observe:** Claude can **read and understand images**. Paste a screenshot and ask it to summarize, extract data, explain an error, or turn a whiteboard sketch into structured notes. This works with dashboards, charts, spreadsheets, architecture diagrams — anything you can screenshot.
-
-**Try it:** Take a screenshot of a chart or table from any tool you use daily. Paste it and ask Claude to extract the data into a CSV, or explain what it shows.
+> **Observe:** Claude **reads the screenshot**, understands the layout, colors, and components, then generates a working HTML mockup. Open `src/generated-mockup.html` in a browser — it's a functional visual replica, built in seconds. No backend, no frameworks, just HTML + CSS.
 
 ---
 
@@ -187,6 +185,6 @@ After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 |---------|--------------|----------------|------|
 | [CLAUDE.md](https://code.claude.com/docs/en/memory) | Project context, auto-loaded | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
 | [Skills](https://code.claude.com/docs/en/skills) | `/todo`, `/draft-reply`, email parsing, drafting, slides, spreadsheets | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
-| Image understanding | Paste screenshots — Claude reads and extracts data | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
+| Image understanding | Paste a UI screenshot — Claude recreates it as HTML | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
 | [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format Python with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
 | [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |
