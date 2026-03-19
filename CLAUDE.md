@@ -250,15 +250,15 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 ### Productivity Demo (~30 min)
 
 0. **Start Claude Code** - Claude reads CLAUDE.md, knows the scenario
-1. **Read Email** - Read the supply chain operations review email
-2. **Image Understanding** - Paste a UI screenshot, Claude recreates it as an HTML mockup
-3. **Todo List** - /todo slash command to extract tasks
-4. **Draft Messages** - "Draft a message to Sarah..." (skill auto-triggers)
-5. **Create Slides** - "Create a slide deck..." (skill auto-triggers)
-6. **Create Spreadsheet** - "Create a CSV with the budget..." (skill auto-triggers)
-7. **Write Script** - Generate Python script for calculations
-8. **Technical Response** - Draft response to client question
-9. **Reply** - /draft-reply to tie everything together
+1. **Read Email** - Read Jordan's supply chain operations review email
+2. **Todo List** - /todo skill extracts tasks from the email
+3. **Draft Messages** - "Draft a message to Sarah..." (skill auto-triggers)
+4. **Create Slides** - 5-slide deck from the email (skill auto-triggers)
+5. **Create Spreadsheet** - Budget breakdown CSV (skill auto-triggers)
+6. **Write Script** - Python script for Q3 metric calculations + Ruff hook
+7. **Technical Response** - Draft response to Metro Regional Health
+8. **Reply** - /draft-reply ties everything together
+9. **Image Understanding** - Paste a UI screenshot, Claude recreates it as HTML
 10. **Checkpoints** - Press Esc+Esc to rewind
 
 ---
