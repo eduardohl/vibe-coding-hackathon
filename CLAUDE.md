@@ -18,16 +18,13 @@ databricks-claude-code-hackathon/
 │   ├── data-engineering/        # DABs + PySpark + DLT demo
 │   │   ├── CLAUDE.md            # Project context for Claude
 │   │   ├── README.md            # Live demo script
-│   │   ├── .claude/             # Claude Code customizations
-│   │   │   ├── commands/        # Custom slash commands
-│   │   │   ├── skills/          # Auto-triggered skills
-│   │   │   └── agents/          # Specialized subagents
+│   │   ├── .claude/             # Skills, agents, hooks
 │   │   ├── src/                 # generated-*.py created during demo
 │   │   └── resources/jobs/      # generated-*.yml created during demo
 │   ├── data-science/            # MLflow + XGBoost demo
 │   │   ├── CLAUDE.md            # Project context
 │   │   ├── README.md            # Demo script
-│   │   ├── .claude/             # Commands, skills, agents, hooks
+│   │   ├── .claude/             # Skills, agents, hooks
 │   │   └── src/                 # Training code
 │   ├── software-engineering/    # Databricks Apps + Lakebase (Node.js/React)
 │   │   ├── CLAUDE.md            # Project context
@@ -42,7 +39,7 @@ databricks-claude-code-hackathon/
 │   └── productivity/            # Email → deliverables demo (no infra)
 │       ├── CLAUDE.md            # Project context
 │       ├── README.md            # Demo script
-│       ├── .claude/             # Commands, skills, hooks
+│       ├── .claude/             # Skills, hooks
 │       └── src/                 # Sample email + generated output
 └── claude_code_guide.md         # Claude Code features reference
 ```
@@ -66,7 +63,7 @@ databricks-claude-code-hackathon/
 
 **Demo Features:**
 - Custom skills (`/deploy`, `/run-job`, `/validate-data`)
-- Auto-triggered skills (data quality, Spark optimization)
+- Auto-triggered skills (data quality, demo data setup)
 - Specialized subagents (spark-optimizer, job-debugger, code-reviewer)
 - Hooks for auto-formatting Python with Ruff
 

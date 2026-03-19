@@ -75,12 +75,12 @@ databricks-claude-code-hackathon/
     ├── data-engineering/  # DABs + PySpark + DLT demo
     │   ├── CLAUDE.md      # Project-specific context
     │   ├── README.md      # Live demo script
-    │   ├── .claude/       # Commands, skills, agents, hooks
+    │   ├── .claude/       # Skills, agents, hooks
     │   └── src/           # Generated code (created live in demo)
     ├── data-science/      # MLflow + XGBoost demo
     │   ├── CLAUDE.md      # Project-specific context
     │   ├── README.md      # Live demo script
-    │   ├── .claude/       # Commands, skills, agents, hooks
+    │   ├── .claude/       # Skills, agents, hooks
     │   └── src/           # Generated code (created live in demo)
     ├── software-engineering/   # Databricks Apps + Lakebase demo
     │   ├── CLAUDE.md      # Project-specific context
@@ -95,7 +95,7 @@ databricks-claude-code-hackathon/
     └── productivity/      # Email → deliverables demo (no infra)
         ├── CLAUDE.md      # Project-specific context
         ├── README.md      # Live demo script
-        ├── .claude/       # Commands, skills, hooks
+        ├── .claude/       # Skills, hooks
         └── src/           # Sample email + generated output
 ```
 
@@ -190,7 +190,7 @@ By the end of this hackathon, participants will:
 
 1. **Understand Vibe Coding** — Effectively prompt and collaborate with Claude Code
 2. **Use MCP Integrations** — Connect Claude to Databricks, GitHub, and documentation tools
-3. **Master Claude Code Features** — Commands, skills, agents, hooks, and CLAUDE.md
+3. **Master Claude Code Features** — Skills, subagents, hooks, MCP, and CLAUDE.md
 4. **Build Working Solutions** — Complete a data engineering or data science challenge
 5. **Share Learnings** — Demo and discuss approaches (focus on learning, not competition)
 

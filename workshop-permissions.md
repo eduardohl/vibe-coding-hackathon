@@ -1,6 +1,6 @@
 # Workshop Permissions Required
 
-Databricks permissions required for workshop participants across all three demo tracks (Data Engineering, Data Science, Software Engineering).
+Databricks permissions required for workshop participants across all five demo tracks (Data Engineering, Data Science, Software Engineering Node.js, Software Engineering Java, Productivity).
 
 ## Compute
 
