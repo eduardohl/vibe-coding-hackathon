@@ -12,14 +12,13 @@
 |------|--------|---------------|
 | 0 | `My catalog is {catalog}, schema is {schema}, CLI profile is {profile}` + `Setup demo data` | [Skills](https://code.claude.com/docs/en/skills) |
 | 1 | `What MCP servers do you have? Show me the products table schema and 5 sample rows` | [MCP](https://code.claude.com/docs/en/mcp) |
-| 2 | `Create a Databricks App with React frontend and Express backend...` *(see below)* | Code gen + [Hooks](https://code.claude.com/docs/en/hooks) |
-| 3 | `What do you know about SupplyTrackSDK?` | [Skills](https://code.claude.com/docs/en/skills) (bundled docs) |
-| 4 | `Write unit tests for the API routes and React components, including the SDK integration` | Testing + [Hooks](https://code.claude.com/docs/en/hooks) |
-| 5 | `/run-tests` | [Skills](https://code.claude.com/docs/en/skills) |
-| 6 | `Delegate to the code-reviewer and security-auditor agents in the background...` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 7 | `/deploy-app` | [Skills](https://code.claude.com/docs/en/skills) |
-| 8 | `Open the deployed app in Chrome and test it for bugs` | [MCP](https://code.claude.com/docs/en/mcp) (Chrome DevTools) |
-| 9 | `Commit and push these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 2 | `Create a Lakebase database and a Databricks App with React + Express...` *(see below)* | Code gen + [Hooks](https://code.claude.com/docs/en/hooks) |
+| 3 | `What do you know about SupplyTrackSDK?` + integrate it | [Skills](https://code.claude.com/docs/en/skills) (bundled docs) |
+| 4 | `Write tests...` + `/run-tests` | Testing + [Skills](https://code.claude.com/docs/en/skills) |
+| 5 | `Delegate to the code-reviewer and security-auditor agents in the background...` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
+| 6 | `/deploy-app` | [Skills](https://code.claude.com/docs/en/skills) |
+| 7 | `Open the deployed app in Chrome and test it for bugs` | [MCP](https://code.claude.com/docs/en/mcp) (Chrome DevTools) |
+| 8 | `Commit and push these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -69,22 +68,24 @@ What MCP servers do you have access to? Then show me the products table schema a
 
 ---
 
-### Step 2: Scaffold the App
+### Step 2: Create Database & Scaffold the App
 
 ```
-Create a Databricks App for supply chain inventory management with a React frontend and Express.js backend:
+Create a Lakebase database called "supply-inventory" for the app, then scaffold a Databricks App for supply chain inventory management with a React frontend and Express.js backend:
 - Use Tailwind CSS for styling with a clean, modern dashboard look
-- Connects to Lakebase for persistence
+- Connects to Lakebase via DATABASE_URL env var (configured in app.yaml)
 - CRUD for medical supplies (list, view, add, edit, delete) with SKU, stock level, reorder point
-- Simple order analytics dashboard with charts
-- app.yaml for Databricks Apps deployment
+- Order analytics dashboard with charts
+- app.yaml with Lakebase resource binding for the database you just created
+- Auto-creates tables on startup (CREATE TABLE IF NOT EXISTS)
+- Health check endpoint at GET /api/health
 - Uses the products and departments from {catalog}.{schema}
 
-Structure as generated-app/ with server.js, src/ (React + Vite + Tailwind), package.json, and app.yaml.
+Structure as generated-app/ with server.js, src/ (React + Vite + Tailwind), package.json, app.yaml, .databricksignore, and .gitignore.
 Don't deploy yet.
 ```
 
-> **Observe:** (1) Full-stack app generated in one shot. (2) Each `.js`/`.jsx` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write.
+> **Observe:** (1) Claude creates a real Lakebase database via CLI, then generates a full-stack app wired to it. (2) Each `.js`/`.jsx` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write.
 
 ---
 
@@ -106,31 +107,21 @@ Add a POST /api/supplies/:sku/reserve endpoint using SupplyTrackSDK to check sto
 
 ---
 
-### Step 4: Write Tests
+### Step 4: Write & Run Tests
 
 ```
 Write tests for the app:
 1. Unit tests for the API route handlers (mock the database)
 2. Tests for the SupplyTrackSDK integration endpoints (mock the SDK client)
 3. A simple React component test for the product list
-Use Jest. Test both success and error paths.
+Use Jest. Test both success and error paths. Then run them.
 ```
 
-> **Observe:** Claude generates tests following CLAUDE.md patterns — mocked DB, mocked SDK, proper assertions. The hooks auto-format each test file.
+> **Observe:** Claude generates tests following CLAUDE.md patterns — mocked DB, mocked SDK, proper assertions. The hooks auto-format each test file. Then Claude runs `npm test` and fixes any failures.
 
 ---
 
-### Step 5: Run the Tests
-
-```
-/run-tests
-```
-
-> **Observe:** The [Skill](https://code.claude.com/docs/en/skills) runs `npm test`, checks coverage, and reports results. You typed `/run-tests` instead of explaining what to do.
-
----
-
-### Step 6: Code Review & Security Audit (Background)
+### Step 5: Code Review & Security Audit (Background)
 
 ```
 Delegate to the code-reviewer and security-auditor agents in the background. The code-reviewer should check quality, test coverage, and best practices. The security-auditor should check for OWASP vulnerabilities. While they run, continue with the next steps.
@@ -140,7 +131,7 @@ Delegate to the code-reviewer and security-auditor agents in the background. The
 
 ---
 
-### Step 7: Deploy
+### Step 6: Deploy
 
 ```
 /deploy-app
@@ -150,7 +141,7 @@ Delegate to the code-reviewer and security-auditor agents in the background. The
 
 ---
 
-### Step 8: Automated UI Testing via Chrome
+### Step 7: Automated UI Testing via Chrome
 
 > **Prereq:** The presenter has connected a Chrome DevTools MCP server on the side. No setup needed from participants.
 
@@ -162,7 +153,7 @@ Open the deployed app in Chrome and test it for bugs. Click through every page, 
 
 ---
 
-### Step 9: Commit & Checkpoints
+### Step 8: Commit & Checkpoints
 
 ```
 Commit and push these changes

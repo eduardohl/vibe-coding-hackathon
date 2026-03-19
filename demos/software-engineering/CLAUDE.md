@@ -23,6 +23,7 @@ Build a **Supply Chain Inventory** app using React + Express.js + Lakebase, then
 - When user mentions "setup demo data" or "test api", use the corresponding skill
 - Read the skill file and follow its instructions exactly before writing any code
 - **IMPORTANT:** When creating new files, use the `generated-` prefix (e.g., `generated-app/`)
+- **CRITICAL — Databricks CLI:** Always pass `-p {profile}` on every `databricks` command. The user sets their profile at the start of the session. Never use the default profile — it may point to a different workspace.
 
 ## Environment
 
@@ -103,6 +104,29 @@ A fictional proprietary SDK for real-time warehouse inventory operations. Claude
 
 See `.claude/skills/supply-track-sdk/api-reference.md` for the full API.
 
+## Lakebase (Database)
+
+The app uses Lakebase (Postgres-compatible) for persistence. It's configured as a resource in `app.yaml` and the connection string is injected via environment variable.
+
+**Create a Lakebase database before deploying:**
+```bash
+databricks lakebase databases create {db_name} -p {profile}
+```
+
+**app.yaml resource binding:**
+```yaml
+resources:
+  - name: lakebase-db
+    type: lakebase
+    config:
+      database: {db_name}
+env:
+  - name: DATABASE_URL
+    valueFrom: lakebase-db
+```
+
+The app should read `DATABASE_URL` from the environment and connect with `pg` (node-postgres). Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
+
 ## Coding Standards
 
 - ES modules (`import`/`export`), `const`/`let` only, async/await
@@ -111,6 +135,17 @@ See `.claude/skills/supply-track-sdk/api-reference.md` for the full API.
 - Parameterize all SQL queries — never concatenate user input
 - Use environment variables for secrets
 - Test both success and error paths with descriptive names
+
+### Architecture (follow these to avoid common issues)
+
+- Add `helmet` middleware for security headers
+- Add `cors` middleware with explicit origin (not wildcard `*`)
+- Add `GET /api/health` endpoint that checks DB connectivity
+- Add `morgan` or `pino` for request logging
+- Validate all request bodies with explicit checks (type, required fields, length)
+- Use `express-async-errors` or wrap async handlers in try/catch
+- Include a `.databricksignore` in the app root (exclude `node_modules/`, `.git/`, `src/`, `__tests__/`)
+- Include a `.gitignore` in the app root (exclude `node_modules/`, `dist/`, `.env`)
 
 ## File Structure
 
