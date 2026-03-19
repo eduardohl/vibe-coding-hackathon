@@ -19,7 +19,7 @@
 | 6 | `Write a Python script that calculates fulfillment rate improvements...` | Code generation + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 7 | `Draft a technical response to Metro Regional Health about real-time inventory API integration` | [Skills](https://code.claude.com/docs/en/skills) (auto-triggered) |
 | 8 | `/draft-reply` | [Skills](https://code.claude.com/docs/en/skills) |
-| 9 | *Paste a UI screenshot* + `Recreate this as HTML` | Image understanding |
+| 9 | *Paste a UI screenshot* + `Recreate this as HTML, rebranded for <my company>` | Image understanding |
 | 10 | *Press `Esc` twice* | [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
@@ -162,10 +162,10 @@ We've done everything Jordan asked for. Let's tie it all together.
 Switching gears — Claude can also understand images. Take a screenshot of any app interface you use daily — a dashboard, an internal tool, a settings page — and paste it into Claude Code.
 
 ```
-Recreate this interface as a self-contained HTML file. Make it look as close to the original as possible. Save it as src/generated-mockup.html
+Recreate this interface as a self-contained HTML file. Make it look as close to the original, but rebrand it with the theme of <my company> (search online for references). Save it as src/generated-mockup.html
 ```
 
-> **Observe:** Claude **reads the screenshot**, understands the layout, colors, and components, then generates a working HTML mockup. Open `src/generated-mockup.html` in a browser — a functional visual replica, built in seconds.
+> **Observe:** Claude **reads the screenshot**, understands the layout, colors, and components, searches for the company's branding online, then generates a working HTML mockup rebranded with their colors and style. Open `src/generated-mockup.html` in a browser — a rebranded visual replica, built in seconds.
 
 ---
 
