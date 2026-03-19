@@ -23,11 +23,12 @@
 
 ## Prerequisites
 
+> **First time?** Follow the [Setup Guide](../../SETUP.md) to install Claude Code, Databricks CLI, and MCP.
+
 1. Terminal open in `demos/data-engineering/`
-2. `claude mcp list` — all servers connected
-3. **Verify your Databricks MCP (`uc-function-mcp`) is configured to the correct workspace/profile** — ask Claude to confirm
-4. Databricks workspace open in browser
-5. Fresh session: start `claude`, then type `/clear`
+2. `claude mcp list` — Databricks and GitHub servers connected
+3. Databricks workspace open in browser
+4. Fresh session: start `claude`, then type `/clear`
 
 ---
 

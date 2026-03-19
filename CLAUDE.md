@@ -14,6 +14,7 @@ This repository contains materials for training and hackathon sessions demonstra
 databricks-claude-code-hackathon/
 ├── CLAUDE.md                    # This file - project memory
 ├── README.md                    # Quick start guide
+├── SETUP.md                     # Installation guide (Claude Code + Databricks CLI + MCP)
 ├── demos/                       # Demo templates (code generated live)
 │   ├── data-engineering/        # DABs + PySpark + DLT demo
 │   │   ├── CLAUDE.md            # Project context for Claude

@@ -26,9 +26,10 @@
 
 ## Prerequisites
 
+> **First time?** Follow [Step 1 of the Setup Guide](../../SETUP.md) to install Claude Code. That's the only requirement.
+
 1. Terminal open in `demos/productivity/`
-2. Claude Code installed
-3. That's it. No MCP, no cloud, no tokens.
+2. Claude Code installed — no MCP, no cloud, no tokens
 
 ---
 

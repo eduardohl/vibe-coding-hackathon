@@ -25,12 +25,13 @@
 
 ## Prerequisites
 
+> **First time?** Follow the [Setup Guide](../../SETUP.md) to install Claude Code, Databricks CLI, and MCP.
+
 1. Terminal open in `demos/software-engineering/`
-2. `claude mcp list` — all servers connected
-3. **Verify Databricks MCP** — run `databricks auth env --profile {profile_name}` to confirm
-4. Node.js 18+ installed (`node --version`)
-5. Databricks workspace open in browser
-6. Fresh session: start `claude`, then type `/clear`
+2. `claude mcp list` — Databricks and GitHub servers connected
+3. Node.js 18+ installed (`node --version`)
+4. Databricks workspace open in browser
+5. Fresh session: start `claude`, then type `/clear`
 
 ---
 

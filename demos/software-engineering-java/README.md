@@ -24,11 +24,12 @@
 
 ## Prerequisites
 
+> **First time?** Follow the [Setup Guide](../../SETUP.md) to install Claude Code (Java and Maven are the only other requirements).
+
 1. Terminal open in `demos/software-engineering-java/`
 2. Java 17+ installed (`java --version`)
 3. Maven 3.8+ installed (`mvn --version`)
 4. Fresh session: start `claude`, then type `/clear`
-5. **No MCP, no cloud, no tokens required**
 
 ---
 
