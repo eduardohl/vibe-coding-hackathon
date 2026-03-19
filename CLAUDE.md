@@ -235,6 +235,7 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 7. **Security Audit** - Delegate to security-auditor subagent
 8. **Deploy** - /deploy-app skill
 9. **Commit & Checkpoints** - Git + Esc+Esc to rewind
+10. **UI Testing** - Claude navigates the app in Chrome and finds bugs
 
 ### Software Engineering Demo — Java (~40 min)
 

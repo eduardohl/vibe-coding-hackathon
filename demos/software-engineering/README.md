@@ -20,6 +20,7 @@
 | 7 | `Delegate to the security-auditor agent to check for vulnerabilities` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | 8 | `/deploy-app` | [Skills](https://code.claude.com/docs/en/skills) |
 | 9 | `Commit and push these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 10 | `Open the deployed app in Chrome and test it for bugs` | [MCP](https://code.claude.com/docs/en/mcp) (Chrome DevTools) |
 
 ---
 
@@ -174,6 +175,18 @@ Add a dark mode toggle to the React app
 Press **`Esc` twice** to open the checkpoint menu.
 
 > **Observe:** [Checkpoints](https://code.claude.com/docs/en/overview) snapshot before every edit. Roll back instantly. Bonus: `/compact` to summarize a long conversation.
+
+---
+
+### Step 10: Automated UI Testing via Chrome
+
+> **Prereq:** The presenter has connected a Chrome DevTools MCP server on the side. No setup needed from participants.
+
+```
+Open the deployed app in Chrome and test it for bugs. Click through every page, try the CRUD operations, and check the console for errors.
+```
+
+> **Observe:** Claude autonomously navigates the app in Chrome — clicking buttons, filling forms, reading console logs, and reporting bugs. It's doing manual QA without a human. That's [MCP](https://code.claude.com/docs/en/mcp) connecting Claude to a real browser.
 
 ---
 
