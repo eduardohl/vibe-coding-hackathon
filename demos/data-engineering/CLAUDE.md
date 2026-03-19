@@ -10,7 +10,7 @@ It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables 
 - Auto-triggered skills (data quality, demo data setup)
 - Specialized subagents (optimizer, debugger, code reviewer)
 - Hooks for automatic code formatting
-- MCP integrations (Databricks via uc-function-mcp, GitHub, Obsidian, Brave Search, Context7, Memory)
+- MCP integrations (Databricks via uc-function-mcp, Obsidian, Brave Search, Context7, Memory)
 
 ## Rules
 
@@ -109,7 +109,6 @@ Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 | Server | Capabilities |
 |--------|-------------|
 | **uc-function-mcp** | Query Databricks tables via SQL, explore schemas |
-| **github** | Create PRs, issues, manage repositories |
 
 **Optional (nice-to-have):**
 

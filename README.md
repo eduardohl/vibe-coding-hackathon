@@ -189,7 +189,7 @@ This creates:
 By the end of this hackathon, participants will:
 
 1. **Understand Vibe Coding** — Effectively prompt and collaborate with Claude Code
-2. **Use MCP Integrations** — Connect Claude to Databricks, GitHub, and documentation tools
+2. **Use MCP Integrations** — Connect Claude to Databricks and documentation tools
 3. **Master Claude Code Features** — Skills, subagents, hooks, MCP, and CLAUDE.md
 4. **Build Working Solutions** — Complete a data engineering or data science challenge
 5. **Share Learnings** — Demo and discuss approaches (focus on learning, not competition)
@@ -204,7 +204,7 @@ By the end of this hackathon, participants will:
 | **Skills** | `.claude/skills/` | User-invocable (`/deploy`, `/train`) and auto-triggered ("setup demo data") |
 | **Agents** | `.claude/agents/` | Specialized subagents for complex tasks |
 | **Hooks** | `.claude/settings.json` | Auto-run on events (e.g., format on save) |
-| **MCP Servers** | External | Required: Databricks, GitHub. Optional: confluence, context7, brave-search, memory, obsidian |
+| **MCP Servers** | External | Required: Databricks. Optional: confluence, context7, brave-search, memory, obsidian |
 
 ---
 

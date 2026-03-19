@@ -14,7 +14,7 @@ Build a **Supply Chain Inventory** app using React + Express.js + Lakebase, then
 - Auto-triggered skills (API testing, demo data setup)
 - Specialized subagents (code reviewer, security auditor, API debugger)
 - Hooks for automatic code formatting (Prettier + ESLint)
-- MCP integrations (Databricks via uc-function-mcp, GitHub, Context7, Memory)
+- MCP integrations (Databricks via uc-function-mcp, Context7, Memory)
 
 ## Rules
 
@@ -80,7 +80,6 @@ Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 | Server | Capabilities |
 |--------|-------------|
 | **uc-function-mcp** | Query Databricks tables via SQL |
-| **github** | Create PRs, issues |
 | **context7** | Library documentation (optional) |
 | **memory** | Persist facts across sessions (optional) |
 

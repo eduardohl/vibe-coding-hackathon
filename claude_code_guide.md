@@ -125,7 +125,6 @@ Live connections to external tools. Claude calls them automatically when it need
 | Server | Purpose | Example |
 |--------|---------|---------|
 | **uc-function-mcp** | Query Databricks via SQL | "Show me the schema of orders" |
-| **github** | PRs, issues, repos | "Create a PR for these changes" |
 | **context7** | Up-to-date library docs | "Show me XGBoost early stopping docs" |
 | **memory** | Persist facts across sessions | "Remember the best hyperparameters" |
 | **brave-search** | Web search | "Search for Spark partition pruning tips" |

@@ -28,7 +28,7 @@
 > **First time?** Follow the [Setup Guide](../../SETUP.md) to install Claude Code, Databricks CLI, and MCP.
 
 1. Terminal open in `demos/data-science/`
-2. `claude mcp list` — Databricks and GitHub servers connected
+2. `claude mcp list` — Databricks MCP server connected
 3. Databricks workspace open in browser (MLflow UI ready)
 4. Fresh session: start `claude`, then type `/clear`
 
@@ -59,7 +59,7 @@ Then: `Setup demo data in my catalog and schema`
 What MCP servers do you have access to?
 ```
 
-> **Observe:** These are live tool connections — Databricks, GitHub, docs, and more. No API code needed.
+> **Observe:** These are live tool connections — Databricks, docs, and more. No API code needed.
 
 ---
 
@@ -196,6 +196,6 @@ After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.
 | [CLAUDE.md](https://code.claude.com/docs/en/memory) — project context | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
 | [Skills](https://code.claude.com/docs/en/skills) — `/train`, `/evaluate`, `/tune`, `/create-pr` | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
 | [Subagents](https://code.claude.com/docs/en/sub-agents) — feature engineer, model evaluator, experiment analyzer | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) — Databricks, GitHub, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [MCP](https://code.claude.com/docs/en/mcp) — Databricks, search, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
 | [Hooks](https://code.claude.com/docs/en/hooks) — auto-format with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
 | [Checkpoints](https://code.claude.com/docs/en/overview) — `Esc+Esc` to rewind | Built-in | [Overview](https://code.claude.com/docs/en/overview) |

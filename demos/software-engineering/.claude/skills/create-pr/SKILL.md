@@ -32,8 +32,8 @@ Create a pull request for the changes made in this session.
    - Create a feature branch if not already on one
    - Push with: `git push -u origin {branch}`
 
-6. **Create PR** via GitHub MCP
-   - Use the GitHub MCP to create the PR
+6. **Create PR** via `gh` CLI
+   - Use `gh pr create` to create the PR
    - Include:
      - Clear title summarizing the change
      - Description with context

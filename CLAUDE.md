@@ -164,7 +164,6 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 | Server | Purpose | Example Use |
 |--------|---------|-------------|
 | **uc-function-mcp** | Query Databricks via SQL | "Show me tables in catalog.schema" |
-| **github** | Create PRs, issues | "Create a PR for my changes" |
 
 **Optional (nice-to-have):**
 

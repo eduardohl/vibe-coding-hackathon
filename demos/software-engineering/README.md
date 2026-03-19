@@ -28,7 +28,7 @@
 > **First time?** Follow the [Setup Guide](../../SETUP.md) to install Claude Code, Databricks CLI, and MCP.
 
 1. Terminal open in `demos/software-engineering/`
-2. `claude mcp list` — Databricks and GitHub servers connected
+2. `claude mcp list` — Databricks MCP server connected
 3. Node.js 18+ installed (`node --version`)
 4. Databricks workspace open in browser
 5. Fresh session: start `claude`, then type `/clear`
@@ -65,7 +65,7 @@ Setup demo data in my catalog and schema
 What MCP servers do you have access to? Then show me the products table schema and 5 sample rows from {catalog}.{schema}.products
 ```
 
-> **Observe:** Live tool connections to Databricks, GitHub, and more — no API code needed. That's your *live* workspace queried via [MCP](https://code.claude.com/docs/en/mcp).
+> **Observe:** Live tool connections to Databricks and more — no API code needed. That's your *live* workspace queried via [MCP](https://code.claude.com/docs/en/mcp).
 
 ---
 
@@ -188,6 +188,6 @@ Press **`Esc` twice** to open the checkpoint menu.
 | [CLAUDE.md](https://code.claude.com/docs/en/memory) | Project context, auto-loaded | `CLAUDE.md` | [Memory](https://code.claude.com/docs/en/memory) |
 | [Skills](https://code.claude.com/docs/en/skills) | `/deploy-app`, `/run-tests`, SupplyTrackSDK docs, API testing | `.claude/skills/` | [Skills](https://code.claude.com/docs/en/skills) |
 | [Subagents](https://code.claude.com/docs/en/sub-agents) | Code reviewer, API debugger, security auditor | `.claude/agents/` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, GitHub, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
+| [MCP](https://code.claude.com/docs/en/mcp) | Databricks, docs | Connected servers | [MCP](https://code.claude.com/docs/en/mcp) |
 | [Hooks](https://code.claude.com/docs/en/hooks) | Auto-format JS/TS with Prettier, Python with Ruff | `.claude/settings.json` | [Hooks](https://code.claude.com/docs/en/hooks) |
 | [Checkpoints](https://code.claude.com/docs/en/overview) | `Esc+Esc` to rewind changes | Built-in | [Overview](https://code.claude.com/docs/en/overview) |

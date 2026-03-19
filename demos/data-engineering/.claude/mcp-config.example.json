@@ -15,15 +15,6 @@
       "description": "Query Unity Catalog, run SQL, manage jobs"
     },
 
-    "github": {
-      "command": "github-mcp",
-      "args": [],
-      "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      },
-      "description": "Create PRs, manage repos, track issues"
-    },
-
     "_optional": "--- Optional (nice-to-have) ---",
 
     "confluence": {
@@ -75,11 +66,6 @@
       "2. Configure authentication: databricks configure",
       "3. The managed MCP uses your Databricks CLI auth automatically"
     ],
-    "github": [
-      "1. Create a Personal Access Token (PAT) in GitHub Settings",
-      "2. Grant: repo (Full control of private repositories)",
-      "3. Set GITHUB_TOKEN environment variable"
-    ],
     "confluence": [
       "1. Create an API token at https://id.atlassian.com/manage/api-tokens",
       "2. Set CONFLUENCE_API_TOKEN environment variable",
@@ -92,10 +78,6 @@
       "List tables: 'Show me all tables in my_catalog.grocery'",
       "Query data: 'Query the top 10 products by order count'",
       "Check job: 'What's the status of my last job run?'"
-    ],
-    "github": [
-      "Create PR: 'Create a pull request for my changes'",
-      "Create issue: 'Create an issue for adding data quality checks'"
     ],
     "confluence": [
       "Document: 'Create a Confluence page documenting my pipeline'",

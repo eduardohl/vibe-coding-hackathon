@@ -23,7 +23,6 @@ Databricks permissions required for workshop participants across all five demo t
 
 - Personal Access Token (PAT) or OAuth — for Databricks CLI and MCP
 - Databricks CLI installed and configured
-- GitHub PAT with `repo` scope — for PR workflows via MCP
 
 ## Recommended Setup
 

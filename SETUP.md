@@ -118,20 +118,7 @@ Replace `YOUR_CATALOG.YOUR_SCHEMA` with your actual catalog and schema.
 
 ---
 
-## Step 5: Add GitHub MCP (optional, for PR workflows)
-
-```bash
-claude mcp add github -- npx -y @modelcontextprotocol/server-github
-```
-
-Set your GitHub token:
-```bash
-export GITHUB_TOKEN=ghp_your_token_here
-```
-
----
-
-## Step 6: Install Ruff (for auto-formatting hooks)
+## Step 5: Install Ruff (for auto-formatting hooks)
 
 The demos auto-format Python files using [Ruff](https://docs.astral.sh/ruff/).
 
