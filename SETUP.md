@@ -95,13 +95,13 @@ claude mcp add uc-function-mcp \
   --header "Authorization: Bearer $(databricks auth token --host https://YOUR-WORKSPACE.cloud.databricks.com | jq -r .access_token)"
 ```
 
-> **Note:** The OAuth token auto-refreshes via the Databricks CLI. If the token expires during a long session, re-run the command above.
+> **Note:** The Bearer token expires after ~1 hour. For long sessions, re-run the `claude mcp add` command above to refresh it. For a more durable setup, consider configuring [OAuth client authentication](https://docs.databricks.com/en/generative-ai/mcp/connect-external-services.html).
 
-### Option B: Community MCP via uv (auto-refreshing auth)
+### Option B: Community MCP via uv (deprecated)
 
-[Full docs](https://github.com/databrickslabs/mcp)
+> **Note:** The `databrickslabs/mcp` package is deprecated. Databricks now recommends the Managed MCP approach (Option A). This option is kept for reference only.
 
-This runs locally and automatically uses your Databricks CLI OAuth credentials — no token management.
+[GitHub repo](https://github.com/databrickslabs/mcp)
 
 **Install uv first:**
 
@@ -118,21 +118,24 @@ Replace `YOUR_CATALOG.YOUR_SCHEMA` with your actual catalog and schema.
 
 ---
 
-## Step 5: Install Ruff (for auto-formatting hooks)
+## Step 5: Install Formatters (for auto-formatting hooks)
 
-The demos auto-format Python files using [Ruff](https://docs.astral.sh/ruff/).
+The demos auto-format code on every write using hooks.
+
+### Ruff (Python — used by DE, DS, SE, Productivity demos)
+
+**Mac:** `brew install ruff` | **Windows:** `pip install ruff` | **Verify:** `ruff --version`
+
+### google-java-format (Java — used by Java SE demo only)
 
 **Mac:**
 ```bash
-brew install ruff
+brew install google-java-format
 ```
 
-**Windows:**
-```powershell
-pip install ruff
-```
+**Windows:** Download from [GitHub releases](https://github.com/google/google-java-format/releases) and add to PATH.
 
-**Verify:** `ruff --version`
+**Verify:** `google-java-format --version`
 
 ---
 
@@ -180,7 +183,7 @@ If Claude returns your table listing, you're ready for the workshop.
 Pick your demo track and follow the README:
 
 - [Productivity Demo](demos/productivity/README.md) — no Databricks needed, best first demo
-- [Data Engineering Demo](demos/data-engineering/README.md) — DABs + PySpark + DLT
+- [Data Engineering Demo](demos/data-engineering/README.md) — DABs + PySpark + Lakeflow Pipelines
 - [Data Science Demo](demos/data-science/README.md) — MLflow + XGBoost
 - [Software Engineering Demo (Node.js)](demos/software-engineering/README.md) — React + Express + Lakebase
 - [Software Engineering Demo (Java)](demos/software-engineering-java/README.md) — Spring Boot + JUnit 5, no cloud

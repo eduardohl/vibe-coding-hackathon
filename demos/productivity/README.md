@@ -30,6 +30,7 @@
 
 1. Terminal open in `demos/productivity/`
 2. Claude Code installed — no MCP, no cloud, no tokens
+3. Fresh session: start `claude`, then type `/clear`
 
 ---
 

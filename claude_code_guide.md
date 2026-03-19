@@ -13,7 +13,7 @@
 | [Subagents](#subagents) | **Manual** — "delegate to..." | **Zero** — isolated context | Spark optimizer reviews PySpark code | [Docs](https://code.claude.com/docs/en/sub-agents) |
 | [MCP Servers](#mcp-servers) | **Auto** — Claude calls as needed | **Medium** — tool defs per turn | Query Unity Catalog via SQL | [Docs](https://code.claude.com/docs/en/mcp) |
 | [Hooks](#hooks) | **Auto** — fires on events | **Zero** — shell commands | Ruff format on every `.py` write | [Docs](https://code.claude.com/docs/en/hooks) |
-| [Checkpoints](#checkpoints) | **Manual** — `Esc + Esc` | **Zero** — git refs | Rewind a failed DLT experiment | [Docs](https://code.claude.com/docs/en/checkpointing) |
+| [Checkpoints](#checkpoints) | **Manual** — `Esc + Esc` | **Zero** — git refs | Rewind a failed experiment | [Docs](https://code.claude.com/docs/en/checkpointing) |
 | [Headless / CLI](#headless-mode) | **Manual** — `claude -p "..."` | **N/A** — separate invocation | Pipe job output for analysis | [Docs](https://code.claude.com/docs/en/cli-reference) |
 
 > **Context cost** = how much of Claude's context window a feature consumes. Keep CLAUDE.md lean; prefer low/zero-cost features for heavy content.
@@ -34,7 +34,7 @@ Markdown file auto-loaded into every conversation. Gives Claude persistent proje
 ```
 
 - Lives at project root (subdirectory CLAUDE.md files merge hierarchically)
-- Keep under 500 lines — everything here costs context on every turn
+- Keep under 200 lines — everything here costs context on every turn
 - Put stable facts here (catalog, schema, conventions), not session-specific notes
 - See also: [Auto Memory](https://code.claude.com/docs/en/memory) — Claude automatically persists learnings in `~/.claude/projects/` across sessions
 
@@ -70,7 +70,7 @@ Skills replace the old "slash commands" (`.claude/commands/`). A skill is a dire
 ```yaml
 ---
 name: deploy
-description: Deploy the DABs bundle to Databricks
+description: Deploy the bundle to Databricks
 # Optional:
 user-invocable: true          # show in /menu (default: true)
 disable-model-invocation: true # only user can trigger (default: false)
@@ -142,15 +142,17 @@ Shell commands that fire automatically on lifecycle events. Deterministic automa
 
 **Where they live:** `.claude/settings.json`
 
-**Key events:**
+**Key events** (22 total — [full list](https://code.claude.com/docs/en/hooks)):
 
 | Event | When | Can Block? |
 |-------|------|-----------|
-| `PreToolUse` | Before tool execution | Yes (exit non-zero) |
-| `PostToolUse` | After tool succeeds | No |
+| `PreToolUse` | Before tool execution | Yes (exit 2) |
+| `PostToolUse` | After tool succeeds | Yes (exit 2) |
 | `UserPromptSubmit` | User submits prompt | Yes (exit 2) |
 | `Stop` | Claude finishes responding | Yes (exit 2) |
 | `SessionStart` | New session / resume / clear | No |
+| `SubagentStop` | Subagent finishes | No |
+| `Notification` | Claude wants to notify user | No |
 
 **This repo uses:**
 

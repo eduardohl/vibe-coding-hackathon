@@ -2,8 +2,8 @@
 
 ## Overview
 
-This is a Databricks Asset Bundles (DABs) project for the Vibe Coding Hackathon.
-It demonstrates ETL job creation using both Lakeflow Jobs and Delta Live Tables (DLT).
+This is a Declarative Automation Bundles (DABs) project for the Vibe Coding Hackathon.
+It demonstrates ETL job creation using both Lakeflow Jobs and Lakeflow Declarative Pipelines (formerly DLT).
 
 **This demo showcases Claude Code features including:**
 - Custom skills (`/deploy`, `/run-job`, `/validate-data`, `/create-pr`)
@@ -155,7 +155,7 @@ Verify with `claude mcp list`. See `.claude/mcp-config.example.json` for setup.
 
 ---
 
-## DABs Commands
+## Bundle Commands
 
 ```bash
 # Validate bundle configuration

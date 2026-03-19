@@ -1,9 +1,9 @@
 ---
 name: run-job
-description: Run a DABs job and monitor its execution. Use when the user says "run job", "execute job", "run the pipeline", or wants to trigger a Databricks job.
+description: Run a bundle job and monitor its execution. Use when the user says "run job", "execute job", "run the pipeline", or wants to trigger a Databricks job.
 ---
 
-# Run DABs Job
+# Run Bundle Job
 
 Execute a Databricks job defined in this bundle and monitor its progress.
 

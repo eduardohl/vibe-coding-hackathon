@@ -37,8 +37,8 @@ A practical workshop teaching AI-assisted development with Claude Code and Datab
 
 **Data Engineering**: Build an Automated Product Reorder Alert Pipeline
 - Create ETL jobs with PySpark
-- Deploy with Databricks Asset Bundles (DABs)
-- Use Delta Live Tables for streaming
+- Deploy with Declarative Automation Bundles (DABs)
+- Use Lakeflow Declarative Pipelines for streaming
 - Orchestrate with Lakeflow Jobs
 
 **Data Science**: Build a Demand Forecasting Model
@@ -70,9 +70,11 @@ A practical workshop teaching AI-assisted development with Claude Code and Datab
 databricks-claude-code-hackathon/
 ├── README.md              # This file
 ├── CLAUDE.md              # Project context for Claude Code
+├── SETUP.md               # Workshop setup guide (Mac + Windows)
 ├── claude_code_guide.md   # Claude Code features reference
+├── workshop-permissions.md # Required Databricks permissions
 └── demos/                 # Reference implementations
-    ├── data-engineering/  # DABs + PySpark + DLT demo
+    ├── data-engineering/  # DABs + PySpark + Lakeflow Pipelines demo
     │   ├── CLAUDE.md      # Project-specific context
     │   ├── README.md      # Live demo script
     │   ├── .claude/       # Skills, agents, hooks

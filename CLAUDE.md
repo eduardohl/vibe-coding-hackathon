@@ -16,7 +16,7 @@ databricks-claude-code-hackathon/
 ├── README.md                    # Quick start guide
 ├── SETUP.md                     # Installation guide (Claude Code + Databricks CLI + MCP)
 ├── demos/                       # Demo templates (code generated live)
-│   ├── data-engineering/        # DABs + PySpark + DLT demo
+│   ├── data-engineering/        # DABs + PySpark + Lakeflow Declarative Pipelines demo
 │   │   ├── CLAUDE.md            # Project context for Claude
 │   │   ├── README.md            # Live demo script
 │   │   ├── .claude/             # Skills, agents, hooks
@@ -56,9 +56,9 @@ databricks-claude-code-hackathon/
 
 | Component | Technology |
 |-----------|------------|
-| Project Structure | Databricks Asset Bundles (DABs) |
+| Project Structure | Declarative Automation Bundles (DABs) |
 | ETL Jobs | PySpark |
-| Streaming/CDC | Delta Live Tables (DLT) |
+| Streaming/CDC | Lakeflow Declarative Pipelines (DLT) |
 | Data Catalog | Unity Catalog |
 | Orchestration | Lakeflow Jobs |
 
@@ -200,7 +200,7 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 0. **Setup Demo Data** - "Setup demo data in {catalog}.{schema}"
 1. **Verify MCP** - "What MCP servers do you have access to?"
 2. **Explore Data** - "Show me what tables are in {catalog}.{schema}"
-3. **Create ETL Pipelines** - PySpark batch + DLT side by side
+3. **Create ETL Pipelines** - PySpark batch + Lakeflow Declarative Pipelines side by side
 4. **Optimize** - Delegate to spark-optimizer subagent
 5. **Look Up Docs** - "Using context7, show me Delta Lake MERGE docs"
 6. **Deploy & Run** - Deploy bundle and run the job

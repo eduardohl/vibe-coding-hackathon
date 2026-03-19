@@ -28,7 +28,8 @@ Build the React frontend and deploy the full-stack app to Databricks Apps.
 5. **Deploy** to Databricks Apps
    - Check if the app already exists: `databricks apps get {app_name}`
    - If it doesn't exist, create it: `databricks apps create --name {app_name}`
-   - Deploy: `databricks apps deploy {app_name} --source-code-path ./`
+   - Sync local files to workspace: `databricks sync . /Workspace/Users/{user_email}/{app_name}`
+   - Deploy: `databricks apps deploy {app_name} --source-code-path /Workspace/Users/{user_email}/{app_name}`
 
 6. **Verify** deployment
    - Check app status: `databricks apps get {app_name}`

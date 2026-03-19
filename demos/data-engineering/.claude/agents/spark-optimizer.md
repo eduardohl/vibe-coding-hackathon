@@ -40,7 +40,7 @@ You are a Spark performance optimization specialist. Your role is to analyze PyS
 
 **Low Priority Issues:**
 - Verbose code → Simplify chains
-- Missing caching → Cache reused DataFrames
+- Redundant recomputation → Restructure DAG to avoid repeating transformations (note: `.cache()`/`.persist()` are NOT supported on serverless compute)
 
 ### 3. Check Spark Configuration
 

@@ -1,9 +1,9 @@
 ---
 name: deploy
-description: Deploy the DABs bundle to a target environment. Use when the user says "deploy", "deploy bundle", "push to databricks", or wants to deploy code.
+description: Deploy the bundle to a target environment. Use when the user says "deploy", "deploy bundle", "push to databricks", or wants to deploy code.
 ---
 
-# Deploy DABs Bundle
+# Deploy Bundle
 
 Deploy this Databricks Asset Bundle to the specified target.
 

@@ -1,6 +1,6 @@
 # Demo: Data Engineering with Claude Code
 
-> **45 min** | PySpark + DLT + Lakeflow Jobs | [Full Claude Code Docs](https://code.claude.com/docs/en/overview)
+> **45 min** | PySpark + Lakeflow Declarative Pipelines + Lakeflow Jobs | [Full Claude Code Docs](https://code.claude.com/docs/en/overview)
 
 ---
 
@@ -87,7 +87,7 @@ Create TWO versions of an ETL pipeline that:
 
 Create both:
 1. A traditional PySpark batch job
-2. A Delta Live Tables (DLT/SDP) pipeline
+2. A Lakeflow Declarative Pipeline
 
 Include a databricks.yml bundle config so we can deploy this using DABs.
 Use the project structure in this directory.
@@ -156,7 +156,7 @@ Commit and push these changes
 ### Step 9: Safe Experimentation with Checkpoints
 
 ```
-Let me try adding a gold layer aggregation to the DLT pipeline
+Let me try adding a gold layer aggregation to the Lakeflow pipeline
 ```
 
 After Claude makes changes, press **`Esc` twice** to open the checkpoint menu.

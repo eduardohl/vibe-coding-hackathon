@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Specialized agent for reviewing PySpark and DABs code
+description: Specialized agent for reviewing PySpark and Databricks bundle code
 ---
 
 # Code Reviewer Agent
