@@ -155,7 +155,7 @@ Delegate to the code-reviewer and security-auditor agents in the background. The
 > **Prereq:** The presenter has connected a Chrome DevTools MCP server on the side. No setup needed from participants.
 
 ```
-Open the deployed app in Chrome and test it for bugs. Click through every page, try the CRUD operations, and check the console for errors. If you find any bugs, fix them and update the tests.
+Open the deployed app in Chrome and test it for bugs. Click through every page, try the CRUD operations, and check the console for errors. Also check the Databricks Apps logs to verify everything is working on the backend. If you find any bugs, fix the app, redeploy, and update the tests.
 ```
 
 > **Observe:** Claude autonomously navigates the app in Chrome — clicking buttons, filling forms, reading console logs, and reporting bugs. It's doing manual QA without a human. That's [MCP](https://code.claude.com/docs/en/mcp) connecting Claude to a real browser.
