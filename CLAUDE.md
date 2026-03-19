@@ -246,7 +246,8 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 4. **Run Tests** - /run-tests skill
 5. **Code Review** - Delegate to code-reviewer subagent
 6. **Security Audit** - Delegate to security-auditor subagent
-7. **Commit & Checkpoints** - Git + Esc+Esc to rewind
+7. **Run & Self-Heal** - Start server, curl every endpoint, fix bugs autonomously
+8. **Commit & Checkpoints** - Git + Esc+Esc to rewind
 
 ### Productivity Demo (~30 min)
 

@@ -18,7 +18,8 @@
 | 5 | `/run-tests` | [Skills](https://code.claude.com/docs/en/skills) |
 | 6 | `Delegate to the code-reviewer agent to review my code` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
 | 7 | `Delegate to the security-auditor agent to check for vulnerabilities` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
-| 8 | `Commit these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
+| 8 | `Start the app locally and test every endpoint with curl...` | Self-healing loop |
+| 9 | `Commit these changes` / *Press `Esc` twice* | Git + [Checkpoints](https://code.claude.com/docs/en/overview) |
 
 ---
 
@@ -137,7 +138,42 @@ Delegate to the security-auditor agent to check my API for vulnerabilities
 
 ---
 
-### Step 8: Commit & Checkpoints
+### Step 8: Run Locally & Self-Heal
+
+```
+Start the app locally with mvn spring-boot:run, then test every endpoint with curl — list all supplies, get one by SKU, create a new supply, update it, delete it, reserve stock, and check warehouse capacity. If any request fails or returns an unexpected result, fix the bug and update the tests. Keep going until everything works.
+```
+
+> **Observe:** Claude starts the server, fires curl requests against every endpoint, reads the responses, and when something breaks — fixes the code, reruns the tests, and retries. This is the **self-healing loop**: test → find bug → fix → retest, all autonomously.
+
+**Try it yourself** — while the server is still running, open a second terminal:
+
+```bash
+# List all supplies
+curl -s http://localhost:8080/api/supplies | python3 -m json.tool
+
+# Get one by SKU
+curl -s http://localhost:8080/api/supplies/PPE-001 | python3 -m json.tool
+
+# Create a new supply
+curl -s -X POST http://localhost:8080/api/supplies \
+  -H "Content-Type: application/json" \
+  -d '{"sku":"TEST-001","name":"Test Item","category":"PPE","stockLevel":100,"reorderPoint":10}' \
+  | python3 -m json.tool
+
+# Reserve stock
+curl -s -X POST http://localhost:8080/api/supplies/PPE-001/reserve \
+  -H "Content-Type: application/json" \
+  -d '{"quantity":5}' \
+  | python3 -m json.tool
+
+# Check warehouse capacity
+curl -s http://localhost:8080/api/warehouses/capacity | python3 -m json.tool
+```
+
+---
+
+### Step 9: Commit & Checkpoints
 
 ```
 Commit these changes with a meaningful message
