@@ -6,14 +6,26 @@
       "Bash(npx *)",
       "Bash(databricks apps *)",
       "Bash(databricks bundle *)",
+      "Bash(databricks workspace *)",
+      "Bash(databricks api *)",
+      "Bash(databricks current-user *)",
       "Bash(git *)",
       "Bash(ruff *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(rm -rf /tmp/*)",
+      "Bash(sleep *)",
+      "Bash(ls *)",
+      "Bash(echo *)",
+      "Bash(curl *)",
       "Read",
       "Write",
       "Edit"
     ],
     "deny": [
-      "Bash(rm -rf *)",
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~*)",
+      "Bash(rm -rf /*)",
       "Bash(npm publish *)"
     ]
   },
