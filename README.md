@@ -236,8 +236,8 @@ By the end of this hackathon, participants will:
 | Permission denied | Check Unity Catalog grants on tables |
 | Missing Python libraries | Add `%pip install xgboost scikit-learn matplotlib seaborn` + `dbutils.library.restartPython()` at notebook start |
 | Job fails on serverless | Ensure library installation cells are at the top of notebook |
-| App deploy fails | Check `app.yaml` configuration and Databricks Apps enablement |
-| Lakebase connection error | Verify Lakebase resource in app.yaml and env vars |
+| App deploy fails | Check `app.yaml` + `databricks.yml` configuration, verify Databricks Apps is enabled |
+| Lakebase connection error | Verify Lakebase resource in `databricks.yml`, ensure project exists |
 | Context too long | Use `/compact` to summarize conversation |
 
 ---

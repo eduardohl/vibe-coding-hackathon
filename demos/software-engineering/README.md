@@ -71,10 +71,10 @@ What MCP servers do you have access to? Then show me the products table schema a
 Read the conversation in src/conversation.md — Jordan and Priya are discussing an inventory tracker app. Build exactly what they describe:
 - Create a Lakebase database for the app
 - Express.js backend with plain HTML frontend (no React, no build step)
-- Connects to Lakebase via DATABASE_URL env var (configured in app.yaml)
+- Connects to Lakebase via PG* env vars (auto-set when Lakebase resource is bound)
 - CRUD for supplies, low-stock badges, the works
 - Use the products data from {catalog}.{schema}
-Structure as src/generated-app/ with server.js, public/ folder, package.json, and app.yaml. Don't deploy yet.
+Structure as src/generated-app/ with server.js, public/ folder, package.json, app.yaml, and databricks.yml. Don't deploy yet.
 ```
 
 > **Observe:** (1) Claude reads a casual conversation and extracts real requirements from it — this is how natural language becomes working software. (2) Each `.js` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write. (3) No build step — plain HTML means instant scaffolding.
@@ -169,8 +169,8 @@ Press **`Esc` twice** to open the checkpoint menu.
 |-------|----------|
 | MCP not connecting | `claude mcp list`, verify token and workspace URL |
 | `npm install` fails | Check Node.js version (`node --version`, need 18+) |
-| App deploy fails | Verify `app.yaml` in app root, check `databricks apps get {name}` |
-| Lakebase connection error | Check app.yaml resource config, verify Lakebase is enabled |
+| App deploy fails | Verify `app.yaml` + `databricks.yml` in app root, check `databricks apps get {name}` |
+| Lakebase connection error | Check Lakebase resource in `databricks.yml`, verify Lakebase project exists |
 | Tests fail with module errors | Run `npm install` first, check `package.json` for missing deps |
 | Prettier hook not firing | Verify `.claude/settings.json` exists and has PostToolUse hook |
 | Chrome UI test not working | Ensure Chrome DevTools MCP is connected (`claude mcp list`) |

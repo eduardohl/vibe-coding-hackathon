@@ -107,35 +107,77 @@ See `.claude/skills/supply-track-sdk/api-reference.md` for the full API.
 
 ## Lakebase (Database)
 
-The app uses Lakebase (Postgres-compatible) for persistence. It's configured as a resource in `app.yaml` and the connection string is injected via environment variable.
+The app uses Lakebase (Postgres-compatible) for persistence. Lakebase is configured as a resource in `databricks.yml` (DABs), and the platform auto-sets `PG*` environment variables (`PGHOST`, `PGPORT`, `PGDATABASE`, `PGSSLMODE`, `PGUSER`).
 
-**Create a Lakebase database before deploying:**
+**Create a Lakebase project before deploying:**
 ```bash
-databricks api post '/api/2.0/postgres/projects?project_id={db_name}' \
-  -p {profile} --json '{"display_name": "{db_name}"}'
+databricks api post '/api/2.0/postgres/projects?project_id={app_name}' \
+  -p {profile} --json '{"display_name": "{app_name}"}'
 ```
 
 > **Note:** The CLI does not have a `lakebase` subcommand. Use the REST API via `databricks api post` as shown above.
 
-**app.yaml config:**
+**app.yaml** (only `command` and `env` are valid fields — NO `resources` block):
 ```yaml
 command:
-  - "bash"
-  - "-c"
-  - "npm install --production && node server.js"
-resources:
-  - name: lakebase-db
-    type: lakebase
-    config:
-      database: {db_name}
+  - node
+  - server.js
 env:
   - name: DATABASE_URL
     valueFrom: lakebase-db
 ```
 
-> **Important:** The `command` must include `npm install --production` because `node_modules/` is NOT synced to the workspace (it's excluded by `.gitignore` and `.databricksignore`). Dependencies are installed at deploy time.
+**databricks.yml** (Lakebase resource binding goes here, not in app.yaml):
+```yaml
+bundle:
+  name: {app_name}
 
-The app should read `DATABASE_URL` from the environment and connect with `pg` (node-postgres). Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
+resources:
+  apps:
+    app:
+      name: {app_name}
+      description: "Supply Chain Inventory Management"
+      source_code_path: .
+      resources:
+        - name: lakebase-db
+          postgres:
+            branch: projects/{app_name}/branches/production
+            database: databricks_postgres
+            permission: CAN_CONNECT_AND_CREATE
+
+targets:
+  dev:
+    default: true
+```
+
+**Dependency installation:** The platform auto-runs `npm install` when it detects `package.json`. Do NOT put `npm install` in the command. Do NOT upload `node_modules/`.
+
+**Lakebase authentication in server.js:** The platform sets `PG*` vars but the password requires an OAuth token. Use the Databricks service principal credentials:
+```javascript
+import pg from 'pg';
+const { Pool } = pg;
+
+const pool = new Pool({
+  // PGHOST, PGPORT, PGDATABASE, PGSSLMODE, PGUSER are auto-set by the platform
+  password: async () => {
+    const res = await fetch(`${process.env.DATABRICKS_HOST}/oidc/v1/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: process.env.DATABRICKS_CLIENT_ID,
+        client_secret: process.env.DATABRICKS_CLIENT_SECRET,
+        scope: 'all-apis',
+      }),
+    });
+    const { access_token } = await res.json();
+    return access_token;
+  },
+  ssl: { rejectUnauthorized: false },
+});
+```
+
+Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
 
 ## Coding Standards
 
@@ -157,7 +199,8 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 - Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`, `node_modules/`)
 - Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`)
 - **No build step** — the app runs directly with `node server.js`
-- **Port:** The Express server MUST listen on `process.env.PORT || 8080` — Databricks Apps injects the `PORT` env var at runtime
+- **Port:** The Express server MUST listen on `process.env.PORT || 8000` and bind to `0.0.0.0` — Databricks Apps injects the `PORT` env var at runtime
+- **Dependencies:** The platform auto-runs `npm install` from `package.json` during deployment. Do NOT upload `node_modules/` or put `npm install` in the app.yaml command
 
 ### App Structure (keep it minimal)
 
@@ -168,9 +211,9 @@ src/generated-app/
 │   ├── index.html      # Single page — table, form, status bar
 │   └── style.css       # Simple clean CSS
 ├── package.json        # express, pg, helmet, cors (minimal deps)
-├── app.yaml            # Databricks Apps config + Lakebase binding
-├── .databricksignore   # Exclude .git, __tests__, .env
-└── .gitignore          # Exclude node_modules, .env
+├── app.yaml            # Databricks Apps runtime config (command + env only)
+├── databricks.yml      # DABs bundle config (app resource + Lakebase binding)
+└── .gitignore          # Exclude node_modules, .env, .bundle
 ```
 
 **Key:** The entire app is ~3 files of logic (server.js, index.html, style.css). No bundler, no transpiler, no framework. This keeps scaffolding fast and deployment simple.
