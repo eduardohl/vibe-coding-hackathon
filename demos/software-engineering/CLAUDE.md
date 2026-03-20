@@ -22,8 +22,9 @@ Build a **Supply Chain Inventory** app using Express.js + Lakebase with a plain 
 - ALWAYS check `.claude/skills/` directory before implementing any task manually
 - When user mentions "setup demo data" or "test api", use the corresponding skill
 - Read the skill file and follow its instructions exactly before writing any code
-- **IMPORTANT:** When creating new files, use the `generated-` prefix (e.g., `generated-app/`)
+- **IMPORTANT:** When creating new files, use the `generated-` prefix inside `src/` (e.g., `src/generated-app/`)
 - **CRITICAL — Databricks CLI:** Always pass `-p {profile}` on every `databricks` command. The user sets their profile at the start of the session. Never use the default profile — it may point to a different workspace.
+- **SDK DEFERRAL:** When scaffolding the app from the conversation, do NOT include SupplyTrackSDK integration. Only build the basic CRUD app with low-stock badges. The SDK (reserve endpoint, warehouse capacity) is added in a later step when the user explicitly asks.
 
 ## Environment
 
@@ -110,8 +111,11 @@ The app uses Lakebase (Postgres-compatible) for persistence. It's configured as 
 
 **Create a Lakebase database before deploying:**
 ```bash
-databricks lakebase databases create {db_name} -p {profile}
+databricks api post '/api/2.0/postgres/projects?project_id={db_name}' \
+  -p {profile} --json '{"display_name": "{db_name}"}'
 ```
+
+> **Note:** The CLI does not have a `lakebase` subcommand. Use the REST API via `databricks api post` as shown above.
 
 **app.yaml resource binding:**
 ```yaml
@@ -151,7 +155,7 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 ### App Structure (keep it minimal)
 
 ```
-generated-app/
+src/generated-app/
 ├── server.js           # Express server + API routes (single file)
 ├── public/             # Static frontend (served by Express)
 │   ├── index.html      # Single page — table, form, status bar

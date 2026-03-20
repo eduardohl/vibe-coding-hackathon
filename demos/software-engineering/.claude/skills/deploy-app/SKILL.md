@@ -24,7 +24,7 @@ Before anything, confirm you know these values (they should already be in CLAUDE
 ### 1. Install and test
 
 ```bash
-cd generated-app
+cd src/generated-app
 npm install
 npm test          # Stop if failures
 ```

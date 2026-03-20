@@ -74,7 +74,7 @@ Read the conversation in src/conversation.md — Jordan and Priya are discussing
 - Connects to Lakebase via DATABASE_URL env var (configured in app.yaml)
 - CRUD for supplies, low-stock badges, the works
 - Use the products data from {catalog}.{schema}
-Structure as generated-app/ with server.js, public/ folder, package.json, and app.yaml. Don't deploy yet.
+Structure as src/generated-app/ with server.js, public/ folder, package.json, and app.yaml. Don't deploy yet.
 ```
 
 > **Observe:** (1) Claude reads a casual conversation and extracts real requirements from it — this is how natural language becomes working software. (2) Each `.js` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write. (3) No build step — plain HTML means instant scaffolding.

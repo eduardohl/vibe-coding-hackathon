@@ -4,48 +4,44 @@
 
 ---
 
-**Jordan:** hey priya, got a sec?
+**Jordan:** hey priya, you around?
 
-**Priya:** sure whats up
+**Priya:** yep whats up
 
-**Jordan:** so you know how we've been tracking warehouse inventory in that shared spreadsheet?
+**Jordan:** ok so remember that giant spreadsheet we use to track warehouse inventory?
 
-**Priya:** the one that freezes every time someone opens it? lol
+**Priya:** the google sheet that takes 45 seconds to load? how could i forget
 
-**Jordan:** THAT one. yeah it's getting ridiculous. we had a situation last week where we ran out of hand sanitizer because nobody noticed the stock was low
+**Jordan:** lmao yeah that one. so last tuesday we completely ran out of hand sanitizer. like zero units. nobody caught it because the sheet was showing stale numbers from the week before
 
-**Priya:** oof. spreadsheets don't scale for this stuff
+**Priya:** yikes
 
-**Jordan:** right. could we build a quick web app? nothing fancy, just something where the team can see what we have in stock and get alerted when stuff is running low
+**Jordan:** and then marcus tried to order more but didn't realize someone else already placed an order for the same thing. so now we have 400 cases of hand sanitizer arriving next week
 
-**Priya:** totally doable. what are we tracking per item?
+**Priya:** classic spreadsheet problem. no real-time visibility, no coordination
 
-**Jordan:** basic stuff - product name, a SKU code, how many units we have, and a reorder point so we know when to buy more. oh and the category
+**Jordan:** exactly. so i'm wondering... could we throw together a simple web app? like really simple. i just need the team to be able to pull it up and see what we actually have in stock right now
 
-**Priya:** so like... a table with name, sku, quantity, reorder point, category. and flag anything where quantity is below the reorder point?
+**Priya:** yeah absolutely. what info do you need per product?
 
-**Jordan:** exactly! like a little badge that says "low stock" or "out of stock". red for out, yellow for low, green for good
+**Jordan:** uhhh let me think. the product name obviously, the sku, how many units we currently have, and then a reorder point — like a threshold where if we drop below it, the app yells at us. oh and what department or category it belongs to
 
-**Priya:** makes sense. do you need to add new items and edit existing ones too?
+**Priya:** so name, sku, quantity on hand, reorder point, and category. and you want some kind of visual indicator when quantity drops below the reorder point?
 
-**Jordan:** yeah for sure. new products come in all the time. and we need to update counts and sometimes delete discontinued stuff
+**Jordan:** yes!! like color coded. green means we're good, yellow means we're getting low, red means we're out. something you can glance at and immediately know what needs attention
 
-**Priya:** got it. full CRUD. what about that warehouse system your team uses? the SupplyTrackSDK?
+**Priya:** love it. and i'm guessing you need to be able to add new products when they come in? edit quantities?
 
-**Jordan:** oh yeah! it'd be great to see warehouse utilization somewhere. like how full the warehouse is. and the reserve function — when someone claims stock for an order we need to lock it so two people don't grab the same items
+**Jordan:** yep. and delete stuff we discontinue. the usual add/edit/delete
 
-**Priya:** so a reserve button per item and a capacity indicator at the top
+**Priya:** cool. for the database i'm thinking lakebase since we already have our product catalog in databricks. it's postgres under the hood so super easy to query from node
 
-**Jordan:** perfect. that's literally all we need. no charts, no analytics, just the list + stock status + warehouse info
+**Jordan:** perfect yeah that works
 
-**Priya:** backend wise — lakebase for the database? we already have the product data in databricks
+**Priya:** i'll keep the frontend dead simple — plain html, no fancy frameworks. one page with the inventory table, a form to add or edit items, and maybe a status bar at the top showing how many items are low or out of stock
 
-**Jordan:** yeah lakebase makes sense, it's postgres right? and keep it simple on the frontend. no need for a big framework, just a clean page that works
+**Jordan:** that's exactly what i want. oh one more thing — no login or anything. this is just for our internal warehouse team
 
-**Priya:** I'll do express with plain html. single page — table of supplies at the top, form to add/edit below, warehouse capacity in a header bar. should be quick to build
+**Priya:** done. i'll have something running today
 
-**Jordan:** no auth needed btw, it's internal only for now
-
-**Priya:** sounds good, I'll keep it lean. probably have something working in under an hour
-
-**Jordan:** that's wild. go for it!
+**Jordan:** you're a legend
