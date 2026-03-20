@@ -157,10 +157,15 @@ targets:
 import pg from 'pg';
 const { Pool } = pg;
 
+// DATABRICKS_HOST may or may not include https:// — always normalize
+const dbHost = process.env.DATABRICKS_HOST?.startsWith('http')
+  ? process.env.DATABRICKS_HOST
+  : `https://${process.env.DATABRICKS_HOST}`;
+
 const pool = new Pool({
   // PGHOST, PGPORT, PGDATABASE, PGSSLMODE, PGUSER are auto-set by the platform
   password: async () => {
-    const res = await fetch(`${process.env.DATABRICKS_HOST}/oidc/v1/token`, {
+    const res = await fetch(`${dbHost}/oidc/v1/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -174,10 +179,31 @@ const pool = new Pool({
     return access_token;
   },
   ssl: { rejectUnauthorized: false },
+  // Lakebase restricts CREATE on the public schema — use a dedicated schema
+  options: '-c search_path=inventory,public',
 });
 ```
 
-Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
+**Lakebase schema setup:** Lakebase does NOT allow `CREATE TABLE` on the default `public` schema. The app must create a dedicated schema on startup:
+```javascript
+let dbReady = false;
+async function initDb() {
+  await pool.query('CREATE SCHEMA IF NOT EXISTS inventory');
+  await pool.query('CREATE TABLE IF NOT EXISTS inventory.supplies (...)');
+  // ... seed data if empty
+  dbReady = true;
+}
+
+// Lazy init middleware — retries DB setup on first API request if startup init fails
+app.use('/api', async (req, res, next) => {
+  if (req.path === '/health') return next();
+  if (!dbReady) {
+    try { await initDb(); }
+    catch (err) { return res.status(503).json({ error: 'Database not ready: ' + err.message }); }
+  }
+  next();
+});
+```
 
 ## Coding Standards
 
@@ -196,8 +222,8 @@ Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
 - Add `GET /api/health` endpoint that checks DB connectivity
 - Validate all request bodies with explicit checks (type, required fields, length)
 - Wrap async handlers in try/catch
-- Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`, `node_modules/`)
-- Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`)
+- **NEVER use `window.confirm()`, `window.alert()`, or `window.prompt()`** in the frontend — these browser dialogs block Chrome DevTools MCP during UI testing. Use custom HTML modals instead (a simple `<div>` overlay with confirm/cancel buttons)
+- Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`, `.bundle/`)
 - **No build step** — the app runs directly with `node server.js`
 - **Port:** The Express server MUST listen on `process.env.PORT || 8000` and bind to `0.0.0.0` — Databricks Apps injects the `PORT` env var at runtime
 - **Dependencies:** The platform auto-runs `npm install` from `package.json` during deployment. Do NOT upload `node_modules/` or put `npm install` in the app.yaml command
