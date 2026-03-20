@@ -117,8 +117,12 @@ databricks api post '/api/2.0/postgres/projects?project_id={db_name}' \
 
 > **Note:** The CLI does not have a `lakebase` subcommand. Use the REST API via `databricks api post` as shown above.
 
-**app.yaml resource binding:**
+**app.yaml config:**
 ```yaml
+command:
+  - "bash"
+  - "-c"
+  - "npm install --production && node server.js"
 resources:
   - name: lakebase-db
     type: lakebase
@@ -128,6 +132,8 @@ env:
   - name: DATABASE_URL
     valueFrom: lakebase-db
 ```
+
+> **Important:** The `command` must include `npm install --production` because `node_modules/` is NOT synced to the workspace (it's excluded by `.gitignore` and `.databricksignore`). Dependencies are installed at deploy time.
 
 The app should read `DATABASE_URL` from the environment and connect with `pg` (node-postgres). Tables are created automatically on first startup (CREATE TABLE IF NOT EXISTS).
 
@@ -148,7 +154,7 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 - Add `GET /api/health` endpoint that checks DB connectivity
 - Validate all request bodies with explicit checks (type, required fields, length)
 - Wrap async handlers in try/catch
-- Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`)
+- Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`, `node_modules/`)
 - Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`)
 - **No build step** — the app runs directly with `node server.js`
 

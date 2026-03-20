@@ -21,7 +21,7 @@ Before anything, confirm you know these values (they should already be in CLAUDE
 
 ## Steps
 
-### 1. Install and test
+### 1. Verify tests pass
 
 ```bash
 cd src/generated-app
@@ -31,9 +31,22 @@ npm test          # Stop if failures
 
 No build step needed — the app uses plain HTML served by Express.
 
-### 2. Create `.databricksignore`
+### 2. Ensure `app.yaml` has the right command
 
-Create this file in the app root to avoid syncing unnecessary files:
+The app.yaml `command` MUST run `npm install` before starting the server. This is how dependencies get installed at deploy time — we do NOT sync `node_modules/`.
+
+```yaml
+command:
+  - "bash"
+  - "-c"
+  - "npm install --production && node server.js"
+```
+
+If the command is just `["node", "server.js"]`, update it to the above. Without this, the app will crash with "Cannot find module 'express'" at runtime.
+
+### 3. Create `.databricksignore`
+
+Create this file in the app root. It controls what `databricks sync` uploads:
 
 ```
 .git/
@@ -42,37 +55,38 @@ Create this file in the app root to avoid syncing unnecessary files:
 .DS_Store
 __tests__/
 coverage/
+node_modules/
 ```
 
-**Note:** Do NOT exclude `node_modules/` — the app needs its dependencies at runtime. With a minimal dependency set (express, pg, helmet, cors), sync is fast.
+**Why exclude `node_modules/`:** The app installs its own deps via the `npm install` command above. Syncing `node_modules/` would be slow (thousands of files) and fails anyway because `databricks sync` also honors `.gitignore`.
 
-### 3. Create the app (if first deploy)
+### 4. Create the app (if first deploy)
 
 ```bash
 # Check if app exists
 databricks apps get {app_name} -p {profile} 2>&1
 
-# Create if needed (no --name flag — app name is positional)
+# Create if needed (app name is positional, not a flag)
 databricks apps create {app_name} --description "Supply Chain Inventory" -p {profile}
 ```
 
-### 4. Sync files to workspace
+### 5. Sync source files to workspace
 
 ```bash
-databricks sync . /Workspace/Users/{user_email}/{app_name} -p {profile} --watch=false
+databricks sync . "/Workspace/Users/{user_email}/{app_name}" -p {profile} --watch=false
 ```
 
-With minimal dependencies (no React/Vite), this should complete in under a minute.
+This syncs only source files (server.js, public/, package.json, app.yaml) — fast because no `node_modules/`.
 
-### 5. Deploy
+### 6. Deploy
 
 ```bash
 databricks apps deploy {app_name} \
-  --source-code-path /Workspace/Users/{user_email}/{app_name} \
+  --source-code-path "/Workspace/Users/{user_email}/{app_name}" \
   -p {profile}
 ```
 
-### 6. Wait and verify
+### 7. Wait and verify
 
 ```bash
 # Poll status (first deploy takes 2-5 minutes)
@@ -95,8 +109,9 @@ Provide the app URL when deployment completes.
 
 | Problem | Fix |
 |---------|-----|
+| `Cannot find module 'express'` | app.yaml command must include `npm install --production &&` before `node server.js` |
 | `unknown flag: --name` | App name is positional: `databricks apps create {name}`, not `--name {name}` |
-| Sync takes forever | Check that the app has minimal deps (no React/Vite) |
 | Wrong workspace | Verify `-p {profile}` is on every command |
 | 300 app limit | Delete old apps: `databricks apps delete {old-name} -p {profile}` |
 | App starts but DB errors | Check Lakebase resource in `app.yaml` and verify DB was created |
+| Sync warning about .git | Harmless — `databricks sync` just can't find a `.git` dir in the app folder |
