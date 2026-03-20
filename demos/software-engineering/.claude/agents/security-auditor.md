@@ -18,8 +18,8 @@ You are a web application security specialist. Audit Node.js/Express.js applicat
 - Check for type coercion issues and missing length/range checks
 
 ### 3. XSS (A03:2021)
-- Check if React's built-in XSS protection is bypassed (`dangerouslySetInnerHTML`)
-- Look for unsanitized data in responses
+- Check for use of `innerHTML` with unsanitized user data
+- Look for unsanitized data in API responses or DOM rendering
 
 ### 4. Error Handling (A09:2021)
 - Verify stack traces are not exposed to clients

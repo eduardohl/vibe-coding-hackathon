@@ -2,10 +2,10 @@
 
 ## Overview
 
-Build a **Supply Chain Inventory** app using React + Express.js + Lakebase, then teach Claude a proprietary SDK it was never trained on.
+Build a **Supply Chain Inventory** app using Express.js + Lakebase with a plain HTML frontend, then teach Claude a proprietary SDK it was never trained on.
 
-**Problem:** Build a Medical Supply Inventory Management App
-**Stack:** React frontend + Express.js backend + Lakebase database
+**Origin:** The app spec comes from a casual Slack conversation in `src/conversation.md` — read it first to understand the requirements.
+**Stack:** Plain HTML/CSS/JS frontend + Express.js backend + Lakebase database
 **Deployment:** Databricks Apps
 
 **This demo showcases Claude Code features including:**
@@ -130,7 +130,8 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 ## Coding Standards
 
 - ES modules (`import`/`export`), `const`/`let` only, async/await
-- Functional React components with hooks
+- **Plain HTML/CSS/JS frontend** — no React, no build step, no JSX
+- Express serves static files from a `public/` directory
 - Express middleware for cross-cutting concerns, validate all inputs
 - Parameterize all SQL queries — never concatenate user input
 - Use environment variables for secrets
@@ -141,11 +142,27 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 - Add `helmet` middleware for security headers
 - Add `cors` middleware with explicit origin (not wildcard `*`)
 - Add `GET /api/health` endpoint that checks DB connectivity
-- Add `morgan` or `pino` for request logging
 - Validate all request bodies with explicit checks (type, required fields, length)
-- Use `express-async-errors` or wrap async handlers in try/catch
-- Include a `.databricksignore` in the app root (exclude `node_modules/`, `.git/`, `src/`, `__tests__/`)
-- Include a `.gitignore` in the app root (exclude `node_modules/`, `dist/`, `.env`)
+- Wrap async handlers in try/catch
+- Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`)
+- Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`)
+- **No build step** — the app runs directly with `node server.js`
+
+### App Structure (keep it minimal)
+
+```
+generated-app/
+├── server.js           # Express server + API routes (single file)
+├── public/             # Static frontend (served by Express)
+│   ├── index.html      # Single page — table, form, status bar
+│   └── style.css       # Simple clean CSS
+├── package.json        # express, pg, helmet, cors (minimal deps)
+├── app.yaml            # Databricks Apps config + Lakebase binding
+├── .databricksignore   # Exclude .git, __tests__, .env
+└── .gitignore          # Exclude node_modules, .env
+```
+
+**Key:** The entire app is ~3 files of logic (server.js, index.html, style.css). No bundler, no transpiler, no framework. This keeps scaffolding fast and deployment simple.
 
 ## File Structure
 
@@ -172,6 +189,7 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 │           ├── api-reference.md
 │           └── examples.md
 └── src/
+    ├── conversation.md          # App spec (casual Slack conversation)
     ├── setup_demo_data.py
     └── generated-*/             # Created during demo
 ```

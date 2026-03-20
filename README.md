@@ -23,7 +23,7 @@ A practical workshop teaching AI-assisted development with Claude Code and Datab
 | **Productivity** | Daily Task Automation | Claude Code skills only — no infra | Parse emails, draft messages, create slides & spreadsheets |
 | **Data Engineering** | Job Orchestration & CI/CD | DABs, PySpark, Lakeflow, Unity Catalog | Create jobs, optimize workflows, auto-PRs |
 | **Data Science** | Experimentation & Logging | MLflow, XGBoost, Feature Engineering | Train models, track experiments, log results |
-| **Software Engineering** | Full-Stack Apps & Testing | Databricks Apps, React, Express, Lakebase | Build apps, write tests, security audit |
+| **Software Engineering** | Full-Stack Apps & Testing | Databricks Apps, Express, Lakebase | Build apps, write tests, security audit |
 | **Software Engineering (Java)** | Testing & Proprietary Libraries | Spring Boot, JUnit 5, H2 — no cloud | Build APIs, teach Claude proprietary SDKs, automated testing |
 
 ### Track Details
@@ -48,7 +48,8 @@ A practical workshop teaching AI-assisted development with Claude Code and Datab
 - Optimize hyperparameters
 
 **Software Engineering**: Build a Supply Chain Inventory Management App
-- Scaffold a React + Express.js full-stack app
+- Read a casual conversation and turn it into a working app
+- Scaffold an Express.js app with plain HTML frontend (no build step)
 - Connect to Lakebase (Postgres-compatible) for persistence
 - Teach Claude a proprietary SDK (SupplyTrackSDK) via bundled docs
 - Write unit tests and API tests with Jest

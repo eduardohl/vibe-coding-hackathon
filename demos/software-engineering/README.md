@@ -1,6 +1,6 @@
 # Demo: Software Engineering with Claude Code
 
-> **45 min** | Databricks Apps + Lakebase + Node.js/React | [Full Claude Code Docs](https://code.claude.com/docs/en/overview)
+> **35 min** | Databricks Apps + Lakebase + Node.js | [Full Claude Code Docs](https://code.claude.com/docs/en/overview)
 >
 > **Focus:** Testing, code quality tooling, and teaching Claude proprietary libraries
 
@@ -12,7 +12,7 @@
 |------|--------|---------------|
 | 0 | `My catalog is {catalog}, schema is {schema}, CLI profile is {profile}` + `Setup demo data` | [Skills](https://code.claude.com/docs/en/skills) |
 | 1 | `What MCP servers do you have? Show me the products table schema and 5 sample rows` | [MCP](https://code.claude.com/docs/en/mcp) |
-| 2 | `Create a Lakebase database and a Databricks App with React + Express...` *(see below)* | Code gen + [Hooks](https://code.claude.com/docs/en/hooks) |
+| 2 | `Read the conversation in src/conversation.md and build the app they describe...` *(see below)* | Code gen + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 3 | `What do you know about SupplyTrackSDK?` + integrate it | [Skills](https://code.claude.com/docs/en/skills) (bundled docs) |
 | 4 | `Write tests...` + `/run-tests` | Testing + [Skills](https://code.claude.com/docs/en/skills) |
 | 5 | `Delegate to the code-reviewer and security-auditor agents in the background...` | [Subagents](https://code.claude.com/docs/en/sub-agents) |
@@ -68,24 +68,19 @@ What MCP servers do you have access to? Then show me the products table schema a
 
 ---
 
-### Step 2: Create Database & Scaffold the App
+### Step 2: Read Conversation & Scaffold the App
 
 ```
-Create a Lakebase database called "supply-inventory" for the app, then scaffold a Databricks App for supply chain inventory management with a React frontend and Express.js backend:
-- Use Tailwind CSS for styling with a clean, modern dashboard look
+Read the conversation in src/conversation.md — Jordan and Priya are discussing an inventory tracker app. Build exactly what they describe:
+- Create a Lakebase database for the app
+- Express.js backend with plain HTML frontend (no React, no build step)
 - Connects to Lakebase via DATABASE_URL env var (configured in app.yaml)
-- CRUD for medical supplies (list, view, add, edit, delete) with SKU, stock level, reorder point
-- Order analytics dashboard with charts
-- app.yaml with Lakebase resource binding for the database you just created
-- Auto-creates tables on startup (CREATE TABLE IF NOT EXISTS)
-- Health check endpoint at GET /api/health
-- Uses the products and departments from {catalog}.{schema}
-
-Structure as generated-app/ with server.js, src/ (React + Vite + Tailwind), package.json, app.yaml, .databricksignore, and .gitignore.
-Don't deploy yet.
+- CRUD for supplies, low-stock badges, the works
+- Use the products data from {catalog}.{schema}
+Structure as generated-app/ with server.js, public/ folder, package.json, and app.yaml. Don't deploy yet.
 ```
 
-> **Observe:** (1) Claude creates a real Lakebase database via CLI, then generates a full-stack app wired to it. (2) Each `.js`/`.jsx` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write.
+> **Observe:** (1) Claude reads a casual conversation and extracts real requirements from it — this is how natural language becomes working software. (2) Each `.js` file gets auto-formatted — that's the [PostToolUse hook](https://code.claude.com/docs/en/hooks) firing Prettier on every write. (3) No build step — plain HTML means instant scaffolding.
 
 ---
 
@@ -110,11 +105,7 @@ Add a POST /api/supplies/:sku/reserve endpoint using SupplyTrackSDK to check sto
 ### Step 4: Write & Run Tests
 
 ```
-Write tests for the app:
-1. Unit tests for the API route handlers (mock the database)
-2. Tests for the SupplyTrackSDK integration endpoints (mock the SDK client)
-3. A simple React component test for the product list
-Use Jest. Test both success and error paths. Then run them.
+Write unit tests for the API route handlers — mock the database and the SDK client. Use Jest + supertest. Test both success and error paths. Then run them.
 ```
 
 > **Observe:** Claude generates tests following CLAUDE.md patterns — mocked DB, mocked SDK, proper assertions. The hooks auto-format each test file. Then Claude runs `npm test` and fixes any failures.
@@ -137,7 +128,7 @@ Delegate to the code-reviewer and security-auditor agents in the background. The
 /deploy-app
 ```
 
-> **Observe:** The [Skill](https://code.claude.com/docs/en/skills) builds, tests, and deploys to Databricks Apps.
+> **Observe:** The [Skill](https://code.claude.com/docs/en/skills) tests and deploys to Databricks Apps. No build step needed — plain HTML goes straight to production.
 
 ---
 
@@ -162,7 +153,7 @@ Commit and push these changes
 Then try something experimental:
 
 ```
-Add a dark mode toggle to the React app
+Add a dark mode toggle to the app
 ```
 
 Press **`Esc` twice** to open the checkpoint menu.
@@ -171,7 +162,7 @@ Press **`Esc` twice** to open the checkpoint menu.
 
 ---
 
-> **Reflect with the group:** How does teaching Claude a proprietary library change what's possible? What internal tools or SDKs would you bundle as skills? How do subagents compare to your current code review process?
+> **Reflect with the group:** How does turning a casual conversation into a working app change your development process? How does teaching Claude a proprietary library change what's possible? What internal tools or SDKs would you bundle as skills?
 
 ---
 

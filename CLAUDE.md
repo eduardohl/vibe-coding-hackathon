@@ -27,11 +27,11 @@ databricks-claude-code-hackathon/
 │   │   ├── README.md            # Demo script
 │   │   ├── .claude/             # Skills, agents, hooks
 │   │   └── src/                 # Training code
-│   ├── software-engineering/    # Databricks Apps + Lakebase (Node.js/React)
+│   ├── software-engineering/    # Databricks Apps + Lakebase (Node.js, plain HTML)
 │   │   ├── CLAUDE.md            # Project context
 │   │   ├── README.md            # Demo script
 │   │   ├── .claude/             # Skills, agents, hooks (+ SupplyTrackSDK docs)
-│   │   └── src/                 # App code (generated live)
+│   │   └── src/                 # Conversation spec + app code (generated live)
 │   ├── software-engineering-java/  # Spring Boot + JUnit 5 (no cloud)
 │   │   ├── CLAUDE.md            # Project context
 │   │   ├── README.md            # Demo script
@@ -79,20 +79,22 @@ databricks-claude-code-hackathon/
 | Model Registry | Unity Catalog |
 
 ### Track 3: Software Engineering (Node.js)
-**Problem:** Build a Supply Chain Inventory Management App
+**Problem:** Build a Supply Chain Inventory Management App (from a casual conversation)
 
 | Component | Technology |
 |-----------|------------|
-| Frontend | React (Vite) |
+| Frontend | Plain HTML/CSS/JS (no build step) |
 | Backend | Express.js (Node.js) |
 | Database | Lakebase (Postgres-compatible) |
 | Deployment | Databricks Apps |
 
 **Demo Features:**
+- Conversation-to-app: Claude reads a casual Slack thread and builds the app described in it
 - Custom skills (`/deploy-app`, `/run-tests`, `/lint`)
 - Skills with bundled documentation (SupplyTrackSDK — teaches Claude a proprietary library)
 - Specialized subagents (code-reviewer, api-debugger, security-auditor)
 - Hooks for auto-formatting JS/TS with Prettier + ESLint
+- No build step — plain HTML means fast scaffold and deploy
 
 ### Track 3b: Software Engineering (Java)
 **Problem:** Build a Medical Supply Inventory Service
@@ -223,19 +225,17 @@ This project uses multiple [MCP](https://code.claude.com/docs/en/mcp) servers. S
 10. **Commit & Push** - Git workflow
 11. **Checkpoints** - Press Esc+Esc to rewind
 
-### Software Engineering Demo — Node.js (~45 min)
+### Software Engineering Demo — Node.js (~35 min)
 
 0. **Setup** - Set catalog/schema/profile, setup demo data
 1. **Explore Data** - Query products table via MCP
-2. **Scaffold App** - Create React + Express supply chain inventory app
+2. **Read Conversation & Scaffold** - Read casual Slack thread → build Express + plain HTML app
 3. **Teach SDK** - "What do you know about SupplyTrackSDK?" + integrate
-4. **Write Tests** - Unit tests for API routes, SDK integration, and React components
-5. **Run Tests** - /run-tests skill
-6. **Code Review** - Delegate to code-reviewer subagent
-7. **Security Audit** - Delegate to security-auditor subagent
-8. **Deploy** - /deploy-app skill
-9. **Commit & Checkpoints** - Git + Esc+Esc to rewind
-10. **UI Testing** - Claude navigates the app in Chrome and finds bugs
+4. **Write & Run Tests** - API tests with Jest + supertest → /run-tests
+5. **Code Review + Security Audit** - Background subagents run in parallel
+6. **Deploy** - /deploy-app skill (no build step)
+7. **UI Testing** - Claude navigates the app in Chrome and finds bugs
+8. **Commit & Checkpoints** - Git + Esc+Esc to rewind
 
 ### Software Engineering Demo — Java (~40 min)
 

@@ -5,7 +5,7 @@ description: Build and deploy the Databricks App. Use when the user says "deploy
 
 # Deploy Databricks App
 
-Build the React frontend and deploy the full-stack app to Databricks Apps.
+Deploy the Express.js app (plain HTML frontend) to Databricks Apps.
 
 ## Pre-flight
 
@@ -21,29 +21,30 @@ Before anything, confirm you know these values (they should already be in CLAUDE
 
 ## Steps
 
-### 1. Install, test, build
+### 1. Install and test
 
 ```bash
 cd generated-app
 npm install
 npm test          # Stop if failures
-npm run build     # Creates dist/
 ```
+
+No build step needed — the app uses plain HTML served by Express.
 
 ### 2. Create `.databricksignore`
 
 Create this file in the app root to avoid syncing unnecessary files:
 
 ```
-node_modules/
 .git/
 .env
 *.log
 .DS_Store
-src/          # Only dist/ is needed after build
 __tests__/
 coverage/
 ```
+
+**Note:** Do NOT exclude `node_modules/` — the app needs its dependencies at runtime. With a minimal dependency set (express, pg, helmet, cors), sync is fast.
 
 ### 3. Create the app (if first deploy)
 
@@ -61,9 +62,7 @@ databricks apps create {app_name} --description "Supply Chain Inventory" -p {pro
 databricks sync . /Workspace/Users/{user_email}/{app_name} -p {profile} --watch=false
 ```
 
-This should be fast (~30s) because `.databricksignore` excludes `node_modules/` — the app installs deps from `package.json` during deployment.
-
-**IMPORTANT:** If the app needs `node_modules/` at runtime (no install step in Databricks Apps), then remove `node_modules/` from `.databricksignore` — but be aware the sync will take several minutes.
+With minimal dependencies (no React/Vite), this should complete in under a minute.
 
 ### 5. Deploy
 
@@ -97,7 +96,7 @@ Provide the app URL when deployment completes.
 | Problem | Fix |
 |---------|-----|
 | `unknown flag: --name` | App name is positional: `databricks apps create {name}`, not `--name {name}` |
-| Sync takes forever | Check `.databricksignore` exists and excludes `node_modules/` |
+| Sync takes forever | Check that the app has minimal deps (no React/Vite) |
 | Wrong workspace | Verify `-p {profile}` is on every command |
 | 300 app limit | Delete old apps: `databricks apps delete {old-name} -p {profile}` |
 | App starts but DB errors | Check Lakebase resource in `app.yaml` and verify DB was created |

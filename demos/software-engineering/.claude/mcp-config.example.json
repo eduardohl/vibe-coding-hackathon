@@ -32,7 +32,7 @@
     "context7": {
       "command": "context7-mcp",
       "args": [],
-      "description": "Get up-to-date library documentation (React, Express, Node.js, pg)"
+      "description": "Get up-to-date library documentation (Express, Node.js, pg)"
     },
 
     "brave-search": {

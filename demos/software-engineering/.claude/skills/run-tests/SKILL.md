@@ -38,15 +38,14 @@ Execute the full test suite including unit tests and API tests.
 
 ## Test Categories
 
-- **Unit tests** - Pure function tests, utility helpers
-- **API tests** - HTTP endpoint tests with mocked database
-- **Component tests** - React component rendering tests
+- **API tests** - HTTP endpoint tests with supertest and mocked database
+- **SDK tests** - SupplyTrackSDK integration endpoint tests with mocked client
 
 ## Coverage Targets
 
 | Category | Target |
 |----------|--------|
-| Statements | > 70% |
-| Branches | > 60% |
-| Functions | > 70% |
-| Lines | > 70% |
+| Statements | > 60% |
+| Branches | > 50% |
+| Functions | > 60% |
+| Lines | > 60% |

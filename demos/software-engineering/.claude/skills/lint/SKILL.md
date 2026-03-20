@@ -10,13 +10,11 @@ Run code quality tools to check and fix formatting and lint issues.
 ## Steps
 
 1. **Format** with Prettier
-   - Run: `npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,css}"`
-   - Run: `npx prettier --write "*.{js,json,yaml,yml}"`
+   - Run: `npx prettier --write "**/*.{js,json,css,html,yaml,yml}"`
    - Report files changed
 
 2. **Lint** with ESLint
-   - Run: `npx eslint --fix "src/**/*.{js,jsx,ts,tsx}"`
-   - Run: `npx eslint --fix "*.js"`
+   - Run: `npx eslint --fix "**/*.js"`
    - Report issues found and auto-fixed
 
 3. **Format Python** files (if any)
