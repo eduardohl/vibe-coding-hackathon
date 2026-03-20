@@ -42,10 +42,8 @@ claude .
 ```
 
 ```
-My catalog is {catalog} and my schema is {schema}. My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace. Remember this for the rest of our session.
+My catalog is {catalog}, my schema is {schema}, and my Databricks CLI profile is {profile_name}. Only operate on this profile's workspace. Remember this for the rest of our session.
 ```
-
-> **Observe:** Claude stores this via [Memory](https://code.claude.com/docs/en/memory) — you won't have to repeat it.
 
 Then: `Setup demo data in my catalog and schema`
 

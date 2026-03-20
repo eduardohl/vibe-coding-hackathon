@@ -135,7 +135,7 @@ Start the app locally with mvn spring-boot:run, then test every endpoint with cu
 
 > **Observe:** Claude starts the server, fires curl requests against every endpoint, reads the responses, and when something breaks — fixes the code, reruns the tests, and retries. This is the **self-healing loop**: test → find bug → fix → retest, all autonomously.
 
-**Try it yourself** — while the server is still running, open a second terminal:
+**Try it yourself** — while the server is still running, open a second terminal (on Windows, use `python` instead of `python3`):
 
 ```bash
 # List all supplies
@@ -194,11 +194,11 @@ Then press **`Esc` twice** to open the checkpoint menu.
 
 | Issue | Solution |
 |-------|----------|
-| `mvn: command not found` | Install Maven: `brew install maven` (Mac) or [download](https://maven.apache.org/download.cgi) |
-| `java: command not found` | Install Java 17+: `brew install openjdk@17` (Mac) or [download](https://adoptium.net) |
+| `mvn: command not found` | **Mac:** `brew install maven` — **Windows:** [download](https://maven.apache.org/download.cgi) and add to PATH |
+| `java: command not found` | **Mac:** `brew install openjdk@17` — **Windows:** [download from Adoptium](https://adoptium.net) |
 | Tests fail with compilation error | Run `mvn clean compile` first, check Java version (`java --version`) |
-| `google-java-format` not found | Install: `brew install google-java-format` (Mac) |
-| Port 8080 already in use | Kill the process: `lsof -ti:8080 \| xargs kill` |
+| `google-java-format` not found | **Mac:** `brew install google-java-format` — **Windows:** see [Setup Guide](../../SETUP.md) |
+| Port 8080 already in use | **Mac:** `lsof -ti:8080 \| xargs kill` — **Windows:** `netstat -ano \| findstr :8080` then `taskkill /PID <pid> /F` |
 | Spring Boot won't start | Check `application.properties`, verify H2 config |
 
 ---

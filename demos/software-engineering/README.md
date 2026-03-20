@@ -10,7 +10,7 @@
 
 | Step | Prompt | Feature Shown |
 |------|--------|---------------|
-| 0 | `My catalog is {catalog}, schema is {schema}, CLI profile is {profile}` + `Setup demo data` | [Skills](https://code.claude.com/docs/en/skills) |
+| 0 | `My catalog is {catalog}, schema is {schema}, CLI profile is {profile}. Remember this.` + `Setup demo data` | [Skills](https://code.claude.com/docs/en/skills) |
 | 1 | `What MCP servers do you have? Show me the products table schema and 5 sample rows` | [MCP](https://code.claude.com/docs/en/mcp) |
 | 2 | `Read the conversation in src/conversation.md and build the app they describe...` *(see below)* | Code gen + [Hooks](https://code.claude.com/docs/en/hooks) |
 | 3 | `What do you know about SupplyTrackSDK?` + integrate it | [Skills](https://code.claude.com/docs/en/skills) (bundled docs) |
@@ -46,13 +46,10 @@ claude .
 Set your environment and create demo data:
 
 ```
-My catalog is {catalog} and my schema is {schema}. Remember this for the rest of our session.
-My Databricks CLI profile is {profile_name}. Only operate on this profile's workspace.
+My catalog is {catalog}, my schema is {schema}, and my Databricks CLI profile is {profile_name}. Only operate on this profile's workspace. Remember this for the rest of our session.
 ```
 
-```
-Setup demo data in my catalog and schema
-```
+Then: `Setup demo data in my catalog and schema`
 
 > **Observe:** Claude matched your intent to the skill's keywords. That's [Skills](https://code.claude.com/docs/en/skills). And it already knows the project context from [CLAUDE.md](https://code.claude.com/docs/en/memory).
 

@@ -87,13 +87,19 @@ This lets Claude query your Unity Catalog tables, run SQL, and explore schemas �
 
 Your workspace exposes MCP endpoints at `https://YOUR-WORKSPACE/api/2.0/mcp/sql`. Add it to Claude Code:
 
-**Mac/Windows:**
+**Mac/Linux:**
 ```bash
 claude mcp add-json uc-function-mcp \
   '{"type":"http","url":"https://YOUR-WORKSPACE.cloud.databricks.com/api/2.0/mcp/sql","headers":{"Authorization":"Bearer '"$(databricks auth token --host https://YOUR-WORKSPACE.cloud.databricks.com | jq -r .access_token)"'"}}'
 ```
 
-> **Note:** The Bearer token expires after ~1 hour. For long sessions, re-run the `claude mcp add-json` command above to refresh it. For a more durable setup, consider configuring [OAuth client authentication](https://docs.databricks.com/en/generative-ai/mcp/connect-external-services.html).
+**Windows (PowerShell):**
+```powershell
+$token = (databricks auth token --host https://YOUR-WORKSPACE.cloud.databricks.com | ConvertFrom-Json).access_token
+claude mcp add-json uc-function-mcp ('{{"type":"http","url":"https://YOUR-WORKSPACE.cloud.databricks.com/api/2.0/mcp/sql","headers":{{"Authorization":"Bearer {0}"}}}}' -f $token)
+```
+
+> **Note:** The Bearer token expires after ~1 hour. For long sessions, re-run the command above to refresh it. For a more durable setup, consider configuring [OAuth client authentication](https://docs.databricks.com/en/generative-ai/mcp/connect-external-services.html).
 
 ### Option B: Community MCP via uv (deprecated)
 
@@ -116,9 +122,26 @@ Replace `YOUR_CATALOG.YOUR_SCHEMA` with your actual catalog and schema.
 
 ---
 
-## Step 5: Install Formatters (for auto-formatting hooks)
+## Step 5: Install Language Runtimes & Formatters
 
-The demos auto-format code on every write using hooks.
+The demos need language runtimes and auto-format code on every write using hooks.
+
+### Node.js 18+ (used by Node.js SE demo)
+
+**Mac:** `brew install node` | **Windows:** Download from [nodejs.org](https://nodejs.org/) or `winget install OpenJS.NodeJS.LTS`
+
+**Verify:** `node --version` and `npm --version`
+
+### Java 17+ and Maven 3.8+ (used by Java SE demo only)
+
+**Mac:**
+```bash
+brew install openjdk@17 maven
+```
+
+**Windows:** Download Java from [Adoptium](https://adoptium.net/) and Maven from [maven.apache.org](https://maven.apache.org/download.cgi). Add both to PATH.
+
+**Verify:** `java --version` and `mvn --version`
 
 ### Ruff (Python — used by DE, DS, SE, Productivity demos)
 
@@ -131,7 +154,7 @@ The demos auto-format code on every write using hooks.
 brew install google-java-format
 ```
 
-**Windows:** Download from [GitHub releases](https://github.com/google/google-java-format/releases) and add to PATH.
+**Windows:** Download the jar from [GitHub releases](https://github.com/google/google-java-format/releases), place it in a directory on your PATH, and create a batch file (`google-java-format.cmd`) that runs `java -jar google-java-format.jar %*`.
 
 **Verify:** `google-java-format --version`
 
@@ -183,5 +206,5 @@ Pick your demo track and follow the README:
 - [Productivity Demo](demos/productivity/README.md) — no Databricks needed, best first demo
 - [Data Engineering Demo](demos/data-engineering/README.md) — DABs + PySpark + Lakeflow Pipelines
 - [Data Science Demo](demos/data-science/README.md) — MLflow + XGBoost
-- [Software Engineering Demo (Node.js)](demos/software-engineering/README.md) — React + Express + Lakebase
+- [Software Engineering Demo (Node.js)](demos/software-engineering/README.md) — Express + Lakebase
 - [Software Engineering Demo (Java)](demos/software-engineering-java/README.md) — Spring Boot + JUnit 5, no cloud
