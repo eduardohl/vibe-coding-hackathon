@@ -157,6 +157,7 @@ The app should read `DATABASE_URL` from the environment and connect with `pg` (n
 - Include a `.databricksignore` in the app root (exclude `.git/`, `__tests__/`, `.env`, `node_modules/`)
 - Include a `.gitignore` in the app root (exclude `node_modules/`, `.env`)
 - **No build step** — the app runs directly with `node server.js`
+- **Port:** The Express server MUST listen on `process.env.PORT || 8080` — Databricks Apps injects the `PORT` env var at runtime
 
 ### App Structure (keep it minimal)
 

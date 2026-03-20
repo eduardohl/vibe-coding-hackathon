@@ -31,36 +31,30 @@ npm test          # Stop if failures
 
 No build step needed — the app uses plain HTML served by Express.
 
-### 2. Ensure `app.yaml` has the right command
+### 2. Ensure `app.yaml` is correct
 
-The app.yaml `command` MUST run `npm install` before starting the server. This is how dependencies get installed at deploy time — we do NOT sync `node_modules/`.
+The app.yaml **must** have these properties:
 
 ```yaml
 command:
   - "bash"
   - "-c"
   - "npm install --production && node server.js"
+resources:
+  - name: lakebase-db
+    type: lakebase
+    config:
+      database: {db_name}
+env:
+  - name: DATABASE_URL
+    valueFrom: lakebase-db
 ```
 
-If the command is just `["node", "server.js"]`, update it to the above. Without this, the app will crash with "Cannot find module 'express'" at runtime.
+**Why `npm install` in command:** We do NOT upload `node_modules/` — deps are installed at deploy time by the platform. Without this, the app crashes with "Cannot find module 'express'".
 
-### 3. Create `.databricksignore`
+Also verify `server.js` listens on `process.env.PORT || 8080` — Databricks Apps injects the `PORT` env var.
 
-Create this file in the app root. It controls what `databricks sync` uploads:
-
-```
-.git/
-.env
-*.log
-.DS_Store
-__tests__/
-coverage/
-node_modules/
-```
-
-**Why exclude `node_modules/`:** The app installs its own deps via the `npm install` command above. Syncing `node_modules/` would be slow (thousands of files) and fails anyway because `databricks sync` also honors `.gitignore`.
-
-### 4. Create the app (if first deploy)
+### 3. Create the app (if first deploy)
 
 ```bash
 # Check if app exists
@@ -70,15 +64,31 @@ databricks apps get {app_name} -p {profile} 2>&1
 databricks apps create {app_name} --description "Supply Chain Inventory" -p {profile}
 ```
 
-### 5. Sync source files to workspace
+### 4. Upload source files via staging directory
+
+**Do NOT use `databricks sync` or `databricks workspace import-dir` directly on the app folder** — both will try to upload `node_modules/` (thousands of files, extremely slow). Instead, use a staging directory with only the files the app needs:
 
 ```bash
-databricks sync . "/Workspace/Users/{user_email}/{app_name}" -p {profile} --watch=false
+# Create clean staging dir
+STAGING_DIR="/tmp/{app_name}-deploy"
+rm -rf "$STAGING_DIR" && mkdir -p "$STAGING_DIR" "$STAGING_DIR/public"
+
+# Copy only what the app needs at runtime
+cp src/generated-app/server.js "$STAGING_DIR/"
+cp src/generated-app/package.json "$STAGING_DIR/"
+cp src/generated-app/package-lock.json "$STAGING_DIR/" 2>/dev/null || true
+cp src/generated-app/app.yaml "$STAGING_DIR/"
+cp src/generated-app/public/* "$STAGING_DIR/public/"
+
+# Upload to workspace (~5-10 files, takes seconds)
+databricks workspace import-dir "$STAGING_DIR" \
+  "/Workspace/Users/{user_email}/{app_name}" \
+  --overwrite -p {profile}
 ```
 
-This syncs only source files (server.js, public/, package.json, app.yaml) — fast because no `node_modules/`.
+**Why staging?** This pattern (from Databricks' own ai-dev-kit) guarantees only source files are uploaded — no `node_modules/`, no `__tests__/`, no `.git/`. Upload takes seconds, not minutes.
 
-### 6. Deploy
+### 5. Deploy
 
 ```bash
 databricks apps deploy {app_name} \
@@ -86,7 +96,7 @@ databricks apps deploy {app_name} \
   -p {profile}
 ```
 
-### 7. Wait and verify
+### 6. Wait and verify
 
 ```bash
 # Poll status (first deploy takes 2-5 minutes)
@@ -110,8 +120,9 @@ Provide the app URL when deployment completes.
 | Problem | Fix |
 |---------|-----|
 | `Cannot find module 'express'` | app.yaml command must include `npm install --production &&` before `node server.js` |
+| Upload takes forever | You're uploading `node_modules/`. Use the staging directory pattern in Step 4 |
 | `unknown flag: --name` | App name is positional: `databricks apps create {name}`, not `--name {name}` |
 | Wrong workspace | Verify `-p {profile}` is on every command |
 | 300 app limit | Delete old apps: `databricks apps delete {old-name} -p {profile}` |
 | App starts but DB errors | Check Lakebase resource in `app.yaml` and verify DB was created |
-| Sync warning about .git | Harmless — `databricks sync` just can't find a `.git` dir in the app folder |
+| Port mismatch | `server.js` must use `process.env.PORT \|\| 8080` — Databricks injects PORT |
